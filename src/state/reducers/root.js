@@ -1,12 +1,10 @@
 import * as ActionType from '../actions/root.js';
 
-import {
-  ROOT_ROUTE_PAGE_GAME
-} from '../../entities/pages.js';
+import { routes } from '../../entities/root.js';
 
 const INITIAL_STATE = {
   route: {
-    activePage: ROOT_ROUTE_PAGE_GAME
+    activePage: routes.pages.game
   },
   network: {
     offline: false
@@ -15,7 +13,7 @@ const INITIAL_STATE = {
 
 const app = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case ActionType.UPDATE_ACTIVE_PAGE_SUCC:
+    case ActionType.UPDATE_ACTIVE_PAGE.SUCCESS:
       return {
         ...state,
         route: {

@@ -1,15 +1,17 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { connect } from 'pwa-helpers/connect-mixin.js';
 import store from '../store.js';
+import { installRouter } from 'pwa-helpers/router.js';
+import { updateMetadata } from 'pwa-helpers/metadata.js';
 
-import { SharedStyles } from './shared-styles.js';
+import { SharedStyles } from '../../internal_comps/sc_shared-styles/shared-styles.js';
 
-import 'microfront_reference_comp1/src/components/app.js';
-import 'microfront_reference_comp2/src/components/app.js';
-import 'microfront_reference_comp_vanilla/src/components/app.js';
-import { comp1_updateTitle } from 'microfront_reference_comp1/src/actions/app.js';
-import { comp2_updateTitle } from 'microfront_reference_comp2/src/actions/app.js';
-import { compVanilla_updateTitle } from 'microfront_reference_comp_vanilla/src/actions/app.js';
+import { navigate } from '../state/actions/root.js';
+
+import * as RootSelector from '../state/selectors/root.js';
+
+import { routes } from '../entities/root.js';
+import './sc-404.js';
 
 class ScRoot extends connect(store)(LitElement) {
   render() {
@@ -20,49 +22,53 @@ class ScRoot extends connect(store)(LitElement) {
         display: block;
       }
     </style>
-
-    <div>THIS IS A TEST</div>
-    <comp-one-app containerId="1" .componentList="${this._componentList}"></comp-one-app>
-    <comp-one-app containerId="2" .componentList="${this._componentList}"></comp-one-app>
-    <comp-two-app containerId="1" .componentList="${this._componentList}"></comp-two-app>
-    <comp-vanilla containerId="5"></comp-vanilla>
+    
+    ${this._activePageHtml()}
     `;
   }
 
   static get properties() {
     return {
-      _componentList: { type: Array }
+      _page: { type: String }
     }
   }
 
-  constructor() {
-    super();
-    this._componentList = [
-      {
-        id: '1',
-        component: 'comp1',
-        updateContainerTitle: comp1_updateTitle
-      },
-      {
-        id: '2',
-        component: 'comp1',
-        updateContainerTitle: comp1_updateTitle
-      },
-      {
-        id: '1',
-        component: 'comp2',
-        updateContainerTitle: comp2_updateTitle
-      },
-      {
-        id: '5',
-        component: 'compVanilla',
-        updateContainerTitle: compVanilla_updateTitle
-      }
-    ];
+  _activePageHtml() {
+    switch(this._page) {
+      case routes.pages.game:
+        return html`<sc-game></sc-game>`;
+      default:
+        return html`<sc-404></sc-404>`;
+    }
+  }
+
+  firstUpdated() {
+    installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname))));
+  }
+
+  updated(changedProps) {
+    if (changedProps.has('_page')) {      
+      updateMetadata({
+        title: this._getPageTitle(this._page)
+      });
+    }
+  }
+
+  _getPageTitle(page) {
+    const title = 'Sharded Cards';
+    switch(page) {
+      case routes.pages.game:
+        return `${title} | PLAY`;
+      case routes.pages.notFound:
+        return `${title} | 404 - NOT FOUND`;
+      default:
+        console.error(`Unexpected page: ${page}`);
+        return title;
+    }
   }
 
   stateChanged(state) {
-    
+    this._page = RootSelector.getActivePage(state);
   }
 }
 
