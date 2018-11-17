@@ -5,7 +5,8 @@ class Sc404 extends LitElement {
   render() {
     return html`
       ${SharedStyles}
-      <div>PAGE NOT FOUND</div>
+      <h1>Nothing behind these curtains.</h1>
+      <h2>Lets <a href="/">get back to the fun</a>.</h2>
     `;
   }
 }
