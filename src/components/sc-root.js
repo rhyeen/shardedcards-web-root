@@ -1,22 +1,22 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { connect } from 'pwa-helpers/connect-mixin.js';
-import store from '../store.js';
+import store from '../state/store.js';
 import { installRouter } from 'pwa-helpers/router.js';
 import { updateMetadata } from 'pwa-helpers/metadata.js';
 
-import { SharedStyles } from '../../internal_comps/sc_shared-styles/shared-styles.js';
+import { ScSharedStyles } from '../../internal_comps/sc_shared/src/entities/sc-shared-styles.js';
 
 import { navigate } from '../state/actions/root.js';
 
 import * as RootSelector from '../state/selectors/root.js';
 
-import { routes } from '../entities/root.js';
+import { ROUTES } from '../entities/root.js';
 import './sc-404.js';
 
 class ScRoot extends connect(store)(LitElement) {
   render() {
     return html`
-    ${SharedStyles}
+    ${ScSharedStyles}
     <style>
       :host {
         display: block;
@@ -35,7 +35,7 @@ class ScRoot extends connect(store)(LitElement) {
 
   _activePageHtml() {
     switch(this._page) {
-      case routes.pages.game:
+      case ROUTES.PAGES.GAME:
         return html`<sc-game></sc-game>`;
       default:
         return html`<sc-404></sc-404>`;
@@ -57,9 +57,9 @@ class ScRoot extends connect(store)(LitElement) {
   _getPageTitle(page) {
     const title = 'Sharded Cards';
     switch(page) {
-      case routes.pages.game:
+      case ROUTES.PAGES.GAME:
         return `${title} | PLAY`;
-      case routes.pages.notFound:
+      case ROUTES.PAGES.NOT_FOUND:
         return `${title} | 404 - NOT FOUND`;
       default:
         console.error(`Unexpected page: ${page}`);

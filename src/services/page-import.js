@@ -1,14 +1,12 @@
-import {
-  routes
-} from '../entities/root.js';
+import { ROUTES } from '../entities/root.js';
 
 export const importActivePage = (activePage) => {
   switch(activePage) {
-    case routes.pages.game:
+    case ROUTES.PAGES.GAME:
       import('../../internal_comps/sc_game/src/components/sc-game.js');
       break;
     default:
-      activePage = routes.pages.notFound;
+      activePage = ROUTES.PAGES.NOT_FOUND;
       import('../components/sc-404.js');
   }
   return activePage;

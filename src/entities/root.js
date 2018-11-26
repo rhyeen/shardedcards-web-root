@@ -1,14 +1,14 @@
-export const routes = {
-  pages: {
-    game: 'ROUTE_PAGE_GAME',
-    notFound: 'ROUTE_PAGE_404'
+export const ROUTES = {
+  PAGES: {
+    GAME: 'ROUTE_PAGE_GAME',
+    NOT_FOUND: 'ROUTE_PAGE_404'
   },
-  endpoints: {
-    game: 'game'
+  ENDPOINTS: {
+    GAME: 'game'
   }
 };
 
-export const DEFAULT_PATH = routes.endpoints.game;
+export const DEFAULT_PATH = ROUTES.ENDPOINTS.GAME;
 
 export const getPageFromPath = (path) => {
   const endpoint = _getEndpoint(path);
@@ -21,9 +21,9 @@ function _getEndpoint(path) {
 
 function _getPageFromEndpoint(endpoint) {
   switch(endpoint) {
-    case routes.endpoints.game:
-      return routes.pages.game;
+    case ROUTES.ENDPOINTS.GAME:
+      return ROUTES.PAGES.GAME;
     default:
-      return routes.pages.notFound;
+      return ROUTES.PAGES.NOT_FOUND;
   }
 };

@@ -1,10 +1,10 @@
 import { LitElement, html } from '@polymer/lit-element';
-import { SharedStyles } from '../../internal_comps/sc_shared-styles/shared-styles.js';
+import { ScSharedStyles } from '../../internal_comps/sc_shared/src/entities/sc-shared-styles.js';
 
 class Sc404 extends LitElement {
   render() {
     return html`
-      ${SharedStyles}
+      ${ScSharedStyles}
       <h1>Nothing behind these curtains.</h1>
       <h2>Lets <a href="/">get back to the fun</a>.</h2>
     `;

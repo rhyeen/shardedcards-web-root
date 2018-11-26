@@ -10,10 +10,10 @@
 // selectors. More info: https://github.com/reduxjs/reselect.
 import { createSelector } from 'reselect';
 
-const routeSelector = state => state.root.route;
+const _routeSelector = state => state.root.route;
 
 export const getActivePage = createSelector(
-  routeSelector,
+  _routeSelector,
   (route) => {
     return route.activePage;
   }
