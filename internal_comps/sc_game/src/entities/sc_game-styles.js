@@ -12,7 +12,7 @@ export const NAV = {
   }
 }
 
-export const sc_gameStyles = html`
+export const ScGameStyles = html`
 <style>
   :host {
     --nav-header-height: 46px;

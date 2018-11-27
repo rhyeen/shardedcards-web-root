@@ -33,6 +33,13 @@ function _deepCopyState(state) {
   };
 }
 
+function _getState(state, copyState) {
+  if (copyState) {
+    return _deepCopyState(state);
+  }
+  return state;
+}
+
 function _setPlayerPendingEnergy(state, energy, copyState = false) {
   let newState = _getState(state, copyState);
   newState.entities.player.energy.pending = energy;
@@ -63,13 +70,6 @@ function _setPlayerMaxEnergy(state, energy, copyState = false) {
   let newState = _getState(state, copyState);
   newState.entities.player.energy.max = energy;
   return newState;
-}
-
-function _getState(state, copyState) {
-  if (copyState) {
-    return _deepCopyState(state);
-  }
-  return state;
 }
 
 export const sc_status = (state = INITIAL_STATE, action) => {

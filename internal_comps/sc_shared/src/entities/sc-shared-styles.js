@@ -111,5 +111,11 @@ export const ScSharedStyles = html`
     align-items: center;
     font-size: 18px;
   }
+  
+  /* HACK: it should be setting to 24px regardless, but it is being set to 28px instead,
+     and I'm unsure why... */
+  [bar-item] .icon {
+    height: 24px;
+  }
 </style>
 `;

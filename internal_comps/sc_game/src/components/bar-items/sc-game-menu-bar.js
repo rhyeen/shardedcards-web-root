@@ -7,7 +7,7 @@ export class ScGameMenuBarItem extends LitElement {
     return html`
     ${ScSharedStyles}
     ${sc_iconsStyles}
-    ${MenuIcon()}
+    <div bar-item>${MenuIcon()}</div>
     `
   }
 }
