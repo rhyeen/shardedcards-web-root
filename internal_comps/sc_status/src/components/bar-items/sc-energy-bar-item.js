@@ -3,7 +3,7 @@ import { connect } from 'pwa-helpers/connect-mixin.js';
 import store from '../../state/store.js';
 
 import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
-import { sc_iconsStyles, EnergyIcon } from '../../../../sc_shared/src/entities/sc-icons.js';
+import { ScIconsStyles, EnergyIcon } from '../../../../sc_shared/src/entities/sc-icons.js';
 
 import * as StatusSelector from '../../state/selectors/sc_status.js';
 
@@ -11,7 +11,7 @@ export class ScEnergyBarItem extends connect(store)(LitElement) {
   render() {
     return html`
     ${ScSharedStyles}
-    ${sc_iconsStyles}
+    ${ScIconsStyles}
     <div bar-item>
       <div class="current">${this._currentEnergy}</div>
       <div class="current-max-divider">/</div>

@@ -35,6 +35,12 @@ export const resetGame = {
   success: () => _action(RESET_GAME.SUCCESS, {})
 };
 
+export const END_TURN = _createRequestTypes('END_TURN');
+export const endTurn = {
+  request: () => _action(END_TURN.REQUEST, {}),
+  success: () => _action(END_TURN.SUCCESS, {})
+};
+
 export const START_CRAFTING = _createRequestTypes('START_CRAFTING');
 export const startCrafting = {
   request: () => _action(START_CRAFTING.REQUEST, {}),

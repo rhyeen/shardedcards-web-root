@@ -11,7 +11,6 @@ import {
 import '../../../../sc_shared/src/components/sc-btn.js';
 
 import { BTN_TYPES } from '../../../../sc_shared/src/entities/sc-btn-types.js';
-
 import { LOCALE_EN } from '../../../../sc_locale/src/entities/en.js';
 
 export class ScGameMenuPane extends LitElement {

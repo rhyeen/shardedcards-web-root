@@ -24,7 +24,7 @@ function getBaseSvg(customClass, definedClass, svgContent) {
   return html`<svg class="${classes}" viewBox="0 0 24 24" svg-icon>${svgContent}</svg>`
 }
 
-export const sc_iconsStyles = html`
+export const ScIconsStyles = html`
 <style>
   [svg-icon] {
     --default-svg-color: #212121;

@@ -3,9 +3,6 @@ import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-sty
 
 import store from '../../state/store.js';
 
-// import './sc-energy-bar-item.js';
-// import './sc-health-bar-item.js';
-// import './sc-game-menu-bar-item.js';
 import '../../../../sc_status/src/components/bar-items/sc-energy-bar-item.js';
 import '../../../../sc_status/src/components/bar-items/sc-health-bar-item.js';
 import '../bar-items/sc-game-menu-bar.js';
