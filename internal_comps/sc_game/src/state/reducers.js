@@ -1,6 +1,6 @@
-import * as ActionType from '../actions/sc_game.js';
+import * as ActionType from './actions.js';
 
-import { GAME_STATES } from '../../entities/game-states.js';
+import { GAME_STATES } from '../entities/game-states.js';
 
 const INITIAL_STATE = {
   ui: {

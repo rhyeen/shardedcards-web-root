@@ -1,5 +1,5 @@
-import * as ActionType from '../actions/sc_status.js';
-import { setValidEnergy, getModifiedEnergy } from '../../entities/energy-status.js';
+import * as ActionType from './actions.js';
+import { setValidEnergy, getModifiedEnergy } from '../entities/energy-status.js';
 
 const INITIAL_STATE = {
   entities: {

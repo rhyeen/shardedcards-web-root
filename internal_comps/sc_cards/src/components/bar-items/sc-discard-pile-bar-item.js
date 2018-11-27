@@ -5,7 +5,7 @@ import store from '../../state/store.js';
 import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
 import { ScIconsStyles, DiscardIcon } from '../../../../sc_shared/src/entities/sc-icons.js';
 
-import * as CardsSelector from '../../state/selectors/sc_cards.js';
+import * as CardsSelector from '../../state/selectors.js';
 
 export class ScDiscardPileBarItem extends connect(store)(LitElement) {
   render() {

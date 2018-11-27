@@ -6,9 +6,9 @@ import { updateMetadata } from 'pwa-helpers/metadata.js';
 
 import { ScSharedStyles } from '../../internal_comps/sc_shared/src/entities/sc-shared-styles.js';
 
-import { navigate } from '../state/actions/root.js';
+import { navigate } from '../state/actions.js';
 
-import * as RootSelector from '../state/selectors/root.js';
+import * as RootSelector from '../state/selectors.js';
 
 import { ROUTES } from '../entities/root.js';
 import './sc-404.js';

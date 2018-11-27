@@ -1,6 +1,6 @@
 import { store } from 'intrastore/src/store.js';
-import root from './reducers/root.js';
-import rootSaga from './sagas/root.js';
+import root from './reducers.js';
+import rootSaga from './sagas.js';
 
 store.addReducers({ root });
 

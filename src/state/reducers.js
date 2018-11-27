@@ -1,6 +1,6 @@
-import * as ActionType from '../actions/root.js';
+import * as ActionType from './actions.js';
 
-import { ROUTES } from '../../entities/root.js';
+import { ROUTES } from '../entities/root.js';
 
 const INITIAL_STATE = {
   route: {

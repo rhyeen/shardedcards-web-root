@@ -4,8 +4,8 @@ import { ScGameStyles, NAV } from '../../entities/sc_game-styles.js';
 import { connect } from 'pwa-helpers/connect-mixin.js';
 import store from '../../state/store.js';
 
-import { finishCrafting, endTurn } from '../../state/actions/sc_game.js';
-import * as GameSelector from '../../state/selectors/sc_game';
+import { finishCrafting, endTurn } from '../../state/actions.js';
+import * as GameSelector from '../../state/selectors';
 import { BTN_TYPES } from '../../../../sc_shared/src/entities/sc-btn-types.js';
 import { LOCALE_EN } from '../../../../sc_locale/src/entities/en.js';
 

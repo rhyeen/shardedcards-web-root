@@ -1,6 +1,6 @@
 import { put, takeEvery, all } from 'redux-saga/effects';
 
-import * as Actions from '../actions/sc_status.js';
+import * as Actions from './actions.js';
 
 function* _spendAllocatedPlayerEnergy() {
   yield put(Actions.spendAllocatedPlayerEnergy.success());

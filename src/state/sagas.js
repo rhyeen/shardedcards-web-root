@@ -1,8 +1,8 @@
 import { call, put, takeEvery, all } from 'redux-saga/effects';
 
-import { getPageFromPath } from '../../entities/root.js';
-import * as Actions from '../actions/root.js';
-import { importActivePage } from '../../services/page-import.js';
+import { getPageFromPath } from '../entities/root.js';
+import * as Actions from './actions.js';
+import { importActivePage } from '../services/page-import.js';
 
 function* _updateActivePage({activePage}) {
   const _activePage = yield call(importActivePage, activePage);

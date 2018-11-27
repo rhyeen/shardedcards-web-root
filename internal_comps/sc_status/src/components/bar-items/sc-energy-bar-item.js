@@ -5,7 +5,7 @@ import store from '../../state/store.js';
 import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
 import { ScIconsStyles, EnergyIcon } from '../../../../sc_shared/src/entities/sc-icons.js';
 
-import * as StatusSelector from '../../state/selectors/sc_status.js';
+import * as StatusSelector from '../../state/selectors.js';
 
 export class ScEnergyBarItem extends connect(store)(LitElement) {
   render() {

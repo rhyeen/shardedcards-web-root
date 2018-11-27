@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { GAME_STATES } from '../../entities/game-states.js';
+import { GAME_STATES } from '../entities/game-states.js';
 
 
 const _gameMenuSelector = state => state.sc_game.ui.menu;

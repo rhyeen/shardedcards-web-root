@@ -1,4 +1,4 @@
-import * as ActionType from '../actions/sc_cards.js';
+import * as ActionType from './actions.js';
 
 const INITIAL_STATE = {
   ui: {

@@ -5,7 +5,7 @@ import store from '../../state/store.js';
 import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
 import { ScIconsStyles, DrawIcon } from '../../../../sc_shared/src/entities/sc-icons.js';
 
-import * as CardsSelector from '../../state/selectors/sc_cards.js';
+import * as CardsSelector from '../../state/selectors.js';
 
 export class ScDrawPileBarItem extends connect(store)(LitElement) {
   render() {

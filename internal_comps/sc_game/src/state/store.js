@@ -1,6 +1,6 @@
 import { store } from 'intrastore/src/store.js';
-import { sc_game } from './reducers/sc_game.js';
-import sc_gameSaga from './sagas/sc_game.js';
+import { sc_game } from './reducers.js';
+import sc_gameSaga from './sagas.js';
 
 store.addReducers({ sc_game });
 

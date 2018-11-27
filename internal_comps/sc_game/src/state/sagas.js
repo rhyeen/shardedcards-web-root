@@ -1,6 +1,6 @@
 import { put, takeEvery, all } from 'redux-saga/effects';
 
-import * as Actions from '../actions/sc_game.js';
+import * as Actions from './actions.js';
 
 function* _resetGame() {
   yield put(Actions.resetGame.success());

@@ -4,7 +4,7 @@ import { ScGameStyles, NAV } from '../../entities/sc_game-styles.js';
 import { connect } from 'pwa-helpers/connect-mixin.js';
 import store from '../../state/store.js';
 
-import * as GameSelector from '../../state/selectors/sc_game.js';
+import * as GameSelector from '../../state/selectors.js';
 
 import '../overlay/sc-game-menu-pane.js';
 

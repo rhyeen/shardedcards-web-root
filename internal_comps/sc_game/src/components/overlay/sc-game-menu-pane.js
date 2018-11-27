@@ -6,7 +6,7 @@ import store from '../../state/store.js';
 import {
   hideInGameMenu,
   resetGame
-} from '../../state/actions/sc_game.js';
+} from '../../state/actions.js';
 
 import '../../../../sc_shared/src/components/sc-btn.js';
 
