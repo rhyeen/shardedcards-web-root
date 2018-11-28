@@ -11,21 +11,14 @@ const INITIAL_STATE = {
   }
 };
 
-function _deepCopyState(state) {
+function _updateActivePage(state, activePage) {
   return {
+    ...state,
     route: {
-      ...state.route
-    },
-    network: {
-      ...state.network
+      ...state.route,
+      activePage: activePage
     }
   };
-}
-
-function _updateActivePage(state, activePage) {
-  const newState = _deepCopyState(state);
-  newState.route.activePage = activePage;
-  return newState;
 }
 
 const app = (state = INITIAL_STATE, action) => {

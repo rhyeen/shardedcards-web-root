@@ -7,3 +7,8 @@ export const CARD_RARITIES = {
   // standard cards are cards that are not custom crafted, such as energy shard.
   STANDARD: 'standard'
 };
+
+export const CARD_TYPES = {
+  SUMMON: 'summon',
+  CAST: 'cast'
+};

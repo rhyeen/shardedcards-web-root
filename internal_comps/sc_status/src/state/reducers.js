@@ -18,86 +18,110 @@ const INITIAL_STATE = {
   }
 };
 
-function _deepCopyState(state) {
+function _setPlayerPendingEnergy(state, energy) {
   return {
+    ...state,
     entities: {
+      ...state.entities,
       player: {
+        ...state.entities.player,
         energy: {
-          ...state.entities.player.energy
-        },
-        health: {
-          ...state.entities.player.health
+          ...state.entities.player.energy,
+          pending: energy
         }
       }
     }
   };
 }
 
-function _getState(state, copyState) {
-  if (copyState) {
-    return _deepCopyState(state);
-  }
-  return state;
+function _setPlayerCurrentHealth(state, health) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      player: {
+        ...state.entities.player,
+        health: {
+          ...state.entities.player.health,
+          pending: health,
+          current: health
+        }
+      }
+    }
+  };
 }
 
-function _setPlayerPendingEnergy(state, energy, copyState = false) {
-  let newState = _getState(state, copyState);
-  newState.entities.player.energy.pending = energy;
-  return newState;
+function _setPlayerCurrentEnergy(state, energy) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      player: {
+        ...state.entities.player,
+        energy: {
+          ...state.entities.player.energy,
+          pending: energy,
+          current: energy
+        }
+      }
+    }
+  };
 }
 
-function _setPlayerCurrentHealth(state, health, copyState = false) {
-  let newState = _getState(state, copyState);
-  newState.entities.player.health.pending = health;
-  newState.entities.player.health.current = health;
-  return newState;
+function _setPlayerMaxHealth(state, health) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      player: {
+        ...state.entities.player,
+        health: {
+          ...state.entities.player.health,
+          max: health
+        }
+      }
+    }
+  };
 }
 
-function _setPlayerCurrentEnergy(state, energy, copyState = false) {
-  let newState = _getState(state, copyState);
-  newState.entities.player.energy.pending = energy;
-  newState.entities.player.energy.current = energy;
-  return newState;
-}
-
-function _setPlayerMaxHealth(state, health, copyState = false) {
-  let newState = _getState(state, copyState);
-  newState.entities.player.health.max = health;
-  return newState;
-}
-
-function _setPlayerMaxEnergy(state, energy, copyState = false) {
-  let newState = _getState(state, copyState);
-  newState.entities.player.energy.max = energy;
-  return newState;
+function _setPlayerMaxEnergy(state, energy) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      player: {
+        ...state.entities.player,
+        energy: {
+          ...state.entities.player.energy,
+          max: energy
+        }
+      }
+    }
+  };
 }
 
 export const sc_status = (state = INITIAL_STATE, action) => {
   let newState, newEnergies;
   switch (action.type) {
     case ActionType.SET_PLAYER_STATUS:
-      newState = _deepCopyState(state);
-      _setPlayerCurrentHealth(newState, action.status.health.current);
-      _setPlayerMaxHealth(newState, action.status.health.max);
-      _setPlayerCurrentEnergy(newState, action.status.energy.current);
-      _setPlayerMaxEnergy(newState, action.status.energy.max);
-      return newState;
+      newState = _setPlayerCurrentHealth(state, action.status.health.current);
+      newState = _setPlayerMaxHealth(newState, action.status.health.max);
+      newState = _setPlayerCurrentEnergy(newState, action.status.energy.current);
+      return _setPlayerMaxEnergy(newState, action.status.energy.max);
     case ActionType.SET_PLAYER_HEALTH:
-      return _setPlayerCurrentHealth(state, action.health, true);
+      return _setPlayerCurrentHealth(state, action.health);
     case ActionType.RESET_PLAYER_ENERGY:
-    return _setPlayerMaxEnergy(state, state.entities.player.energy.max, true);   
+    return _setPlayerMaxEnergy(state, state.entities.player.energy.max);   
     case ActionType.ALLOCATE_PLAYER_ENERGY:
-      return _setPlayerPendingEnergy(state, setValidEnergy(state.energy.current - action.energyCost), true);
+      return _setPlayerPendingEnergy(state, setValidEnergy(state.energy.current - action.energyCost));
     case ActionType.SPEND_ALLOCATED_PLAYER_ENERGY.SUCCESS:
-      return _setPlayerCurrentEnergy(state, state.entities.player.energy.pending, true);
+      return _setPlayerCurrentEnergy(state, state.entities.player.energy.pending);
     case ActionType.CANCEL_ALLOCATED_PLAYER_ENERGY:
-      return _setPlayerPendingEnergy(state, state.entities.player.energy.current, true);
+      return _setPlayerPendingEnergy(state, state.entities.player.energy.current);
     case ActionType.MODIFY_PLAYER_ENERGY.SUCCESS:
-      newState = _deepCopyState(state);
       newEnergies = getModifiedEnergy(newState.entities.player.energy, action.maxEnergyModifier, action.currentEnergyModifier);
-      _setPlayerCurrentEnergy(newState, newEnergies.current);
-      _setPlayerMaxEnergy(newState, newEnergies.max);
-      return newState;
+      newState = _setPlayerCurrentEnergy(state, newEnergies.current);
+      return _setPlayerMaxEnergy(newState, newEnergies.max);
     default:
       return state;
   }

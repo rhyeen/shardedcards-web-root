@@ -14,13 +14,13 @@ export const getDeckSize = createSelector(
 export const getDiscardPileSize = createSelector(
   _playerDiscardPileSelector,
   (discardPile) => {
-    return discardPile.size;
+    return discardPile.cards.length;
   }
 );
 
 export const getLostPileSize = createSelector(
   _playerLostCardsSelector,
   (lostCards) => {
-    return lostCards.size;
+    return lostCards.cards.length;
   }
 );
