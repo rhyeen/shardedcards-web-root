@@ -9,6 +9,6 @@ export const CARD_RARITIES = {
 };
 
 export const CARD_TYPES = {
-  SUMMON: 'summon',
-  CAST: 'cast'
+  MINION: 'minion',
+  SPELL: 'spell'
 };

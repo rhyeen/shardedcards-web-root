@@ -1,92 +1,133 @@
 import * as ActionType from './actions.js';
-import * as CardAction from '../services/card-actions.js';
 import * as Cards from '../services/card-selection.js';
 
 import { CARD_TYPES } from '../../../sc_shared/src/entities/card-keywords.js';
-import { CARD_SOURCES } from '../entities/selected-card.js';
+import { CARD_SOURCES, CARD_TARGETS } from '../entities/selected-card.js';
 
-const INITIAL_STATE = {
-  ui: {
-    selectedCard: {
-      source: null,
-      id: null,
-      instance: null,
-      handIndex: null,
-      playAreaIndex: null
-    },
-    selectedAbility: {
-      target: null,
-      id: null,
-      instance: null,
-      abilityId: null,
-      handIndex: null,
-      playAreaIndex: null
-    }
-  },
-  entities: {
-    player: {
-      cards: {},
-      hand: {
-        cards: [],
-        refillSize: 5
+const INITIAL_STATE = _resetState();
+
+function _resetState() {
+  return {
+    ui: {
+      selectedCard: {
+        source: null,
+        id: null,
+        instance: null,
+        handIndex: null,
+        playAreaIndex: null
       },
-      deck: {
-        size: 0
-      },
-      discardPile: {
-        cards: []
-      },
-      lostCards: {
-        cards: []
-      },
-      field: {
-        slots: [
-          {
-            id: null,
-            instance: null
-          },
-          {
-            id: null,
-            instance: null
-          },
-          {
-            id: null,
-            instance: null
-          }
-        ]
+      selectedAbility: {
+        targets: null,
+        abilityId: null
       }
     },
-    opponent: {
-      field: {
-        backlog: [
-          {
-            size: 0
-          },
-          {
-            size: 0
-          },
-          {
-            size: 0
-          }
-        ],
-        slots: [
-          {
-            id: null,
-            instance: null
-          },
-          {
-            id: null,
-            instance: null
-          },
-          {
-            id: null,
-            instance: null
-          }
-        ]
+    entities: {
+      player: {
+        cards: {},
+        hand: {
+          cards: [],
+          refillSize: 5
+        },
+        deck: {
+          size: 0
+        },
+        discardPile: {
+          cards: []
+        },
+        lostCards: {
+          cards: []
+        },
+        field: {
+          slots: [
+            {
+              id: null,
+              instance: null
+            },
+            {
+              id: null,
+              instance: null
+            },
+            {
+              id: null,
+              instance: null
+            }
+          ]
+        }
+      },
+      opponent: {
+        field: {
+          backlog: [
+            {
+              size: 0
+            },
+            {
+              size: 0
+            },
+            {
+              size: 0
+            }
+          ],
+          slots: [
+            {
+              id: null,
+              instance: null
+            },
+            {
+              id: null,
+              instance: null
+            },
+            {
+              id: null,
+              instance: null
+            }
+          ]
+        }
+      }
+    }
+  };
+}
+
+function _setPlayerCards(state, cards) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      player: {
+        ...state.entities.player,
+        cards: cards
       }
     }
   }
-};
+}
+
+function _setOpponentCards(state, cards) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      opponent: {
+        ...state.entities.opponent,
+        cards: cards
+      }
+    }
+  }
+}
+
+function _setPlayerDeckSize(state, deckSize) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      player: {
+        ...state.entities.player,
+        deck: {
+          ...state.entities.player.deck,
+          size: deckSize
+        }
+      }
+    }
+  };
+}
 
 function _removeHandCard(state, handIndex) {
   let newState = _shallowCopyHandCards(state);
@@ -135,6 +176,19 @@ function _setSelectedCard(state, source, cardId, cardInstance, handIndex, playAr
   };
 }
 
+function _setSelectedAbility(state, targets, abilityId) {
+  return {
+    ...state,
+    ui: {
+      ...state.ui,
+      selectedAbility: {
+        targets: targets,
+        abilityId: abilityId
+      }
+    }
+  };
+}
+
 function _setSelectedCardSource(state, source) {
   return {
     ...state,
@@ -159,6 +213,19 @@ function _removeSelectedCard(state) {
         instance: null,
         handIndex: null,
         playAreaIndex: null
+      }
+    }
+  };
+}
+
+function _removeSelectedAbility(state) {
+  return {
+    ...state,
+    ui: {
+      ...state.ui,
+      selectedAbility: {
+        targets: null,
+        abilityId: null
       }
     }
   };
@@ -195,7 +262,7 @@ function _shallowCopyPlayerCards(state) {
   };
 }
 
-function _addDiscardCard(state, cardId, cardInstance) {
+function _discardCard(state, cardId, cardInstance) {
   let newState = _shallowCopyDiscardCards(state);
   newState.entities.player.hand.cards.push({
     id: cardId,
@@ -229,6 +296,16 @@ function _setPlayerFieldSlot(state, playAreaIndex, cardId, cardInstance) {
   return newState;
 }
 
+function _setPlayerFieldSlots(state, playerFieldSlots) {
+  let newState = _shallowCopyPlayerFieldSlots(state);
+  for (let i = 0; i < 3; i++) {
+    newState.entities.player.field.slots[i] = {
+      id: playerFieldSlots[i].id,
+      instance: playerFieldSlots[i].instance
+    };
+  }
+}
+
 function _shallowCopyPlayerFieldSlots(state) {
   return {
     ...state,
@@ -245,14 +322,43 @@ function _shallowCopyPlayerFieldSlots(state) {
   };
 }
 
+function _setOpponentFieldSlots(state, opponentFieldSlots) {
+  let newState = _shallowCopyOpponentFieldSlots(state);
+  for (let i = 0; i < 3; i++) {
+    newState.entities.opponent.field.slots[i] = {
+      id: opponentFieldSlots[i].id,
+      instance: opponentFieldSlots[i].instance
+    };
+  }
+}
+
+function _shallowCopyOpponentFieldSlots(state) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      opponent: {
+        ...state.entities.opponent,
+        field: {
+          ...state.entities.field,
+          slots: [...state.entities.field.slots]
+        }
+      }
+    }
+  };
+}
+
 export const sc_cards = (state = INITIAL_STATE, action) => {
   let newState, handIndex, cardId, cardInstance, card;
   switch (action.type) {
     case ActionType.SELECT_CARD_FROM_HAND:
       newState = _removeHandCard(state, action.handIndex);
-      return _setSelectedCard(state, CARD_SOURCES.HAND, action.cardId, action.cardInstance, action.handIndex, null);
+      return _setSelectedCard(state, CARD_SOURCES.SELECT_PLAYER_HAND, action.cardId, action.cardInstance, action.handIndex, null);
     case ActionType.CANCEL_SELECT_CARD_FROM_HAND:
     case ActionType.CANCEL_PLAY_SELECTED_CARD:
+    case ActionType.CANCEL_SELECT_PLAYER_MINION:
+    case ActionType.CANCEL_SELECT_OPPONENT_MINION:
+    case ActionType.CANCEL_CAST_SPELL: // CANCEL_CASTING_CARD for spell only
       handIndex = state.ui.selectedCard.handIndex;
       cardId = state.ui.selectedCard.id;
       cardInstance = state.ui.selectedCard.instance;
@@ -261,14 +367,14 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
     case ActionType.PLAY_SELECTED_CARD:
       card = Cards.getCard(state.entities.player.cards, state.ui.selectedCard.id, state.ui.selectedCard.instance);
       switch (card.type) {
-        case CARD_TYPES.SUMMON:
-          return _setSelectedCardSource(state, CARD_SOURCES.PLAY_SUMMON);
-        case CARD_TYPES.CAST:
-          return _setSelectedCardSource(state, CARD_SOURCES.PLAY_CAST);
+        case CARD_TYPES.MINION:
+          return _setSelectedCardSource(state, CARD_SOURCES.SUMMON_PLAYER_MINION);
+        case CARD_TYPES.SPELL:
+          return _setSelectedCardSource(state, CARD_SOURCES.CAST_PLAYER_SPELL);
         default:
           console.error(`unexpected card type: ${card.type}`)
           return state
-      }
+      }      
     case ActionType.SUMMON_CARD.SUCCESS:
       cardId = state.ui.selectedCard.id;
       cardInstance = state.ui.selectedCard.instance;
@@ -277,11 +383,74 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       for (let updatedCard of action.updatedCards) {
         newState = _setCard(newState, updatedCard.card, updatedCard.id, updatedCard.instance);
       }
-      if (discardedCard) {
-        newState = _addDiscardCard(newState, discardedCard.id, discardedCard.instance);
+      if (action.discardedCard) {
+        newState = _discardCard(newState, action.discardedCard.id, action.discardedCard.instance);
       }
       newState = _setPlayerFieldSlot(newState, action.playAreaIndex, cardId, cardInstance);
       return _removeSelectedCard(newState);
+    case ActionType.SELECT_PLAYER_MINION:
+      return _setSelectedCard(state, CARD_SOURCES.SELECT_PLAYER_MINION, action.cardId, action.cardInstance, null, action.playAreaIndex);
+    case ActionType.SELECT_OPPONENT_MINION:
+      return _setSelectedCard(state, CARD_SOURCES.SELECT_OPPONENT_MINION, action.cardId, action.cardInstance, null, action.playAreaIndex);
+    case ActionType.PLAY_PLAYER_MINION:
+      return _setSelectedCardSource(CARD_SOURCES.PLAY_PLAYER_MINION);
+    case ActionType.ATTACK_CARD.SUCCESS:
+    case ActionType.SET_FIELD_FROM_OPPONENT_TURN.SUCCESS:
+      newState = state;
+      for (let updatedCard of action.updatedCards) {
+        newState = _setCard(newState, updatedCard.card, updatedCard.id, updatedCard.instance);
+      }
+      for (let discardedCard of action.addedToDiscardPile) {
+        newState = _discardCard(newState, discardedCard.id, discardedCard.instance);
+      }
+      newState = _setPlayerFieldSlots(newState, action.playerFieldSlots);
+      newState = _setOpponentFieldSlots(newState, action.opponentFieldSlots);
+      return _removeSelectedCard(newState);
+    case ActionType.CLEAR_HAND.SUCCESS:
+      newState = state;
+      for (let discardedCard of action.addedToDiscardPile) {
+        newState = _discardCard(newState, discardedCard.id, discardedCard.instance);
+      }
+      return _setPlayerDeckSize(newState, action.deckSize);
+    case ActionType.SET_PLAYER_DECKS: // SET_HAND
+      newState = state;
+      newState = _setHandCards(newState, action.handCards);
+      newState = _setDiscardedPileCards(newState, action.discardPileCards);
+      newState = _setLostPileCards(newState, aciton.lostPileCards);
+      return _setPlayerDeckSize(newState, action.deckSize);
+    case ActionType.REFRESH_PLAYER_CARDS.SUCCESS:
+      newState = state;
+      newState = _setHandCards(newState, action.handCards);
+      return _setPlayerFieldSlots(newState, action.playerFieldSlots);
+    case ActionType.SET_PLAYER_CARDS:
+      return _setPlayerCards(state, action.cards);
+    case ActionType.SET_OPPONENT_CARDS:
+      return _setOpponentCards(state, action.cards);
+    case ActionType.SET_OPPONENT_FIELD:
+      return _setOpponentFieldSlots(state, action.opponentFieldSlots);
+    case ActionType.RESET_CARDS:
+      return _resetState();
+    case ActionType.USE_CARD_ABILITY: // USE_CARD_ABILITY + CAST_AGAINST_TARGET + APPLY_CAST_AGAINST_OPPONENT_TARGET + APPLY_CAST_AGAINST_UNIT_TARGET
+      newState = state;
+      for (let updatedCard of action.updatedCards) {
+        newState = _setCard(newState, updatedCard.card, updatedCard.id, updatedCard.instance);
+      }
+      for (let discardedCard of action.addedToDiscardPile) {
+        newState = _discardCard(newState, discardedCard.id, discardedCard.instance);
+      }
+      newState = _setPlayerFieldSlots(newState, action.playerFieldSlots);
+      newState = _setOpponentFieldSlots(newState, action.opponentFieldSlots);
+      return _removeSelectedAbility(newState);
+    case ActionType.FINISH_SPELL_CARD: // FINISH_CASTING_CARD
+      newState = _discardCard(state, action.discardedCard.id, action.discardedCard.instance);
+      return _removeSelectedCard(newState);
+    case ActionType.SELECT_OPPONENT_MINION_TARGETED_ABILITY: // CAST_OPPONENT_TARGET_ABILITY
+      return _setSelectedAbility(state, CARD_TARGETS.OPPONENT_MINION, action.abilityId);
+    case ActionType.SELECT_PLAYER_MINION_TARGETED_ABILITY: // CAST_UNIT_TARGET_ABILITY
+      return _setSelectedAbility(state, CARD_TARGETS.PLAYER_MINION, action.abilityId);
+    case ActionType.CANCEL_SELECT_OPPONENT_MINION_TARGETED_ABILITY:
+    case ActionType.CANCEL_SELECT_PLAYER_MINION_TARGETED_ABILITY:
+      return _removeSelectedAbility(newState);
     default:
       return state;
   }
