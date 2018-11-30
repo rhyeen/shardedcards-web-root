@@ -355,14 +355,16 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       newState = _removeHandCard(state, action.handIndex);
       return _setSelectedCard(state, CARD_SOURCES.SELECT_PLAYER_HAND, action.cardId, action.cardInstance, action.handIndex, null);
     case ActionType.CANCEL_SELECT_CARD_FROM_HAND:
-    case ActionType.CANCEL_PLAY_SELECTED_CARD:
-    case ActionType.CANCEL_SELECT_PLAYER_MINION:
-    case ActionType.CANCEL_SELECT_OPPONENT_MINION:
+    case ActionType.CANCEL_PLAY_SELECTED_SPELL:
     case ActionType.CANCEL_CAST_SPELL: // CANCEL_CASTING_CARD for spell only
       handIndex = state.ui.selectedCard.handIndex;
       cardId = state.ui.selectedCard.id;
       cardInstance = state.ui.selectedCard.instance;
       newState = _addHandCard(state, handIndex, cardId, cardInstance);
+      return _removeSelectedCard(newState);
+    case ActionType.CANCEL_SELECT_OPPONENT_MINION:    
+    case ActionType.CANCEL_SELECT_PLAYER_MINION:
+    case ActionType.CANCEL_PLAY_SELECTED_MINION:
       return _removeSelectedCard(newState);
     case ActionType.PLAY_SELECTED_CARD:
       card = Cards.getCard(state.entities.player.cards, state.ui.selectedCard.id, state.ui.selectedCard.instance);
@@ -374,7 +376,7 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
         default:
           console.error(`unexpected card type: ${card.type}`)
           return state
-      }      
+      }
     case ActionType.SUMMON_CARD.SUCCESS:
       cardId = state.ui.selectedCard.id;
       cardInstance = state.ui.selectedCard.instance;
@@ -408,6 +410,7 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       return _removeSelectedCard(newState);
     case ActionType.CLEAR_HAND.SUCCESS:
       newState = state;
+      newState = _setHandCards(newState, []);
       for (let discardedCard of action.addedToDiscardPile) {
         newState = _discardCard(newState, discardedCard.id, discardedCard.instance);
       }
@@ -426,11 +429,11 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       return _setPlayerCards(state, action.cards);
     case ActionType.SET_OPPONENT_CARDS:
       return _setOpponentCards(state, action.cards);
-    case ActionType.SET_OPPONENT_FIELD:
+    case ActionType.SET_OPPONENT_FIELD_SLOTS:
       return _setOpponentFieldSlots(state, action.opponentFieldSlots);
     case ActionType.RESET_CARDS:
       return _resetState();
-    case ActionType.USE_CARD_ABILITY: // USE_CARD_ABILITY + CAST_AGAINST_TARGET + APPLY_CAST_AGAINST_OPPONENT_TARGET + APPLY_CAST_AGAINST_UNIT_TARGET
+    case ActionType.USE_CARD_ABILITY.SUCCESS: // USE_CARD_ABILITY + CAST_AGAINST_TARGET + APPLY_CAST_AGAINST_OPPONENT_TARGET + APPLY_CAST_AGAINST_UNIT_TARGET
       newState = state;
       for (let updatedCard of action.updatedCards) {
         newState = _setCard(newState, updatedCard.card, updatedCard.id, updatedCard.instance);
@@ -442,7 +445,9 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       newState = _setOpponentFieldSlots(newState, action.opponentFieldSlots);
       return _removeSelectedAbility(newState);
     case ActionType.FINISH_SPELL_CARD: // FINISH_CASTING_CARD
-      newState = _discardCard(state, action.discardedCard.id, action.discardedCard.instance);
+      cardId = state.ui.selectedCard.id;
+      cardInstance = state.ui.selectedCard.instance;  
+      newState = _discardCard(state, cardId, cardInstance);
       return _removeSelectedCard(newState);
     case ActionType.SELECT_OPPONENT_MINION_TARGETED_ABILITY: // CAST_OPPONENT_TARGET_ABILITY
       return _setSelectedAbility(state, CARD_TARGETS.OPPONENT_MINION, action.abilityId);
