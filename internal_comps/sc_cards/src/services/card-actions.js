@@ -1,7 +1,7 @@
 import * as Cards from '../services/card-selection.js';
 
-export function summonCard(player, playAreaIndex, handCardIndex) {
-  // const handCard = Cards.getCardFromHand(player, handCardIndex);
+export function summonCard(player, cards, playAreaIndex, handCardIndex) {
+  // const handCard = Cards.getCardFromHand(player, cards, handCardIndex);
   // if (status) {
   //   if (_canAffordCard(handCard, status)) {
   //     _payForCard(handCard, status)

@@ -5,6 +5,19 @@ export function getCard(cards, cardId, cardInstance) {
   return cards[cardId].instances[cardInstance];
 }
 
+export function getCardAbility(cards, cardId, cardInstance, abilityId) {
+  let card = getCard(cards, cardId, cardInstance);
+  if (!card || !card.abilities || !card.abilities.length) {
+    return null;
+  }
+  for (let ability of card.abilities) {
+    if (ability.id === abilityId) {
+      return ability;
+    }
+  }
+  return null;
+}
+
 export function getParentCard(cards, cardId) {
   if (!cardId) {
     return null;
@@ -12,9 +25,9 @@ export function getParentCard(cards, cardId) {
   return cards[cardId];
 }
 
-export function getCardFromHand(player, handCardIndex) {
+export function getCardFromHand(player, cards, handCardIndex) {
   let { cardId, cardInstance } = _getCardIdentifiersFromHand(player.hand, handCardIndex);
-  let card = getCard(player.cards, cardId, cardInstance);
+  let card = getCard(cards, cardId, cardInstance);
   if (!card) {
     console.error(`card at handCardIndex: ${handCardIndex} does not exist`);
   }

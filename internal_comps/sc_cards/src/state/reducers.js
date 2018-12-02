@@ -22,8 +22,8 @@ function _resetState() {
       }
     },
     entities: {
+      cards: {},
       player: {
-        cards: {},
         hand: {
           cards: [],
           refillSize: 5
@@ -92,9 +92,9 @@ function _setPlayerCards(state, cards) {
     ...state,
     entities: {
       ...state.entities,
-      player: {
-        ...state.entities.player,
-        cards: cards
+      cards: {
+        ...state.entities.cards,
+        ...cards
       }
     }
   }
@@ -105,9 +105,9 @@ function _setOpponentCards(state, cards) {
     ...state,
     entities: {
       ...state.entities,
-      opponent: {
-        ...state.entities.opponent,
-        cards: cards
+      cards: {
+        ...state.entities.cards,
+        ...cards
       }
     }
   }
@@ -233,15 +233,15 @@ function _removeSelectedAbility(state) {
 
 function _setCard(state, card, cardId, cardInstance) {
   let newState = _shallowCopyPlayerCardInstances(state, cardId);
-  newState.entities.player.cards[cardId].instances[cardInstance] = card;
+  newState.entities.cards[cardId].instances[cardInstance] = card;
 }
 
 function _shallowCopyPlayerCardInstances(state, cardId) {
   let newState = _shallowCopyPlayerCards(state);
-  newState.entities.player.cards[cardId] = {
-    ...newState.entities.player.cards[cardId],
+  newState.entities.cards[cardId] = {
+    ...newState.entities.cards[cardId],
     instances: {
-      ...newState.entities.player.cards[cardId].instances
+      ...newState.entities.cards[cardId].instances
     }
   }
   return newState;
@@ -332,6 +332,15 @@ function _setOpponentFieldSlots(state, opponentFieldSlots) {
   }
 }
 
+function _setOpponentFieldBacklog(state, opponentFieldBacklog) {
+  let newState = _shallowCopyOpponentFieldBacklog(state);
+  for (let i = 0; i < 3; i++) {
+    newState.entities.opponent.field.backlog[i] = {
+      size: opponentFieldBacklog[i].size
+    };
+  }
+}
+
 function _shallowCopyOpponentFieldSlots(state) {
   return {
     ...state,
@@ -342,6 +351,22 @@ function _shallowCopyOpponentFieldSlots(state) {
         field: {
           ...state.entities.field,
           slots: [...state.entities.field.slots]
+        }
+      }
+    }
+  };
+}
+
+function _shallowCopyOpponentFieldBacklog(state) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      opponent: {
+        ...state.entities.opponent,
+        field: {
+          ...state.entities.field,
+          backlog: [...state.entities.field.backlog]
         }
       }
     }
@@ -367,7 +392,7 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
     case ActionType.CANCEL_PLAY_SELECTED_MINION:
       return _removeSelectedCard(newState);
     case ActionType.PLAY_SELECTED_CARD:
-      card = Cards.getCard(state.entities.player.cards, state.ui.selectedCard.id, state.ui.selectedCard.instance);
+      card = Cards.getCard(state.entities.cards, state.ui.selectedCard.id, state.ui.selectedCard.instance);
       switch (card.type) {
         case CARD_TYPES.MINION:
           return _setSelectedCardSource(state, CARD_SOURCES.SUMMON_PLAYER_MINION);
@@ -431,6 +456,8 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       return _setOpponentCards(state, action.cards);
     case ActionType.SET_OPPONENT_FIELD_SLOTS:
       return _setOpponentFieldSlots(state, action.opponentFieldSlots);
+    case ActionType.SET_OPPONENT_FIELD_BACKLOG:
+      return _setOpponentFieldBacklog(state, action.opponentFieldBacklog);
     case ActionType.RESET_CARDS:
       return _resetState();
     case ActionType.USE_CARD_ABILITY.SUCCESS: // USE_CARD_ABILITY + CAST_AGAINST_TARGET + APPLY_CAST_AGAINST_OPPONENT_TARGET + APPLY_CAST_AGAINST_UNIT_TARGET
