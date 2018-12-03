@@ -12,13 +12,31 @@ const _playerFieldSlotsSelector = state => state.sc_cards.entities.player.field.
 const _opponentFieldSlotsSelector = state => state.sc_cards.entities.opponent.field.slots;
 const _opponentFieldBacklogSelector = state => state.sc_cards.entities.opponent.field.backlog;
 
+export const getCards = createSelector(
+  _cardsSelector,
+  (cards) => {
+    return cards;
+  }
+);
 
 export const getHandCards = createSelector(
   _playerHandCardsSelector,
-  (handCards) => {
+  _cardsSelector,
+  (handCardsIds, cards) => {
+    let handCards = [];
+    for (handCardIds of handCardsIds) {
+      handCards.push(_getHandCard(handCardsIds, cards));
+    }
     return handCards;
   }
 );
+
+function _getHandCard(handCardIds, cards) {
+  return {
+    ...handCardIds,
+    card: getCard(cards, handCardIds.id, handCardIds.instance)
+  };
+}
 
 export const getDeckSize = createSelector(
   _playerDeckSelector,

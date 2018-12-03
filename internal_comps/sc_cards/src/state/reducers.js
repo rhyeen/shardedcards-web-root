@@ -402,7 +402,7 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
           console.error(`unexpected card type: ${card.type}`)
           return state
       }
-    case ActionType.SUMMON_CARD.SUCCESS:
+    case ActionType.SUMMON_CARD.SUCCESS: // PLACE_ON_PLAY_AREA
       cardId = state.ui.selectedCard.id;
       cardInstance = state.ui.selectedCard.instance;
       newState = state;
@@ -410,7 +410,7 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       for (let updatedCard of action.updatedCards) {
         newState = _setCard(newState, updatedCard.card, updatedCard.id, updatedCard.instance);
       }
-      if (action.discardedCard) {
+      if (action.discardedCard && action.discardedCard.id) {
         newState = _discardCard(newState, action.discardedCard.id, action.discardedCard.instance);
       }
       newState = _setPlayerFieldSlot(newState, action.playAreaIndex, cardId, cardInstance);
@@ -448,8 +448,10 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       return _setPlayerDeckSize(newState, action.deckSize);
     case ActionType.REFRESH_PLAYER_CARDS.SUCCESS:
       newState = state;
-      newState = _setHandCards(newState, action.handCards);
-      return _setPlayerFieldSlots(newState, action.playerFieldSlots);
+      for (let updatedCard of action.updatedCards) {
+        newState = _setCard(newState, updatedCard.card, updatedCard.id, updatedCard.instance);
+      }
+      return newState;
     case ActionType.SET_PLAYER_CARDS:
       return _setPlayerCards(state, action.cards);
     case ActionType.SET_OPPONENT_CARDS:

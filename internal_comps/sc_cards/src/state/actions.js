@@ -86,7 +86,7 @@ export const setPlayerDecks = (handCards, discardPileCards, lostPileCards, deckS
 export const REFRESH_PLAYER_CARDS = _createRequestTypes('REFRESH_PLAYER_CARDS');
 export const refreshPlayerCards = {
   request: () => _action(REFRESH_PLAYER_CARDS.REQUEST, {}),
-  success: (handCards, playerFieldSlots) => _action(REFRESH_PLAYER_CARDS.SUCCESS, {handCards, playerFieldSlots})
+  success: (updatedCards) => _action(REFRESH_PLAYER_CARDS.SUCCESS, {updatedCards})
 };
 
 export const SET_PLAYER_CARDS = _createRequestRaw('SET_PLAYER_CARDS');
@@ -103,7 +103,7 @@ export const resetCards = () => _action(RESET_CARDS, {});
 
 export const USE_CARD_ABILITY = _createRequestTypes('USE_CARD_ABILITY');
 export const useCardAbility = {
-  request: () => _action(USE_CARD_ABILITY.REQUEST, {}),
+  request: (playAreaIndex) => _action(USE_CARD_ABILITY.REQUEST, {playAreaIndex}),
   success: (updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots) => _action(USE_CARD_ABILITY.SUCCESS, {updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots})
 };
 

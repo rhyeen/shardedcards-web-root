@@ -12,3 +12,9 @@ export const CARD_TYPES = {
   MINION: 'minion',
   SPELL: 'spell'
 };
+
+export const CARD_ABILITIES = {
+  HASTE: 'haste',
+  SPELLSHOT: 'spellshot',
+  REACH: 'reach'
+};
