@@ -4,7 +4,7 @@
   "contributors": [
     "Ryan Saunders"
   ],
-  "license": "UNLICENSED",
+  "license": "NONE",
   "repository": "rhyeen/shardedcards-web-root",
   "scripts": {
     "start": "polymer serve",
