@@ -7,6 +7,11 @@ import * as CardActions from '../services/card-actions.js';
 import * as Actions from './actions.js';
 
 function* _summonCard({playAreaIndex}) {
+  let { discardedCard, updatedCards} = yield _prepareSummonCard(playAreaIndex);
+  yield put(Actions.summonCard.success(playAreaIndex, updatedCards, discardedCard));
+}
+
+function _prepareSummonCard(playAreaIndex) {
   const state = store.getState();
   let selectedCard = CardsSelector.getSelectedCard(state);
   let playerFieldCard = CardsSelector.getPlayerFieldSlots(state)[playAreaIndex];
@@ -15,10 +20,15 @@ function* _summonCard({playAreaIndex}) {
     instance: playerFieldCard.instance,
   };
   let updatedCards = CardActions.summonCard(selectedCard, playerFieldCard);
-  yield put(Actions.summonCard.success(playAreaIndex, updatedCards, discardedCard));
+  return { discardedCard, updatedCards};
 }
 
 function* _attackCard({playAreaIndex}) {
+  let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots } = _prepareAttackCard(playAreaIndex);
+  yield put(Actions.attackCard.success(updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots));
+}
+
+function _prepareAttackCard(playAreaIndex) {
   const state = store.getState();
   let selectedCard = CardsSelector.getSelectedCard(state);
   let playerFieldSlots = CardsSelector.getPlayerFieldSlots(state);
@@ -39,35 +49,48 @@ function* _attackCard({playAreaIndex}) {
       instance: null
     };
   }
-  yield put(Actions.attackCard.success(updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots));
+  return { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots };
 }
 
 function* _setFieldFromOpponentTurn() {
-  console.error(`Go get opponent's turn`);
+  yield console.error(`Go get opponent's turn`);
   yield put(Actions.setFieldFromOpponentTurn.success(updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots));
 }
 
 function* _clearHand() {
+  let addedToDiscardPile = yield _prepareClearHand();
+  yield put(Actions.clearHand.success(addedToDiscardPile));
+}
+
+function _prepareClearHand() {
   const state = store.getState();
-  yield put(Actions.clearHand.success(CardsSelector.getHandCards(state)));
+  return CardsSelector.getHandCards(state);
 }
 
 function* _refreshPlayerCards() {
+  let updatedCards = yield _prepareRefreshPlayerCards();
+  yield put(Actions.refreshPlayerCards.success(updatedCards));
+}
+
+function _prepareRefreshPlayerCards() {
   const state = store.getState();
   let handCards = CardsSelector.getHandCards(state);
   let playerFieldSlots = CardsSelector.getPlayerFieldSlots(state);
   let refreshReadyCards = [...handCards, ...playerFieldSlots];
-  let updatedCards = CardActions.refreshCards(refreshReadyCards);
-  yield put(Actions.refreshPlayerCards.success(updatedCards));
+  return CardActions.refreshCards(refreshReadyCards);
 }
 
 function* _useCardAbility({playAreaIndex}) {
+  let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots } = yield _prepareUseCardAbility(playAreaIndex);
+  yield put(Actions.useCardAbility.success(updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots));
+}
+
+function _prepareUseCardAbility(playAreaIndex) {
   const state = store.getState();
   let selectedAbility = CardsSelector.getSelectedAbility(state);
   let playerFieldSlots = CardsSelector.getPlayerFieldSlots(state);
   let opponentFieldSlots = CardsSelector.getOpponentFieldSlots(state);
-  let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots } = CardActions.useCardAbility(playAreaIndex, selectedAbility, playerFieldSlots, opponentFieldSlots);
-  yield put(Actions.useCardAbility.success(updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots));
+  return CardActions.useCardAbility(playAreaIndex, selectedAbility, playerFieldSlots, opponentFieldSlots);
 }
 
 export default function* root() {
