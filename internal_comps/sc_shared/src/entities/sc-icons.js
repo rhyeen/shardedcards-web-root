@@ -27,6 +27,7 @@ function getBaseSvg(customClass, definedClass, svgContent) {
 export const ScIconsStyles = html`
 <style>
   [svg-icon] {
+    /** @TODO: defined as a const in sc-shared-styles **/
     --default-svg-color: #212121;
     width: 24px;
     height: 24px;
