@@ -8,25 +8,25 @@ export const RUN_ENV = {
   PRODUCTION: 'prod'
 };
 
-export const InterfaceState = () => {
+export const interfaceState = () => {
   return INTERFACE.MOCK;
 };
 
-export const InvalidInterfaceState = () => {
-  return new Error(`Invalid interface state: ${InterfaceState()}`);
+export const invalidInterfaceState = () => {
+  return new Error(`Invalid interface state: ${interfaceState()}`);
 }
 
-export const RunState = () => {
+export const runState = () => {
   return RUN_ENV.LOCAL;
 }
 
-export const BaseEndpoint = () => {
-  switch (RunState()) {
+export const baseEndpoint = () => {
+  switch (runState()) {
     case RUN_ENV.LOCAL:
       return 'http://localhost:6250';
     case RUN_ENV.PRODUCTION:
       return '';
     default:
-      return new Error(`Invalid run state: ${RunState()}`);
+      return new Error(`Invalid run state: ${runState()}`);
   }
 }

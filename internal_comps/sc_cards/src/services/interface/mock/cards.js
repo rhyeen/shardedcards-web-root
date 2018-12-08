@@ -2,63 +2,58 @@ import {
   Mock,
   CALLBACK_TIME } from '../../../../../sc_shared/src/services/mock.js';
 
+import { Model } from './models/model.js';
 
-
-import {default as storage} from './storage/storage.js';
-import {
-  GetOpponentField,
-  GetOpponentFieldCards,
-  RedrawHand } from './storage/card-actions.js';
-
-import {
-  BeginPlayerTurn } from './storage/turn-actions.js';
-
-export const CallMockGetHand = (turn) => {
-  return new Promise((resolve, reject) => {
-    DebugRequest(CallMockGetHand, turn)
+export const getPlayerDecks = () => {
+  return new Promise((resolve) => {
+    Mock.debugRequest(getPlayerDecks);
     setTimeout(() => {
-      // @NOTE: may not be the best spot to refresh the player cards, but it needs to happen at
-      // the beginning of the player's turn.
-      RedrawHand()      
-      BeginPlayerTurn()
-      const response = {
-        hand: storage.card.hand,
-        deckSize: storage.card.deck.length,
-        discardPileSize: storage.card.discardPile.length,
-        lostCardsSize: 0
-      }
-      DebugSuccessfulResponse(CallMockGetHand, response)
-      resolve(PrepareResponse(response))
-    }, GET_CALLBACK_TIME)
-  })
-}
+      let response = {
+        hand: {
+          cards: Model.player.hand.cards,
+          refillSize: Model.player.hand.refillSize
+        },
+        deck: {
+          size: Model.player.deck.cards.length
+        },
+        discardPile: {
+          cards: Model.player.discardPile.cards
+        },
+        lostCards: {
+          cards: Model.player.lostCards.cards
+        }
+      };
+      Mock.debugSuccessfulResponse(getHand, response);
+      resolve(Mock.prepareResponse(response));
+    }, CALLBACK_TIME.GET);
+  });
+};
 
-export const CallMockGetOpponentField = () => {
-  return new Promise((resolve, reject) => {
-    DebugRequest(CallMockGetOpponentField)
+export const getOpponentField = () => {
+  return new Promise((resolve) => {
+    Mock.debugRequest(getOpponentField);
     setTimeout(() => {
-      const response = {
-        opponentField: GetOpponentField(),
-        opponentFieldBacklog: [
-          storage.card.opponentBacklog[0].length,
-          storage.card.opponentBacklog[1].length,
-          storage.card.opponentBacklog[2].length
+      let response = {
+        backlog: [
+          { size: Model.opponent.field.backlog[0].cards.length },
+          { size: Model.opponent.field.backlog[1].cards.length },
+          { size: Model.opponent.field.backlog[2].cards.length }
         ],
-        opponentFieldCards: GetOpponentFieldCards()
-      }
-      DebugSuccessfulResponse(CallMockGetOpponentField, response)
-      resolve(PrepareResponse(response))
-    }, GET_CALLBACK_TIME)
+        slots: Model.opponent.field.slots
+      };
+      Mock.debugSuccessfulResponse(getOpponentField, response);
+      resolve(Mock.prepareResponse(response));
+    }, CALLBACK_TIME.GET);
   })
 }
 
-export const CallMockGetCards = () => {
-  return new Promise((resolve, reject) => {
-    DebugRequest(CallMockGetCards)
+export const GetCards = () => {
+  return new Promise((resolve) => {
+    Mock.debugRequest(GetCards);
     setTimeout(() => {
-      const response = storage.card.cards
-      DebugSuccessfulResponse(CallMockGetCards, response)
-      resolve(PrepareResponse(response))
-    }, GET_CALLBACK_TIME)
+      const response = Model.cards;
+      Mock.debugSuccessfulResponse(GetCards, response);
+      resolve(Mock.prepareResponse(response));
+    }, CALLBACK_TIME.GET);
   })
 }

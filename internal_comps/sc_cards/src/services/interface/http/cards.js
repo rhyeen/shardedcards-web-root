@@ -1,13 +1,13 @@
 import { Http } from '../../../../../sc_shared/src/services/http.js';
 
-export const GetHand = () => {
+export const getHand = () => {
   return Http.get('cardgroups/hand');
 }
 
-export const GetCards = () => {
+export const getCards = () => {
   return Http.get('cards');
 }
 
-export const GetOpponentField = () => {
+export const getOpponentField = () => {
   return Http.get('cardgroups/opponentfield');
 }

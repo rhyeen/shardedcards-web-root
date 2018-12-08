@@ -16,5 +16,11 @@ export const CARD_TYPES = {
 export const CARD_ABILITIES = {
   HASTE: 'haste',
   SPELLSHOT: 'spellshot',
-  REACH: 'reach'
+  REACH: 'reach',
+  ENERGIZE: 'energize'
+};
+
+export const ENERGY_SHARD = {
+  ID: 'ENERGY_SHARD',
+  INSTANCE: '0'
 };

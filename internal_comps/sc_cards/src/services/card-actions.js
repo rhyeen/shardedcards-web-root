@@ -79,6 +79,14 @@ function _prepareCardForDiscard(cards, card, cardId) {
   return true;
 }
 
+/** @MUTATES: cards */
+export function resetCards(cards, cardInstances) {
+  for (let cardInstance in cardInstances) {
+    let card = cards[cardInstance.id].instances[cardInstance.instance];
+    _resetCard(cards, card, cardInstance.id);
+  }
+}
+
 function _resetCard(cards, card, cardId) {
   let parentCard = Cards.getParentCard(cards, cardId);
   card.conditions.exhausted = false;

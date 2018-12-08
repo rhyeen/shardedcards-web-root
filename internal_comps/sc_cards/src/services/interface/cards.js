@@ -1,40 +1,40 @@
 import {
   INTERFACE,
-  InterfaceState,
-  InvalidInterfaceState } from '../../../../sc_shared/src/services/interface-state.js';
+  interfaceState,
+  invalidInterfaceState } from '../../../../sc_shared/src/services/interface-state.js';
 
 import * as CallHttp from './http/cards.js';
 import * as CallMock from './mock/cards.js';
 
-export const GetHand = () => {
-  switch(InterfaceState()) {
+export const getHand = () => {
+  switch(interfaceState()) {
     case INTERFACE.HTTP:
-      return CallHttp.GetHand();
+      return CallHttp.getHand();
     case INTERFACE.MOCK:
-      return CallMock.GetHand();
+      return CallMock.getHand();
     default:
-      return InvalidInterfaceState();
+      return invalidInterfaceState();
   }
 }
 
-export const GetCards = () => {
-  switch(InterfaceState()) {
+export const getCards = () => {
+  switch(interfaceState()) {
     case INTERFACE.HTTP:
-      return CallHttp.GetCards();
+      return CallHttp.getCards();
     case INTERFACE.MOCK:
-      return CallMock.GetCards();
+      return CallMock.getCards();
     default:
-      return InvalidInterfaceState();
+      return invalidInterfaceState();
   }
 }
 
-export const GetOpponentField = () => {
-  switch(InterfaceState()) {
+export const getOpponentField = () => {
+  switch(interfaceState()) {
     case INTERFACE.HTTP:
-      return CallHttp.GetOpponentField();
+      return CallHttp.getOpponentField();
     case INTERFACE.MOCK:
-      return CallMock.GetOpponentField();
+      return CallMock.getOpponentField();
     default:
-      return InvalidInterfaceState();
+      return invalidInterfaceState();
   }
 }

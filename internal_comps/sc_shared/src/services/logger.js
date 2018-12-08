@@ -4,7 +4,7 @@ export const LOG_LEVEL = {
   ERROR: 'error'
 };
 
-export const LogLevel = () => {
+export const logLevel = () => {
   return LOG_LEVEL.DEBUG;
 }
 
@@ -15,13 +15,13 @@ export const Log = {
 }
 
 function logDebug(message) {
-  if (LogLevel() === DEBUG) {
+  if (logLevel() === DEBUG) {
     console.log(message);
   }
 }
 
 function logInfo(message) {
-  if (LogLevel() === DEBUG || LogLevel() === INFO) {
+  if (logLevel() === DEBUG || logLevel() === INFO) {
     console.log(message);
   }
 }
