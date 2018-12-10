@@ -1,7 +1,6 @@
-import { Model, getInitialModel } from '../models/model.js';
-import { getInitialCards } from '../models/initial-cards.js';
-import { getInitialDeck } from '../models/initial-deck.js';
+import { Model, initializeModel } from '../models/model.js';
 import { getInitialOpponentCards } from '../models/initial-opponent-cards.js';
+import { Log } from '../../../../../../sc_shared/src/services/logger.js';
 
 import * as Cards from '../../../card-selection.js';
 import * as CardActions from '../../../card-actions.js';
@@ -34,17 +33,11 @@ function _getOpponentFieldCards() {
 }
 
 export const initializeCards = () => {
-  _initializeModel();
+  initializeModel();
   _setOpponentFieldBacklogs();
   shuffleDrawDeck(true);
   refreshOpponentField();
 };
-
-function _initializeModel() {
-  Model = getInitialModel();
-  Model.cards = {...getInitialCards(), ...getInitialOpponentCards() };
-  Model.player.deck = getInitialDeck();
-}
 
 function _setOpponentFieldBacklogs() {
   _setOpponentFieldBacklog(0);
@@ -169,7 +162,7 @@ function _placeEnergyShardOnTop(deck) {
       return;
     }
   }
-  console.error(`cannot find the energy shard: ${ENERGY_SHARD.ID}`);
+  Log.error(`cannot find the energy shard: ${ENERGY_SHARD.ID}`);
 }
 
 export const shuffleDiscardIntoDrawDeck = () => {

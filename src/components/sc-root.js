@@ -3,6 +3,7 @@ import { connect } from 'pwa-helpers/connect-mixin.js';
 import store from '../state/store.js';
 import { installRouter } from 'pwa-helpers/router.js';
 import { updateMetadata } from 'pwa-helpers/metadata.js';
+import { Log } from '../../internal_comps/sc_shared/src/services/logger.js';
 
 import { ScSharedStyles } from '../../internal_comps/sc_shared/src/entities/sc-shared-styles.js';
 
@@ -62,7 +63,7 @@ class ScRoot extends connect(store)(LitElement) {
       case ROUTES.PAGES.NOT_FOUND:
         return `${title} | 404 - NOT FOUND`;
       default:
-        console.error(`Unexpected page: ${page}`);
+        Log.error(`Unexpected page: ${page}`);
         return title;
     }
   }

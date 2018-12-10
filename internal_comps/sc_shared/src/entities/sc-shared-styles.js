@@ -1,4 +1,5 @@
 import { html } from '@polymer/lit-element';
+import { Log } from '../services/logger.js';
 
 import { CARD_RARITIES } from './card-keywords.js';
 
@@ -49,7 +50,7 @@ export const CardRarityColor = function(rarity) {
     case CARD_RARITIES.STANDARD:
       return CARD_RARITIES_COLOR.STANDARD;
     default:
-      console.error(`undefined rarity: ${rarity}`);
+      Log.error(`undefined rarity: ${rarity}`);
       return CARD_RARITIES.COMMON_COLOR;
   }
 }

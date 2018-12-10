@@ -76,14 +76,14 @@ function _deepCopy(obj) {
 //   let { cardId, cardInstance } = _getCardIdentifiersFromHand(player.hand, handCardIndex);
 //   let card = getCard(cards, cardId, cardInstance);
 //   if (!card) {
-//     console.error(`card at handCardIndex: ${handCardIndex} does not exist`);
+//     Log.error(`card at handCardIndex: ${handCardIndex} does not exist`);
 //   }
 //   return card;
 // }
 
 // function _getCardIdentifiersFromHand(hand, handCardIndex) {
 //   if (!_validHandCardIndex(hand, handCardIndex)) {
-//     console.error(`invalid handCardIndex: ${handCardIndex}`);
+//     Log.error(`invalid handCardIndex: ${handCardIndex}`);
 //     return null;
 //   }
 //   const cardId = hand.cards[handCardIndex].id;

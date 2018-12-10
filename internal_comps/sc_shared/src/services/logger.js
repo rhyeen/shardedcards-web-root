@@ -16,16 +16,20 @@ export const Log = {
 
 function logDebug(message) {
   if (logLevel() === DEBUG) {
-    console.log(message);
+    console.log(_freezeMessage(message));
   }
 }
 
 function logInfo(message) {
   if (logLevel() === DEBUG || logLevel() === INFO) {
-    console.log(message);
+    console.log(_freezeMessage(message));
   }
 }
 
 function logError(message) {
-  console.error(message);
+  console.error(_freezeMessage(message));
+}
+
+function _freezeMessage(message) {
+  return JSON.parse(JSON.stringify(message));
 }

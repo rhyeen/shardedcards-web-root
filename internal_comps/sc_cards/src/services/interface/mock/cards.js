@@ -47,12 +47,12 @@ export const getOpponentField = () => {
   })
 }
 
-export const GetCards = () => {
+export const getCards = () => {
   return new Promise((resolve) => {
-    Mock.debugRequest(GetCards);
+    Mock.debugRequest(getCards);
     setTimeout(() => {
       const response = Model.cards;
-      Mock.debugSuccessfulResponse(GetCards, response);
+      Mock.debugSuccessfulResponse(getCards, response);
       resolve(Mock.prepareResponse(response));
     }, CALLBACK_TIME.GET);
   })

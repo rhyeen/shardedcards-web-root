@@ -53,7 +53,7 @@ function _prepareAttackCard(playAreaIndex) {
 }
 
 function* _setFieldFromOpponentTurn() {
-  yield console.error(`Go get opponent's turn`);
+  yield console.trace(`@TODO: Go get opponent's turn`);
   yield put(Actions.setFieldFromOpponentTurn.success(updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots));
 }
 

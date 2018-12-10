@@ -3,6 +3,7 @@ import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-sty
 import { ScGameStyles, NAV } from '../../entities/sc_game-styles.js';
 import { connect } from 'pwa-helpers/connect-mixin.js';
 import store from '../../state/store.js';
+import { Log } from '../../../../sc_shared/src/services/logger.js';
 
 import { finishCrafting, endTurn } from '../../state/actions.js';
 import * as GameSelector from '../../state/selectors';
@@ -49,7 +50,7 @@ export class ScGameFooter extends connect(store)(LitElement) {
     } else if (this._isCrafting) {
       return this._getCraftingBarItemsHtml();
     } else {
-      console.error(`Unexpected game state`);
+      Log.error(`Unexpected game state`);
       return html``;
     }
   }

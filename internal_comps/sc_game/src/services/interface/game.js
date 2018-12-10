@@ -3,37 +3,37 @@ import {
   interfaceState,
   invalidInterfaceState } from '../../../../sc_shared/src/services/interface-state.js';
 
-import * as CallHttp from './http/cards.js';
-import * as CallMock from './mock/cards.js';
+import * as CallHttp from './http/game.js';
+import * as CallMock from './mock/game.js';
 
-export const getHand = () => {
+export const beginGame = () => {
   switch(interfaceState()) {
     case INTERFACE.HTTP:
-      return CallHttp.getHand();
+      return CallHttp.beginGame();
     case INTERFACE.MOCK:
-      return CallMock.getHand();
+      return CallMock.beginGame();
     default:
       return invalidInterfaceState();
   }
 };
 
-export const getCards = () => {
+export const endCrafting = () => {
   switch(interfaceState()) {
     case INTERFACE.HTTP:
-      return CallHttp.getCards();
+      return CallHttp.endCrafting();
     case INTERFACE.MOCK:
-      return CallMock.getCards();
+      return CallMock.endCrafting();
     default:
       return invalidInterfaceState();
   }
 };
 
-export const getOpponentField = () => {
+export const endTurn = () => {
   switch(interfaceState()) {
     case INTERFACE.HTTP:
-      return CallHttp.getOpponentField();
+      return CallHttp.endTurn();
     case INTERFACE.MOCK:
-      return CallMock.getOpponentField();
+      return CallMock.endTurn();
     default:
       return invalidInterfaceState();
   }

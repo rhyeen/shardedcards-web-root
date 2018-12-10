@@ -1,5 +1,6 @@
 import * as ActionType from './actions.js';
 import * as Cards from '../services/card-selection.js';
+import { Log } from '../../../sc_shared/src/services/logger.js';
 
 import { CARD_TYPES } from '../../../sc_shared/src/entities/card-keywords.js';
 import { CARD_SOURCES, CARD_TARGETS } from '../entities/selected-card.js';
@@ -399,8 +400,8 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
         case CARD_TYPES.SPELL:
           return _setSelectedCardSource(state, CARD_SOURCES.CAST_PLAYER_SPELL);
         default:
-          console.error(`unexpected card type: ${card.type}`)
-          return state
+          Log.error(`unexpected card type: ${card.type}`);
+          return state;
       }
     case ActionType.SUMMON_CARD.SUCCESS: // PLACE_ON_PLAY_AREA
       cardId = state.ui.selectedCard.id;

@@ -1,5 +1,6 @@
 import * as Cards from '../services/card-selection.js';
 import { CARD_ABILITIES } from '../../../sc_shared/src/entities/card-keywords.js';
+import { Log } from '../../../sc_shared/src/services/logger.js';
 
 export function summonCard(selectedCard, playerFieldCard) {
   let updatedCards = [selectedCard];
@@ -48,11 +49,11 @@ export function attackCard(cards, attackingCard, attackedCard) {
 function _attackerCanReach(attackingCard, attackedCard) {
   let distance = Math.abs(attackingCard.playAreaIndex - attackedCard.playAreaIndex);
   if (distance > attackingCard.card.range) {
-    console.error(`target is out of reach for attack`);
+    Log.error(`target is out of reach for attack`);
     return false;
   }
   if (attackingCard.conditions.exhausted) {
-    console.error(`attacker is exhausted`);
+    Log.error(`attacker is exhausted`);
     return false;
   }
   return true;
@@ -164,7 +165,7 @@ export function useCardAbility(playAreaIndex, selectedAbility, playerFieldSlots,
       };
     }
   } else {
-    console.error(`unexpected ability target: ${selectedAbility.targets}`);
+    Log.error(`unexpected ability target: ${selectedAbility.targets}`);
     return results;
   }
   _consumeAbilityUse(selectedAbility);
@@ -180,15 +181,15 @@ function _useAbilityOnOpponentUnit(selectedAbility, opponentFieldSlot) {
 
 function _abilityCanCastOnOpponentUnit(selectedAbility, opponentFieldSlot) {
   if (!selectedAbility.ability) {
-    console.error(`card does not have ability: ${selectedAbility.abilityId}`);
+    Log.error(`card does not have ability: ${selectedAbility.abilityId}`);
     return false;
   }
   if (!opponentFieldSlot.card) {
-    console.error(`cannot cast ability ${selectedAbility.abilityId} on an empty opponent slot`);
+    Log.error(`cannot cast ability ${selectedAbility.abilityId} on an empty opponent slot`);
     return false;
   }
   if (!_abilityCanTargetOpponent(selectedAbility.abilityId)) {
-    console.error(`ability ${selectedAbility.abilityId} cannot target opponent cards`);
+    Log.error(`ability ${selectedAbility.abilityId} cannot target opponent cards`);
     return false;
   }
   return true;
@@ -224,7 +225,7 @@ function _useAbilityOnVerifiedTargetUnit(selectedAbility, fieldSlot) {
       updatedCard = _useAbilityReach(selectedAbility, fieldSlot);
       break;
     default:
-      console.error(`unexpected ability ${selectedAbility.abilityId} on targeted card`);
+      Log.error(`unexpected ability ${selectedAbility.abilityId} on targeted card`);
       break;
   }
   if (updatedCard) {
@@ -251,15 +252,15 @@ function _setRangeResults(rangeModifier, target) {
 
 function _abilityCanCastOnPlayerUnit(selectedAbility, playerFieldSlot) {
   if (!selectedAbility.ability) {
-    console.error(`card does not have ability: ${selectedAbility.abilityId}`);
+    Log.error(`card does not have ability: ${selectedAbility.abilityId}`);
     return false;
   }
   if (!playerFieldSlot.card) {
-    console.error(`cannot cast ability ${selectedAbility.abilityId} on an empty player slot`);
+    Log.error(`cannot cast ability ${selectedAbility.abilityId} on an empty player slot`);
     return false;
   }
   if (!_abilityCanTargetPlayer(selectedAbility.abilityId)) {
-    console.error(`ability ${selectedAbility.abilityId} cannot target player cards`);
+    Log.error(`ability ${selectedAbility.abilityId} cannot target player cards`);
     return false;
   }
   return true;

@@ -1,5 +1,6 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { ScSharedStyles, SHADOW_ELEVATIONS } from '../entities/sc-shared-styles.js';
+import { Log } from '../../../sc_shared/src/services/logger.js';
 
 import { BTN_TYPES } from '../entities/sc-btn-types.js';
 
@@ -93,7 +94,7 @@ class ScBtn extends LitElement {
       case BTN_TYPES.PRESET.BACK:
         return 'btn-back';
       default:
-        console.error(`Invalid btntype: ${this.btntype}`);
+        Log.error(`Invalid btntype: ${this.btntype}`);
         return 'btn-secondary';
     }
   }
