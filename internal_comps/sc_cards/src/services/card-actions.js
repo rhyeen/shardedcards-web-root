@@ -140,12 +140,13 @@ function _refreshCard(card) {
   return cardNeedsRefreshing;
 }
 
-export function useCardAbility(playAreaIndex, selectedAbility, playerFieldSlots, opponentFieldSlots) {
+export function useCardAbility(cards, playAreaIndex, selectedAbility, playerFieldSlots, opponentFieldSlots) {
   let results = {
     updatedCards: [],
     addedToDiscardPile: [],
     playerFieldSlots: [...playerFieldSlots],
-    opponentFieldSlots: [...opponentFieldSlots]
+    opponentFieldSlots: [...opponentFieldSlots],
+    statusUpdates: {}
   };
   if (_abilityUsedOnOpponentMinion(selectedAbility)) {
     let { updatedCards, isFieldCardDiscarded } = _useAbilityOnOpponentMinion(selectedAbility, opponentFieldSlots[playAreaIndex]);
@@ -157,7 +158,7 @@ export function useCardAbility(playAreaIndex, selectedAbility, playerFieldSlots,
       };
     }
   } else if (_abilityUsedOnPlayerMinion(selectedAbility)) {
-    let { updatedCards, isFieldCardDiscarded } = _useAbilityOnPlayerMinion(selectedAbility, playerFieldSlots[playAreaIndex]);
+    let { updatedCards, isFieldCardDiscarded } = _useAbilityOnPlayerMinion(cards, selectedAbility, playerFieldSlots[playAreaIndex]);
     results.updatedCards = updatedCards;
     if (isFieldCardDiscarded) {
       results.playerFieldSlots[playAreaIndex] = {
@@ -166,6 +167,10 @@ export function useCardAbility(playAreaIndex, selectedAbility, playerFieldSlots,
       };
     }
   } else if (_abilityUsedOnPlayer(selectedAbility)) {
+    let { updatedCards, statusUpdates } = _useAbilityOnPlayer(selectedAbility);
+    results.updatedCards = updatedCards;
+    results.statusUpdates = statusUpdates;
+    // @TODO: need to figure out how to appropriately return stuff like player status updates...
     console.trace('@TODO');
   } else {
     Log.error(`unexpected ability target: ${selectedAbility.targets}`);
@@ -219,14 +224,14 @@ function _abilityCanTargetOpponent(abilityId) {
   }
 }
 
-function _useAbilityOnPlayerMinion(selectedAbility, playerFieldSlot) {
+function _useAbilityOnPlayerMinion(cards, selectedAbility, playerFieldSlot) {
   if (!_abilityCanCastOnPlayerMinion(selectedAbility, playerFieldSlot)) {
     return { updatedCards:[], isFieldCardDiscarded:false };
   }
-  return _useAbilityOnVerifiedTargetMinion(selectedAbility, playerFieldSlot);
+  return _useAbilityOnVerifiedTargetMinion(cards, selectedAbility, playerFieldSlot);
 }
 
-function _useAbilityOnVerifiedTargetMinion(selectedAbility, fieldSlot) {
+function _useAbilityOnVerifiedTargetMinion(cards, selectedAbility, fieldSlot) {
   let results = {
     updatedCards: [],
     isFieldCardDiscarded: false
@@ -250,6 +255,29 @@ function _useAbilityOnVerifiedTargetMinion(selectedAbility, fieldSlot) {
   return results;
 }
 
+function _useAbilityOnPlayer(selectedAbility) {
+  if (!_abilityCanCastOnPlayer(selectedAbility)) {
+    return { updatedCards: [], statusUpdates: {}};
+  }
+  return _useAbilityOnVerifiedPlayer(selectedAbility);
+}
+
+function _useAbilityOnVerifiedPlayer(selectedAbility) {
+  let results = {
+    updatedCards: [],
+    statusUpdates: {}
+  }
+  switch (selectedAbility.abilityId) {
+    case CARD_ABILITIES.ENERGIZE:
+      results.statusUpdates = _useAbilityEnergize(selectedAbility);
+      break;
+    default:
+      Log.error(`unexpected ability ${selectedAbility.abilityId} on targeted player`);
+      break;
+  }
+  return results;
+}
+
 function _useAbilitySpellshot(selectedAbility, fieldSlot) {
   _damageCard(selectedAbility.ability.amount, fieldSlot.card);
   return fieldSlot;
@@ -265,6 +293,17 @@ function _setRangeResults(rangeModifier, target) {
   target.version += 1;
 }
 
+function _useAbilityEnergize(selectedAbility) {
+  return {
+    player: {
+      energy: {
+        maxModifier: selectedAbility.ability.amount,
+        currentModifier: selectedAbility.ability.amount
+      }
+    }
+  };
+}
+
 function _abilityCanCastOnPlayerMinion(selectedAbility, playerFieldSlot) {
   if (!selectedAbility.ability) {
     Log.error(`card does not have ability: ${selectedAbility.abilityId}`);
@@ -274,19 +313,40 @@ function _abilityCanCastOnPlayerMinion(selectedAbility, playerFieldSlot) {
     Log.error(`cannot cast ability ${selectedAbility.abilityId} on an empty player slot`);
     return false;
   }
-  if (!_abilityCanTargetPlayer(selectedAbility.abilityId)) {
+  if (!_abilityCanTargetPlayerMinion(selectedAbility.abilityId)) {
     Log.error(`ability ${selectedAbility.abilityId} cannot target player cards`);
     return false;
   }
   return true;
 }
 
-function _abilityCanTargetPlayer(abilityId) {
+function _abilityCanCastOnPlayer(selectedAbility) {
+  if (!selectedAbility.ability) {
+    Log.error(`card does not have ability: ${selectedAbility.abilityId}`);
+    return false;
+  }
+  if (!_abilityCanTargetPlayer(selectedAbility.abilityId)) {
+    Log.error(`ability ${selectedAbility.abilityId} cannot target player`);
+    return false;
+  }
+  return true;
+}
+
+function _abilityCanTargetPlayerMinion(abilityId) {
   switch (abilityId) {
     case CARD_ABILITIES.REACH:
-      return true
+      return true;
     default:
-      return false
+      return false;
+  }
+}
+
+function _abilityCanTargetPlayer(abilityId) {
+  switch (abilityId) {
+    case CARD_ABILITIES.ENERGIZE:
+      return true;
+    default:
+      return false;
   }
 }
 

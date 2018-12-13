@@ -3,7 +3,7 @@ import { put, takeEvery, all } from 'redux-saga/effects';
 import store from './store.js';
 import * as CardsSelector from './selectors.js';
 import * as CardActions from '../services/card-actions.js';
-
+import * as StatusDispatchActions from '../../../sc_status/src/state/actions.js';
 import * as Actions from './actions.js';
 
 function* _summonMinion({playAreaIndex}) {
@@ -36,8 +36,13 @@ function _prepareAttackMinion(playAreaIndex) {
   let playerFieldCard = playerFieldSlots[selectedCard.playAreaIndex];
   let opponentFieldCard = opponentFieldSlots[playAreaIndex];
   let cards = CardsSelector.getCards(state);
+  let addedToDiscardPile = [];
   let { updatedCards, attackerDiscarded, attackedDiscarded } = CardActions.attackMinion(cards, playerFieldCard, opponentFieldCard);
   if (attackerDiscarded) {
+    addedToDiscardPile.push({
+      id: playerFieldSlots[selectedCard.playAreaIndex].id,
+      instance: playerFieldSlots[selectedCard.playAreaIndex].instance
+    });
     playerFieldSlots[selectedCard.playAreaIndex] = {
       id: null,
       instance: null
@@ -81,7 +86,8 @@ function _prepareRefreshPlayerCards() {
 }
 
 function* _useCardAbility({playAreaIndex}) {
-  let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots } = yield _prepareUseCardAbility(playAreaIndex);
+  let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots, statusUpdates } = yield _prepareUseCardAbility(playAreaIndex);
+  yield _handleStatusUpdates(statusUpdates);
   yield put(Actions.useCardAbility.success(updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots));
 }
 
@@ -90,7 +96,15 @@ function _prepareUseCardAbility(playAreaIndex) {
   let selectedAbility = CardsSelector.getSelectedAbility(state);
   let playerFieldSlots = CardsSelector.getPlayerFieldSlots(state);
   let opponentFieldSlots = CardsSelector.getOpponentFieldSlots(state);
-  return CardActions.useCardAbility(playAreaIndex, selectedAbility, playerFieldSlots, opponentFieldSlots);
+  let cards = CardsSelector.getCards(state);
+  return CardActions.useCardAbility(cards, playAreaIndex, selectedAbility, playerFieldSlots, opponentFieldSlots);
+}
+
+function _handleStatusUpdates(statusUpdates) {
+  if (!statusUpdates) {
+    return;
+  }
+  put(StatusDispatchActions.updateStatus(statusUpdates));
 }
 
 export default function* root() {

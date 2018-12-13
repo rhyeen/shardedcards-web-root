@@ -62,3 +62,6 @@ export const modifyPlayerEnergy = {
   request: (maxEnergyModifier, currentEnergyModifier) => _action(MODIFY_PLAYER_ENERGY.REQUEST, {maxEnergyModifier, currentEnergyModifier}),
   success: (maxEnergyModifier, currentEnergyModifier) => _action(MODIFY_PLAYER_ENERGY.SUCCESS, {maxEnergyModifier, currentEnergyModifier})
 };
+
+export const UPDATE_STATUS =  _createRequestRaw('UPDATE_STATUS');
+export const updateStatus = (statusUpdates) => _action(UPDATE_STATUS, {statusUpdates});

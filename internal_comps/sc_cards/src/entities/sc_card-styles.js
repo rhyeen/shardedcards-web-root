@@ -27,7 +27,7 @@ export const ScCardStyles = html`
     --hand-card-hover-raise-height: 10px;
     --hand-card-padding: 16px;
     --hand-card-border-radius: 16px;
-    /** @TODO: should this be part of the generic elevations? **/
+    /** @DEBUG: should this be part of the generic elevations? **/
     --hand-card-elevation: 0px -4px 20px rgba(0, 0, 0, 0.15);
 
     --last-hand-card-extra-height: 4px;

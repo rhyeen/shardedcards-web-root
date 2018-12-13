@@ -125,7 +125,7 @@ class ScCardValue extends LitElement {
       default:
         return html``;
     }
-    // @TODO: can't remember why we need to add this class...
+    // @DEBUG: can't remember why we need to add this class...
     return iconFunction('background-svg-icon');
   }
 

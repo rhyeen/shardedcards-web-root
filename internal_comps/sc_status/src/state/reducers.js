@@ -119,9 +119,27 @@ export const sc_status = (state = INITIAL_STATE, action) => {
     case ActionType.CANCEL_ALLOCATED_PLAYER_ENERGY:
       return _setPlayerPendingEnergy(state, state.entities.player.energy.current);
     case ActionType.MODIFY_PLAYER_ENERGY.SUCCESS:
-      newEnergies = getModifiedEnergy(newState.entities.player.energy, action.maxEnergyModifier, action.currentEnergyModifier);
+      newEnergies = getModifiedEnergy(state.entities.player.energy, action.maxEnergyModifier, action.currentEnergyModifier);
       newState = _setPlayerCurrentEnergy(state, newEnergies.current);
       return _setPlayerMaxEnergy(newState, newEnergies.max);
+    case ActionType.UPDATE_STATUS:
+      newState = state;
+      if (!action.statusUpdates) {
+        return newState;
+      }
+      if (action.statusUpdates.player) {
+        if (action.statusUpdates.player.energy) {
+          if (action.statusUpdates.player.energy.maxModifier) {
+            newEnergies = getModifiedEnergy(newState.entities.player.energy, action.statusUpdates.player.energy.maxModifier, null);
+            newState = _setPlayerMaxEnergy(state, newEnergies.max);
+          }
+          if (action.statusUpdates.player.energy.currentModifier) {
+            newEnergies = getModifiedEnergy(newState.entities.player.energy, null, action.statusUpdates.player.energy.currentModifier);
+            newState = _setPlayerCurrentEnergy(state, newEnergies.current);
+          }
+        }
+      }
+      return newState;
     default:
       return state;
   }

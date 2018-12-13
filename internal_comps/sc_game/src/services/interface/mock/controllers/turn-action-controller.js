@@ -5,6 +5,8 @@ import { Log } from '../../../../../../sc_shared/src/services/logger.js';
 import * as Cards from '../../../../../../sc_cards/src/services/card-selection.js';
 import * as CardActions from '../../../../../../sc_cards/src/services/card-actions.js';
 import { CARD_TARGETS } from '../../../../../../sc_cards/src/entities/selected-card.js';
+import * as StatusController from '../../../../../../sc_status/src/services/interface/mock/controllers/status-controller.js';
+
 /**
  * Returns true if all the actions are valid for the given turn.
  */
@@ -217,8 +219,40 @@ function _executeActionAttack(action, target) {
     instance: action.instance
   };
   let { updatedCards, attackerDiscarded, attackedDiscarded } = CardActions.attackMinion(CardsModel.Model.cards, attackingCard, attackedCard);
-  // @TODO:
+  _updateCards(updatedCards);
+  if (attackerDiscarded) {
+    _discardPlayerFieldCard(action.playAreaIndex);
+  }
+  if (attackedDiscarded) {
+    _discardOpponentFieldCard(target.playAreaIndex);
+  }
   return true;
+}
+
+function _updateCards(updatedCards) {
+  Cards.setCards(CardsModel.Model.cards, updatedCards);
+}
+
+function _discardPlayerFieldCard(playAreaIndex) {
+  _addCardToDiscardPile(CardsModel.Model.player.field.slots[playAreaIndex]);
+  CardsModel.Model.player.field.slots[playAreaIndex] = _defaultFieldSlot();
+}
+
+function _addCardsToDiscardPile(cards) {
+  for (let card of cards) {
+    _addCardToDiscardPile(card);
+  }
+}
+
+function _addCardToDiscardPile(card) {
+  CardsModel.Model.player.discardPile.cards.push({
+    id: card.id,
+    instance: card.instance
+  });
+}
+
+function _discardOpponentFieldCard(playAreaIndex) {
+  CardsModel.Model.opponent.field.slots[playAreaIndex] = _defaultFieldSlot();
 }
 
 function _executeActionSummonMinion(action) {
@@ -247,7 +281,7 @@ function _executeActionSummonMinion(action) {
     playAreaIndex: target.playAreaIndex
   }
   let updatedCards = CardActions.summonMinion(selectedCard, playerFieldCard);
-  // @TODO:
+  _updateCards(updatedCards);
   return true;
 }
 
@@ -268,8 +302,14 @@ function _executeAbility(action, target) {
   };
   let playerFieldSlots = _getPlayerFieldSlots();
   let opponentFieldSlots = _getOpponentFieldSlots();
-  let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots } = CardActions.useCardAbility(playAreaIndex, selectedAbility, playerFieldSlots, opponentFieldSlots);
-  // @TODO:
+  let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots, statusUpdates } = CardActions.useCardAbility(CardsModel.Model.cards, playAreaIndex, selectedAbility, playerFieldSlots, opponentFieldSlots);
+  _updateCards(updatedCards);
+  _addCardsToDiscardPile(addedToDiscardPile);
+  _setFieldSlots(CardsModel.Model.player.field.slots, playerFieldSlots);
+  _setFieldSlots(CardsModel.Model.opponent.field.slots, opponentFieldSlots);
+  if (statusUpdates) {
+    StatusController.updateStatus(statusUpdates);
+  }
   return true;
 }
 
@@ -294,6 +334,25 @@ function _getFieldSlot(slot) {
     id: slot.id,
     instance: slot.instance,
     card: Cards.getCard(CardsModel.Model.cards, slot.id, slot.instance)
+  };
+}
+
+function _defaultFieldSlot() {
+  return {
+    id: null,
+    instance: null
+  };
+}
+
+function _setFieldSlots(oldSlots, newSlots) {
+  _setFieldSlot(oldSlots, newSlots, 0);
+  _setFieldSlot(oldSlots, newSlots, 1);
+  _setFieldSlot(oldSlots, newSlots, 2);
+}
+
+function _setFieldSlot(oldSlots, newSlots, index) {
+  oldSlots[index] = {
+    ...newSlots[index]
   };
 }
 

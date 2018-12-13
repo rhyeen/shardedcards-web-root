@@ -15,20 +15,20 @@ class ScPlayerHand extends connect(store)(LitElement) {
       <style>
         :host {
           width: calc(100% - var(${AREAS.PLAYER_HAND.MARGIN}));
-          /** @TODO: no idea why this is not AREAS.PLAYER_HAND.WIDTH... */
+          /** @DEBUG: no idea why this is not AREAS.PLAYER_HAND.WIDTH... */
           max-width: var(${CARDS.HAND.WIDTH});
           flex: 0 0 var(${AREAS.PLAYER_HAND.HEIGHT});
         }
 
         sc-player-hand-card {
           position: absolute;
-          /** @TODO: no idea why this is not CARDS.HAND.WIDTH... */
-          width: calc(100% - 42px); /* @TODO: no idea about the 42... */
+          /** @DEBUG: no idea why this is not CARDS.HAND.WIDTH... */
+          width: calc(100% - 42px); /* @DEBUG: no idea about the 42... */
           transition: height 0.1s, margin-top 0.1s;
           transition-timing-function: ease-in;
         }
 
-        /** @TODO: is this still needed? **/
+        /** @DEBUG: is this still needed? **/
         sc-player-hand-card[active] {
           opacity: 0;
         }
