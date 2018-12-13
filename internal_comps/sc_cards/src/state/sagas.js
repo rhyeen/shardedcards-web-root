@@ -6,12 +6,12 @@ import * as CardActions from '../services/card-actions.js';
 
 import * as Actions from './actions.js';
 
-function* _summonCard({playAreaIndex}) {
-  let { discardedCard, updatedCards} = yield _prepareSummonCard(playAreaIndex);
-  yield put(Actions.summonCard.success(playAreaIndex, updatedCards, discardedCard));
+function* _summonMinion({playAreaIndex}) {
+  let { discardedCard, updatedCards} = yield _prepareSummonMinion(playAreaIndex);
+  yield put(Actions.summonMinion.success(playAreaIndex, updatedCards, discardedCard));
 }
 
-function _prepareSummonCard(playAreaIndex) {
+function _prepareSummonMinion(playAreaIndex) {
   const state = store.getState();
   let selectedCard = CardsSelector.getSelectedCard(state);
   let playerFieldCard = CardsSelector.getPlayerFieldSlots(state)[playAreaIndex];
@@ -19,16 +19,16 @@ function _prepareSummonCard(playAreaIndex) {
     id: playerFieldCard.id,
     instance: playerFieldCard.instance,
   };
-  let updatedCards = CardActions.summonCard(selectedCard, playerFieldCard);
+  let updatedCards = CardActions.summonMinion(selectedCard, playerFieldCard);
   return { discardedCard, updatedCards};
 }
 
-function* _attackCard({playAreaIndex}) {
-  let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots } = _prepareAttackCard(playAreaIndex);
-  yield put(Actions.attackCard.success(updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots));
+function* _attackMinion({playAreaIndex}) {
+  let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots } = _prepareAttackMinion(playAreaIndex);
+  yield put(Actions.attackMinion.success(updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots));
 }
 
-function _prepareAttackCard(playAreaIndex) {
+function _prepareAttackMinion(playAreaIndex) {
   const state = store.getState();
   let selectedCard = CardsSelector.getSelectedCard(state);
   let playerFieldSlots = CardsSelector.getPlayerFieldSlots(state);
@@ -36,7 +36,7 @@ function _prepareAttackCard(playAreaIndex) {
   let playerFieldCard = playerFieldSlots[selectedCard.playAreaIndex];
   let opponentFieldCard = opponentFieldSlots[playAreaIndex];
   let cards = CardsSelector.getCards(state);
-  let { updatedCards, attackerDiscarded, attackedDiscarded } = CardActions.attackCard(cards, playerFieldCard, opponentFieldCard);
+  let { updatedCards, attackerDiscarded, attackedDiscarded } = CardActions.attackMinion(cards, playerFieldCard, opponentFieldCard);
   if (attackerDiscarded) {
     playerFieldSlots[selectedCard.playAreaIndex] = {
       id: null,
@@ -95,8 +95,8 @@ function _prepareUseCardAbility(playAreaIndex) {
 
 export default function* root() {
   yield all([
-    takeEvery(Actions.SUMMON_CARD.REQUEST, _summonCard),
-    takeEvery(Actions.ATTACK_CARD.REQUEST, _attackCard),
+    takeEvery(Actions.SUMMON_MINION.REQUEST, _summonMinion),
+    takeEvery(Actions.ATTACK_MINION.REQUEST, _attackMinion),
     takeEvery(Actions.SET_FIELD_FROM_OPPONENT_TURN.REQUEST, _setFieldFromOpponentTurn),
     takeEvery(Actions.CLEAR_HAND.REQUEST, _clearHand),
     takeEvery(Actions.REFRESH_PLAYER_CARDS.REQUEST, _refreshPlayerCards),

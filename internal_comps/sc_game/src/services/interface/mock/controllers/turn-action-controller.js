@@ -4,6 +4,7 @@ import { CARD_ABILITIES } from '../../../../../../sc_shared/src/entities/card-ke
 import { Log } from '../../../../../../sc_shared/src/services/logger.js';
 import * as Cards from '../../../../../../sc_cards/src/services/card-selection.js';
 import * as CardActions from '../../../../../../sc_cards/src/services/card-actions.js';
+import { CARD_TARGETS } from '../../../../../../sc_cards/src/entities/selected-card.js';
 /**
  * Returns true if all the actions are valid for the given turn.
  */
@@ -121,7 +122,7 @@ function _executeAbilityTargetOpponentMinion(action, target) {
   }
   switch(target.abilityId) {
     case CARD_ABILITIES.SPELLSHOT:
-      return _executeAbilitySpellshot(action, target);
+      return _executeAbility(action, target);
     default:
       Log.error(`Unexpected ability ${target.abilityId} for opponent minion target`);
       return false;
@@ -139,7 +140,7 @@ function _executeAbilityTargetPlayerMinion(action, target) {
   }
   switch(target.abilityId) {
     case CARD_ABILITIES.REACH:
-      return _executeAbilityReach(action, target);
+      return _executeAbility(action, target);
     default:
       Log.error(`Unexpected ability ${target.abilityId} for player minion target`);
       return false;
@@ -153,7 +154,7 @@ function _executeAbilityTargetPlayer(action, target) {
   }
   switch(target.abilityId) {
     case CARD_ABILITIES.ENERGIZE:
-      return _executeAbilityEnergize(action, target);
+      return _executeAbility(action, target);
     default:
       Log.error(`Unexpected ability ${target.abilityId} for player target`);
       return false;
@@ -215,7 +216,7 @@ function _executeActionAttack(action, target) {
     id: target.id,
     instance: action.instance
   };
-  let results = CardActions.attackCard(CardsModel.Model.cards, attackingCard, attackedCard);
+  let { updatedCards, attackerDiscarded, attackedDiscarded } = CardActions.attackMinion(CardsModel.Model.cards, attackingCard, attackedCard);
   // @TODO:
   return true;
 }
@@ -230,21 +231,82 @@ function _executeActionSummonMinion(action) {
     return false;
   }
   let target = action.targets[0];
+  if (_invalidPlayAreaIndex(target.playAreaIndex)) {
+    Log.error(`Invalid playAreaIndex: ${target.playAreaIndex}`);
+    return false;
+  }
+  let selectedCard = {
+    card: Cards.getCard(CardsModel.Model.cards, action.id, action.instance),
+    id: action.id,
+    instance: action.instance
+  };
+  let playerFieldCard = {
+    card: Cards.getCard(CardsModel.Model.cards, target.id, target.instance),
+    id: target.id,
+    instance: target.instance,
+    playAreaIndex: target.playAreaIndex
+  }
+  let updatedCards = CardActions.summonMinion(selectedCard, playerFieldCard);
   // @TODO:
   return true;
 }
 
-function _executeAbilitySpellshot(action, target) {
+function _executeAbility(action, target) {
+  let playAreaIndex = target.playAreaIndex;
+  let targets = _getAbilityTargets(target.type);
+  if (!targets) {
+    return false;
+  }
+  let card = Cards.getCard(CardsModel.Model.cards, target.id, target.instance);
+  let selectedAbility = {
+    targets,
+    ability: Cards.getAbility(card, target.abilityId),
+    abilityId: target.abilityId,
+    card,
+    id: target.id,
+    instance: target.instance
+  };
+  let playerFieldSlots = _getPlayerFieldSlots();
+  let opponentFieldSlots = _getOpponentFieldSlots();
+  let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots } = CardActions.useCardAbility(playAreaIndex, selectedAbility, playerFieldSlots, opponentFieldSlots);
   // @TODO:
   return true;
 }
 
-function _executeAbilityReach(action, target) {
-  // @TODO:
-  return true;
+function _getPlayerFieldSlots() {
+  return [
+    _getFieldSlot(CardsModel.Model.player.field.slots[0]),
+    _getFieldSlot(CardsModel.Model.player.field.slots[1]),
+    _getFieldSlot(CardsModel.Model.player.field.slots[2])
+  ];
 }
 
-function _executeAbilityEnergize(action, target) {
-  // @TODO:
-  return true;
+function _getOpponentFieldSlots() {
+  return [
+    _getFieldSlot(CardsModel.Model.opponent.field.slots[0]),
+    _getFieldSlot(CardsModel.Model.opponent.field.slots[1]),
+    _getFieldSlot(CardsModel.Model.opponent.field.slots[2])
+  ];
+}
+
+function _getFieldSlot(slot) {
+  return {
+    id: slot.id,
+    instance: slot.instance,
+    card: Cards.getCard(CardsModel.Model.cards, slot.id, slot.instance)
+  };
+}
+
+function _getAbilityTargets(targetType) {
+  switch(targetType) {
+    case ACTION_TARGET_TYPES.ABILITY_TARGET_OPPONENT_MINION:
+      return CARD_TARGETS.OPPONENT_MINION;
+    case ACTION_TARGET_TYPES.ABILITY_TARGET_PLAYER_MINION:
+      return CARD_TARGETS.PLAYER_MINION;
+    case ACTION_TARGET_TYPES.ABILITY_TARGET_PLAYER:
+      return CARD_TARGETS.PLAYER;
+    default:
+      Log.error(`Unexpected target.type: ${targetType}`);
+      return null;
+  }
 }

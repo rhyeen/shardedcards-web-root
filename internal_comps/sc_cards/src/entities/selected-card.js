@@ -9,5 +9,6 @@ export const CARD_SOURCES = {
 
 export const CARD_TARGETS = {
   PLAYER_MINION: 'playerMinion',
-  OPPONENT_MINION: 'opponentMinion'
+  OPPONENT_MINION: 'opponentMinion',
+  PLAYER: 'player'
 };

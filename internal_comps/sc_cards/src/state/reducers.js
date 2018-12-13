@@ -403,7 +403,7 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
           Log.error(`unexpected card type: ${card.type}`);
           return state;
       }
-    case ActionType.SUMMON_CARD.SUCCESS: // PLACE_ON_PLAY_AREA
+    case ActionType.SUMMON_MINION.SUCCESS: // PLACE_ON_PLAY_AREA
       cardId = state.ui.selectedCard.id;
       cardInstance = state.ui.selectedCard.instance;
       newState = state;
@@ -422,7 +422,7 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       return _setSelectedCard(state, CARD_SOURCES.SELECT_OPPONENT_MINION, action.cardId, action.cardInstance, null, action.playAreaIndex);
     case ActionType.PLAY_PLAYER_MINION:
       return _setSelectedCardSource(CARD_SOURCES.PLAY_PLAYER_MINION);
-    case ActionType.ATTACK_CARD.SUCCESS:
+    case ActionType.ATTACK_MINION.SUCCESS:
     case ActionType.SET_FIELD_FROM_OPPONENT_TURN.SUCCESS:
       newState = state;
       for (let updatedCard of action.updatedCards) {

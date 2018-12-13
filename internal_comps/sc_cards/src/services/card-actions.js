@@ -1,8 +1,9 @@
 import * as Cards from '../services/card-selection.js';
 import { CARD_ABILITIES } from '../../../sc_shared/src/entities/card-keywords.js';
 import { Log } from '../../../sc_shared/src/services/logger.js';
+import { CARD_TARGETS } from '../entities/selected-card.js';
 
-export function summonCard(selectedCard, playerFieldCard) {
+export function summonMinion(selectedCard, playerFieldCard) {
   let updatedCards = [selectedCard];
   if (playerFieldCard.card) {
     updatedCards.push(playerFieldCard);
@@ -27,7 +28,7 @@ function _hasHaste(card) {
   return !!Cards.getAbility(card, CARD_ABILITIES.HASTE);
 }
 
-export function attackCard(cards, attackingCard, attackedCard) {
+export function attackMinion(cards, attackingCard, attackedCard) {
   let results = {
     updatedCards: [],
     attackerDiscarded: false,
@@ -146,8 +147,8 @@ export function useCardAbility(playAreaIndex, selectedAbility, playerFieldSlots,
     playerFieldSlots: [...playerFieldSlots],
     opponentFieldSlots: [...opponentFieldSlots]
   };
-  if (_abilityUsedOnOpponentUnit(selectedAbility)) {
-    let { updatedCards, isFieldCardDiscarded } = _useAbilityOnOpponentUnit(selectedAbility, opponentFieldSlots[playAreaIndex]);
+  if (_abilityUsedOnOpponentMinion(selectedAbility)) {
+    let { updatedCards, isFieldCardDiscarded } = _useAbilityOnOpponentMinion(selectedAbility, opponentFieldSlots[playAreaIndex]);
     results.updatedCards = updatedCards;
     if (isFieldCardDiscarded) {
       results.opponentFieldSlots[playAreaIndex] = {
@@ -155,8 +156,8 @@ export function useCardAbility(playAreaIndex, selectedAbility, playerFieldSlots,
         instance: null
       };
     }
-  } else if (_abilityUsedOnPlayerUnit(selectedAbility)) {
-    let { updatedCards, isFieldCardDiscarded } = _useAbilityOnPlayerUnit(selectedAbility, playerFieldSlots[playAreaIndex]);
+  } else if (_abilityUsedOnPlayerMinion(selectedAbility)) {
+    let { updatedCards, isFieldCardDiscarded } = _useAbilityOnPlayerMinion(selectedAbility, playerFieldSlots[playAreaIndex]);
     results.updatedCards = updatedCards;
     if (isFieldCardDiscarded) {
       results.playerFieldSlots[playAreaIndex] = {
@@ -164,6 +165,8 @@ export function useCardAbility(playAreaIndex, selectedAbility, playerFieldSlots,
         instance: null
       };
     }
+  } else if (_abilityUsedOnPlayer(selectedAbility)) {
+    console.trace('@TODO');
   } else {
     Log.error(`unexpected ability target: ${selectedAbility.targets}`);
     return results;
@@ -172,14 +175,26 @@ export function useCardAbility(playAreaIndex, selectedAbility, playerFieldSlots,
   return results;
 }
 
-function _useAbilityOnOpponentUnit(selectedAbility, opponentFieldSlot) {
-  if (!_abilityCanCastOnOpponentUnit(selectedAbility, opponentFieldSlot)) {
-    return { updatedCards:[], isFieldCardDiscarded:false };
-  }
-  return _useAbilityOnVerifiedTargetUnit(selectedAbility, playerFieldSlot);
+function _abilityUsedOnOpponentMinion(selectedAbility) {
+  return selectedAbility.targets === CARD_TARGETS.OPPONENT_MINION;
 }
 
-function _abilityCanCastOnOpponentUnit(selectedAbility, opponentFieldSlot) {
+function _abilityUsedOnPlayerMinion(selectedAbility) {
+  return selectedAbility.targets === CARD_TARGETS.PLAYER_MINION;  
+}
+
+function _abilityUsedOnPlayer(selectedAbility) {
+  return selectedAbility.targets === CARD_TARGETS.PLAYER;  
+}
+
+function _useAbilityOnOpponentMinion(selectedAbility, opponentFieldSlot) {
+  if (!_abilityCanCastOnOpponentMinion(selectedAbility, opponentFieldSlot)) {
+    return { updatedCards:[], isFieldCardDiscarded:false };
+  }
+  return _useAbilityOnVerifiedTargetMinion(selectedAbility, playerFieldSlot);
+}
+
+function _abilityCanCastOnOpponentMinion(selectedAbility, opponentFieldSlot) {
   if (!selectedAbility.ability) {
     Log.error(`card does not have ability: ${selectedAbility.abilityId}`);
     return false;
@@ -204,14 +219,14 @@ function _abilityCanTargetOpponent(abilityId) {
   }
 }
 
-function _useAbilityOnPlayerUnit(selectedAbility, playerFieldSlot) {
-  if (!_abilityCanCastOnPlayerUnit(selectedAbility, playerFieldSlot)) {
+function _useAbilityOnPlayerMinion(selectedAbility, playerFieldSlot) {
+  if (!_abilityCanCastOnPlayerMinion(selectedAbility, playerFieldSlot)) {
     return { updatedCards:[], isFieldCardDiscarded:false };
   }
-  return _useAbilityOnVerifiedTargetUnit(selectedAbility, playerFieldSlot);
+  return _useAbilityOnVerifiedTargetMinion(selectedAbility, playerFieldSlot);
 }
 
-function _useAbilityOnVerifiedTargetUnit(selectedAbility, fieldSlot) {
+function _useAbilityOnVerifiedTargetMinion(selectedAbility, fieldSlot) {
   let results = {
     updatedCards: [],
     isFieldCardDiscarded: false
@@ -250,7 +265,7 @@ function _setRangeResults(rangeModifier, target) {
   target.version += 1;
 }
 
-function _abilityCanCastOnPlayerUnit(selectedAbility, playerFieldSlot) {
+function _abilityCanCastOnPlayerMinion(selectedAbility, playerFieldSlot) {
   if (!selectedAbility.ability) {
     Log.error(`card does not have ability: ${selectedAbility.abilityId}`);
     return false;

@@ -47,10 +47,10 @@ export const cancelPlaySelectedMinion = () => _action(CANCEL_PLAY_SELECTED_MINIO
 export const PLAY_SELECTED_CARD = _createRequestRaw('PLAY_SELECTED_CARD');
 export const playSelectedCard = () => _action(PLAY_SELECTED_CARD, {});
 
-export const SUMMON_CARD = _createRequestTypes('SUMMON_CARD');
-export const summonCard = {
-  request: (playAreaIndex) => _action(SUMMON_CARD.REQUEST, {playAreaIndex}),
-  success: (playAreaIndex, updatedCards, discardedCard) => _action(SUMMON_CARD.SUCCESS, {playAreaIndex, updatedCards, discardedCard})
+export const SUMMON_MINION = _createRequestTypes('SUMMON_MINION');
+export const summonMinion = {
+  request: (playAreaIndex) => _action(SUMMON_MINION.REQUEST, {playAreaIndex}),
+  success: (playAreaIndex, updatedCards, discardedCard) => _action(SUMMON_MINION.SUCCESS, {playAreaIndex, updatedCards, discardedCard})
 };
 
 export const SELECT_PLAYER_MINION = _createRequestRaw('SELECT_PLAYER_MINION');
@@ -62,10 +62,10 @@ export const selectOpponentMinion = (cardId, cardInstance, playAreaIndex) => _ac
 export const PLAY_PLAYER_MINION = _createRequestRaw('PLAY_PLAYER_MINION');
 export const playPlayerMinion = () => _action(PLAY_PLAYER_MINION, {});
 
-export const ATTACK_CARD = _createRequestTypes('ATTACK_CARD');
-export const attackCard = {
-  request: (playAreaIndex) => _action(ATTACK_CARD.REQUEST, {playAreaIndex}),
-  success: (updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots) => _action(ATTACK_CARD.SUCCESS, {updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots})
+export const ATTACK_MINION = _createRequestTypes('ATTACK_MINION');
+export const attackMinion = {
+  request: (playAreaIndex) => _action(ATTACK_MINION.REQUEST, {playAreaIndex}),
+  success: (updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots) => _action(ATTACK_MINION.SUCCESS, {updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots})
 };
 
 export const SET_FIELD_FROM_OPPONENT_TURN = _createRequestTypes('SET_FIELD_FROM_OPPONENT_TURN');
