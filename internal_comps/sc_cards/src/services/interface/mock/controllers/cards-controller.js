@@ -32,11 +32,27 @@ function _getOpponentFieldCards() {
   return Cards.getCards(Model.cards, cards);
 }
 
+export const refreshPlayerField = () => {
+  let fieldCards = _getPlayerFieldCards();
+  fieldCards = CardActions.refreshCards(fieldCards);
+  Cards.setCards(Model.cards, fieldCards);
+}
+
+function _getPlayerFieldCards() {
+  let cards = [
+    Model.player.field.slots[0],
+    Model.player.field.slots[1],
+    Model.player.field.slots[2]
+  ];
+  return Cards.getCards(Model.cards, cards);
+}
+
 export const initializeCards = () => {
   initializeModel();
   _setOpponentFieldBacklogs();
   shuffleDrawDeck(true);
-  refreshOpponentField();
+  // @NOTE: no idea why this would be necessary.
+  // refreshOpponentField();
 };
 
 function _setOpponentFieldBacklogs() {
