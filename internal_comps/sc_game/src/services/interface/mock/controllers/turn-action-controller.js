@@ -27,16 +27,16 @@ export const executeTurn = (turn) => {
  *    source: {
  *      id: "", // required
  *      instance: "", // required
- *      handIndex: 0, // required if ACTION_TYPES == PLACE_MINION | CAST_SPELL
+ *      handIndex: 0, // required if ACTION_TYPES == SUMMON_MINION | CAST_SPELL
  *      playAreaIndex: 0, // required if ACTION_TYPES == PLAY_MINION
  *    },
  *    targets: [ // required
  *      {
  *        type: ACTION_TARGET_TYPES.*, // required
  *        playAreaIndex: 0,
- *        abilityId: CARD_ABILITIES.*
- *        id: "", // required
- *        instance: "" // required
+ *        abilityId: CARD_ABILITIES.*,
+ *        id: "",
+ *        instance: ""
  *      }
  *    ]
  * }
@@ -55,7 +55,7 @@ export const executeAction = (action) => {
   switch(action.type) {
     case ACTION_TYPES.PLAY_MINION:
       return _executeActionPlayMinion(action);
-    case ACTION_TYPES.PLACE_MINION:
+    case ACTION_TYPES.SUMMON_MINION:
       return _executeActionSummonMinion(action);
     case ACTION_TYPES.CAST_SPELL:
       return _executeActionCastSpell(action);

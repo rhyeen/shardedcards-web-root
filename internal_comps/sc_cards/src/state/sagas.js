@@ -1,13 +1,19 @@
 import { put, takeEvery, all } from 'redux-saga/effects';
-
+import { ACTION_TYPES, ACTION_TARGET_TYPES } from '../../../sc_shared/src/entities/turn-keywords.js';
+import { CARD_TYPES } from '../../../sc_shared/src/entities/card-keywords.js';
 import store from './store.js';
 import * as CardsSelector from './selectors.js';
 import * as CardActions from '../services/card-actions.js';
 import * as StatusDispatchActions from '../../../sc_status/src/state/actions.js';
 import * as Actions from './actions.js';
+import * as GameDispatchActions from '../../../sc_game/src/state/actions.js';
+import { Log } from '../../../sc_shared/src/services/logger.js';
+import { CARD_TARGETS } from '../entities/selected-card.js';
 
 function* _summonMinion({playAreaIndex}) {
   let { discardedCard, updatedCards} = yield _prepareSummonMinion(playAreaIndex);
+  let action = yield _getSummonMinionAction(playAreaIndex);
+  yield put(GameDispatchActions.recordAction(action));
   yield put(Actions.summonMinion.success(playAreaIndex, updatedCards, discardedCard));
 }
 
@@ -23,8 +29,33 @@ function _prepareSummonMinion(playAreaIndex) {
   return { discardedCard, updatedCards};
 }
 
+function _getSummonMinionAction(playAreaIndex) {
+  const state = store.getState();
+  let selectedCard = CardsSelector.getSelectedCard(state);
+  let playerFieldCard = CardsSelector.getPlayerFieldSlots(state)[playAreaIndex];
+  return {
+    type: ACTION_TYPES.SUMMON_MINION,
+    source: {
+      id: selectedCard.id,
+      instance: selectedCard.instance,
+      handIndex: selectedCard.handIndex,
+      playAreaIndex: selectedCard.playAreaIndex
+    },
+    targets: [
+      {
+        type: ACTION_TARGET_TYPES.SUMMON_MINION,
+        playAreaIndex,
+        id: playerFieldCard.id,
+        instance: playerFieldCard.instance
+      }
+    ]
+  };
+}
+
 function* _attackMinion({playAreaIndex}) {
   let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots } = _prepareAttackMinion(playAreaIndex);
+  let action = yield _getAttackMinionAction(playAreaIndex);
+  yield put(GameDispatchActions.recordAction(action));
   yield put(Actions.attackMinion.success(updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots));
 }
 
@@ -55,6 +86,29 @@ function _prepareAttackMinion(playAreaIndex) {
     };
   }
   return { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots };
+}
+
+function _getAttackMinionAction(playAreaIndex) {
+  const state = store.getState();
+  let selectedCard = CardsSelector.getSelectedCard(state);
+  let opponentFieldCard = CardsSelector.getOpponentFieldSlots(state)[playAreaIndex];
+  return {
+    type: ACTION_TYPES.PLAY_MINION,
+    source: {
+      id: selectedCard.id,
+      instance: selectedCard.instance,
+      handIndex: selectedCard.handIndex,
+      playAreaIndex: selectedCard.playAreaIndex
+    },
+    targets: [
+      {
+        type: ACTION_TARGET_TYPES.ATTACK,
+        playAreaIndex,
+        id: opponentFieldCard.id,
+        instance: opponentFieldCard.instance
+      }
+    ]
+  };
 }
 
 function* _setFieldFromOpponentTurn() {
@@ -88,6 +142,8 @@ function _prepareRefreshPlayerCards() {
 function* _useCardAbility({playAreaIndex}) {
   let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots, statusUpdates } = yield _prepareUseCardAbility(playAreaIndex);
   yield _handleStatusUpdates(statusUpdates);
+  let action = yield _getUseCardAbilityAction(playAreaIndex);
+  yield put(GameDispatchActions.recordAction(action));
   yield put(Actions.useCardAbility.success(updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots));
 }
 
@@ -105,6 +161,56 @@ function _handleStatusUpdates(statusUpdates) {
     return;
   }
   put(StatusDispatchActions.updateStatus(statusUpdates));
+}
+
+function _getUseCardAbilityAction(playAreaIndex) {
+  const state = store.getState();
+  let selectedAbility = CardsSelector.getSelectedAbility(state);
+  let opponentFieldCard = CardsSelector.getOpponentFieldSlots(state)[playAreaIndex];
+  return {
+    type: _getActionTypeOfCard(selectedAbility.card),
+    source: {
+      id: selectedAbility.id,
+      instance: selectedAbility.instance,
+      handIndex: selectedAbility.handIndex,
+      playAreaIndex: selectedAbility.playAreaIndex
+    },
+    targets: [
+      {
+        type: _getTargetTypeOfAbility(selectedAbility),
+        playAreaIndex,
+        id: opponentFieldCard.id,
+        instance: opponentFieldCard.instance,
+        abilityId: selectedAbility.abilityId
+      }
+    ]
+  };
+}
+
+function _getActionTypeOfCard(card) {
+  switch(card.type) {
+    case CARD_TYPES.MINION:
+      return ACTION_TYPES.PLAY_MINION;
+    case CARD_TYPES.SPELL:
+      return ACTION_TYPES.CAST_SPELL;
+    default:
+      Log.error(`Unexpected card type: ${card.type}`);
+      return null;
+  }
+}
+
+function _getTargetTypeOfAbility(selectedAbility) {
+  switch(selectedAbility.targets) {
+    case CARD_TARGETS.OPPONENT_MINION:
+      return ACTION_TARGET_TYPES.ABILITY_TARGET_OPPONENT_MINION;
+    case CARD_TARGETS.PLAYER_MINION:
+      return ACTION_TARGET_TYPES.ABILITY_TARGET_PLAYER_MINION;
+    case CARD_TARGETS.PLAYER:
+      return ACTION_TARGET_TYPES.ABILITY_TARGET_PLAYER;
+    default:
+      Log.error(`Unexpected ability target: ${selectedAbility.targets}`);
+      return null;
+  }
 }
 
 export default function* root() {

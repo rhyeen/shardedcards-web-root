@@ -1,4 +1,6 @@
 import { put, takeEvery, all } from 'redux-saga/effects';
+import * as GameInterface from '../services/interface/game.js';
+import * as GameSelector from './selectors.js';
 
 import * as Actions from './actions.js';
 
@@ -23,7 +25,15 @@ function* _loseGame() {
 }
 
 function* _endTurn() {
+  yield _callEndTurn();
+  yield put(Actions.endTurn.success());
   yield put(Actions.startCrafting.request());
+}
+
+function _callEndTurn() {
+  const state = store.getState();
+  let turn = GameSelector.getPendingTurn(state);
+  GameInterface.endTurn(turn);
 }
 
 export default function* root() {

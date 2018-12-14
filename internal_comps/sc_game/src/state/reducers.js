@@ -10,6 +10,10 @@ const INITIAL_STATE = {
     game: {
       state: GAME_STATES.PLAYING
     }
+  },
+  entities: {
+    pendingTurn: [],
+    turnHistory: []
   }
 };
 
@@ -39,6 +43,27 @@ function _updateGameState(state, gameState) {
   };
 }
 
+function _updatePendingTurn(state, action) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      pendingTurn: [...state.entities.pendingTurn, action]
+    }
+  };
+}
+
+function _finishTurn(state) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      turnHistory: [...turnHistory, state.entities.pendingTurn],
+      pendingTurn: []
+    }
+  };
+}
+
 export const sc_game = (state = INITIAL_STATE, action) => {
   let newState;  
   switch (action.type) {
@@ -57,6 +82,10 @@ export const sc_game = (state = INITIAL_STATE, action) => {
       return _updateGameState(state, GAME_STATES.WIN);
     case ActionType.LOSE_GAME.SUCCESS:
       return _updateGameState(state, GAME_STATES.LOSE);
+    case ActionType.RECORD_ACTION:
+      return _updatePendingTurn(state, action.action);
+    case ActionType.END_TURN.SUCCESS:
+      return _finishTurn(state);
     default:
       return state;
   }

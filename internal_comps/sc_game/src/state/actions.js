@@ -23,6 +23,10 @@ function _action(type, payload = {}) {
   return {type, ...payload};
 }
 
+
+export const RECORD_ACTION =  _createRequestRaw('RECORD_ACTION');
+export const recordAction = (action) => _action(RECORD_ACTION, {action});
+
 export const SHOW_IN_GAME_MENU =  _createRequestRaw('SHOW_IN_GAME_MENU');
 export const showInGameMenu = () => _action(SHOW_IN_GAME_MENU, {});
 

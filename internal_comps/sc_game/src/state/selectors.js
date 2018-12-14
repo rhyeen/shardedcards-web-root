@@ -5,6 +5,14 @@ import { GAME_STATES } from '../entities/game-states.js';
 
 const _gameMenuSelector = state => state.sc_game.ui.menu;
 const _gameStateSelector = state => state.sc_game.ui.game;
+const _pendingTurnSelector = state => state.sc_game.entities.pendingTurn;
+
+export const getPendingTurn = createSelector(
+  _pendingTurnSelector,
+  (pendingTurn) => {
+    return pendingTurn;
+  }
+);
 
 export const isGameMenuOpen = createSelector(
   _gameMenuSelector,

@@ -17,12 +17,12 @@ export const beginGame = () => {
   }
 };
 
-export const endCrafting = () => {
+export const endCrafting = (turn) => {
   switch(interfaceState()) {
     case INTERFACE.HTTP:
-      return CallHttp.endCrafting();
+      return CallHttp.endCrafting(turn);
     case INTERFACE.MOCK:
-      return CallMock.endCrafting();
+      return CallMock.endCrafting(turn);
     default:
       return invalidInterfaceState();
   }
@@ -31,9 +31,9 @@ export const endCrafting = () => {
 export const endTurn = () => {
   switch(interfaceState()) {
     case INTERFACE.HTTP:
-      return CallHttp.endTurn();
+      return CallHttp.endTurn(turn);
     case INTERFACE.MOCK:
-      return CallMock.endTurn();
+      return CallMock.endTurn(turn);
     default:
       return invalidInterfaceState();
   }
