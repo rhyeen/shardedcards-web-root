@@ -14,7 +14,7 @@ const OPPONENT_BACKLOG_PARTITIONS = {
   RARE: 5,
   EPIC: 5,
   LEGENDARY: 1,
-  CHANCE_OF_NEXT_LEVEL_CARD = 0.3
+  CHANCE_OF_NEXT_LEVEL_CARD: 0.3
 };
 
 export const refreshOpponentField = () => {

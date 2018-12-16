@@ -300,9 +300,9 @@ function _executeAbility(action, target) {
     id: target.id,
     instance: target.instance
   };
-  let playerFieldSlots = _getPlayerFieldSlots();
-  let opponentFieldSlots = _getOpponentFieldSlots();
-  let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots, statusUpdates } = CardActions.useCardAbility(CardsModel.Model.cards, playAreaIndex, selectedAbility, playerFieldSlots, opponentFieldSlots);
+  let _playerFieldSlots = _getPlayerFieldSlots();
+  let _opponentFieldSlots = _getOpponentFieldSlots();
+  let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots, statusUpdates } = CardActions.useCardAbility(CardsModel.Model.cards, playAreaIndex, selectedAbility, _playerFieldSlots, _opponentFieldSlots);
   _updateCards(updatedCards);
   _addCardsToDiscardPile(addedToDiscardPile);
   _setFieldSlots(CardsModel.Model.player.field.slots, playerFieldSlots);
