@@ -44,8 +44,8 @@ export const getOpponentField = () => {
       Mock.debugSuccessfulResponse(getOpponentField, response);
       resolve(Mock.prepareResponse(response));
     }, CALLBACK_TIME.GET);
-  })
-}
+  });
+};
 
 export const getCards = () => {
   return new Promise((resolve) => {
@@ -55,5 +55,18 @@ export const getCards = () => {
       Mock.debugSuccessfulResponse(getCards, response);
       resolve(Mock.prepareResponse(response));
     }, CALLBACK_TIME.GET);
-  })
-}
+  });
+};
+
+export const getCardsUpdatedFromOpponentTurn = () => {
+  return new Promise((resolve) => {
+    Mock.debugRequest(getCardsUpdatedFromOpponentTurn);
+    setTimeout(() => {
+      let response = {
+        cards: Model.cardsUpdatedFromOpponentTurn
+      };
+      Mock.debugSuccessfulResponse(getCardsUpdatedFromOpponentTurn, response);
+      resolve(Mock.prepareResponse(response));
+    }, CALLBACK_TIME.GET);
+  });
+};

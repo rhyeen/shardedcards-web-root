@@ -6,12 +6,12 @@ import {
 import * as CallHttp from './http/cards.js';
 import * as CallMock from './mock/cards.js';
 
-export const getHand = () => {
+export const getPlayerDecks = () => {
   switch(interfaceState()) {
     case INTERFACE.HTTP:
-      return CallHttp.getHand();
+      return CallHttp.getPlayerDecks();
     case INTERFACE.MOCK:
-      return CallMock.getHand();
+      return CallMock.getPlayerDecks();
     default:
       return invalidInterfaceState();
   }
@@ -34,6 +34,17 @@ export const getOpponentField = () => {
       return CallHttp.getOpponentField();
     case INTERFACE.MOCK:
       return CallMock.getOpponentField();
+    default:
+      return invalidInterfaceState();
+  }
+};
+
+export const getCardsUpdatedFromOpponentTurn = () => {
+  switch(interfaceState()) {
+    case INTERFACE.HTTP:
+      return CallHttp.getCardsUpdatedFromOpponentTurn();
+    case INTERFACE.MOCK:
+      return CallMock.getCardsUpdatedFromOpponentTurn();
     default:
       return invalidInterfaceState();
   }

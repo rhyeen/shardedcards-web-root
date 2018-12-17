@@ -1,7 +1,7 @@
 import { Http } from '../../../../../sc_shared/src/services/http.js';
 
-export const getHand = () => {
-  return Http.get('cardgroups/hand');
+export const getPlayerDecks = () => {
+  return Http.get('cardgroups/playerdecks');
 }
 
 export const getCards = () => {
@@ -10,4 +10,8 @@ export const getCards = () => {
 
 export const getOpponentField = () => {
   return Http.get('cardgroups/opponentfield');
+}
+
+export const getCardsUpdatedFromOpponentTurn = () => {
+  return Http.get('cards/updated');
 }

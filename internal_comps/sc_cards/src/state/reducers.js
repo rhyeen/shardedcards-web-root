@@ -88,30 +88,16 @@ function _resetState() {
   };
 }
 
-function _setPlayerCards(state, cards) {
+function _setCards(state, cards) {
   return {
     ...state,
     entities: {
       ...state.entities,
       cards: {
-        ...state.entities.cards,
         ...cards
       }
     }
-  }
-}
-
-function _setOpponentCards(state, cards) {
-  return {
-    ...state,
-    entities: {
-      ...state.entities,
-      cards: {
-        ...state.entities.cards,
-        ...cards
-      }
-    }
-  }
+  };
 }
 
 function _setPlayerDeckSize(state, deckSize) {
@@ -128,6 +114,18 @@ function _setPlayerDeckSize(state, deckSize) {
       }
     }
   };
+}
+
+function _setHandCards(state, handCards) {
+  let newState = _shallowCopyHandCards(state);
+  newState.entities.player.hand.cards = handCards;
+  return newState;
+}
+
+function _setHandRefillSize(state, handRefillSize) {
+  let newState = _shallowCopyHandCards(state);
+  newState.entities.player.hand.refillSize = handRefillSize;
+  return newState;
 }
 
 function _removeHandCard(state, handIndex) {
@@ -441,20 +439,22 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
         newState = _discardCard(newState, discardedCard.id, discardedCard.instance);
       }
       return _setPlayerDeckSize(newState, action.deckSize);
-    case ActionType.SET_PLAYER_DECKS:
+    case ActionType.SET_PLAYER_DECKS.SUCCESS:
       newState = state;
       newState = _setHandCards(newState, action.handCards);
+      newState = _setHandRefillSize(newState, action.handRefillSize);
       newState = _setDiscardedPileCards(newState, action.discardPileCards);
       newState = _setLostPileCards(newState, aciton.lostPileCards);
       return _setPlayerDeckSize(newState, action.deckSize);
     case ActionType.REFRESH_PLAYER_CARDS.SUCCESS:
+    case ActionType.SET_UPDATED_CARDS.SUCCESS:
       newState = state;
       for (let updatedCard of action.updatedCards) {
         newState = _setCard(newState, updatedCard.card, updatedCard.id, updatedCard.instance);
       }
       return newState;
-    case ActionType.SET_PLAYER_CARDS:
-      return _setPlayerCards(state, action.cards);
+    case ActionType.SET_CARDS.SUCCESS:
+      return _setCards(state, action.cards);
     case ActionType.SET_OPPONENT_CARDS:
       return _setOpponentCards(state, action.cards);
     case ActionType.SET_OPPONENT_FIELD_SLOTS:

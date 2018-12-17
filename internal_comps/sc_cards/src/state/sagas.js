@@ -9,6 +9,22 @@ import * as Actions from './actions.js';
 import * as GameDispatchActions from '../../../sc_game/src/state/actions.js';
 import { Log } from '../../../sc_shared/src/services/logger.js';
 import { CARD_TARGETS } from '../entities/selected-card.js';
+import * as CardsInterface from '../services/interface/cards.js';
+
+function* _setUpdatedCards() {
+  let { cards } = CardsInterface.getCardsUpdatedFromOpponentTurn();
+  Actions.setUpdatedCards.success(cards);
+}
+
+function* _setCards() {
+  let { cards } = CardsInterface.getCards();
+  Actions.setCards.success(cards);
+}
+
+function* _setPlayerDecks() {
+  let { hand, deck, discardPile, lostCards } = CardsInterface.getPlayerDecks();
+  Actions.setPlayerDecks.success(hand.cards, hand.refillSize, discardPile.cards, lostCards.cards, deck.size);
+}
 
 function* _summonMinion({playAreaIndex}) {
   let { discardedCard, updatedCards} = yield _prepareSummonMinion(playAreaIndex);
@@ -112,7 +128,8 @@ function _getAttackMinionAction(playAreaIndex) {
 }
 
 function* _setFieldFromOpponentTurn() {
-  yield console.trace(`@TODO: Go get opponent's turn`);
+  let { slots, backlog } = CardsInterface.getOpponentField();
+  console.trace('@TODO');
   yield put(Actions.setFieldFromOpponentTurn.success(updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots));
 }
 
@@ -220,6 +237,9 @@ export default function* root() {
     takeEvery(Actions.SET_FIELD_FROM_OPPONENT_TURN.REQUEST, _setFieldFromOpponentTurn),
     takeEvery(Actions.CLEAR_HAND.REQUEST, _clearHand),
     takeEvery(Actions.REFRESH_PLAYER_CARDS.REQUEST, _refreshPlayerCards),
-    takeEvery(Actions.USE_CARD_ABILITY.REQUEST, _useCardAbility)
+    takeEvery(Actions.USE_CARD_ABILITY.REQUEST, _useCardAbility),
+    takeEvery(Actions.SET_PLAYER_DECKS.REQUEST, _setPlayerDecks),
+    takeEvery(Actions.SET_CARDS.REQUEST, _setCards),
+    takeEvery(Actions.SET_UPDATED_CARDS.REQUEST, _setUpadedCards),
   ]);
 }

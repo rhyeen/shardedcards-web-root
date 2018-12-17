@@ -45,6 +45,12 @@ export const endTurn = {
   success: () => _action(END_TURN.SUCCESS, {})
 };
 
+export const BEGIN_TURN = _createRequestTypes('BEGIN_TURN');
+export const beginTurn = {
+  request: () => _action(BEGIN_TURN.REQUEST, {}),
+  success: () => _action(BEGIN_TURN.SUCCESS, {})
+};
+
 export const START_CRAFTING = _createRequestTypes('START_CRAFTING');
 export const startCrafting = {
   request: () => _action(START_CRAFTING.REQUEST, {}),

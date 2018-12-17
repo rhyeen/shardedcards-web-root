@@ -20,8 +20,30 @@ const OPPONENT_BACKLOG_PARTITIONS = {
 export const refreshOpponentField = () => {
   let fieldCards = _getOpponentFieldCards();
   fieldCards = CardActions.refreshCards(fieldCards);
+  _addToCardsUpdatedOnOpponentTurn(fieldCards);
   Cards.setCards(Model.cards, fieldCards);
 };
+
+function _addToCardsUpdatedOnOpponentTurn(cards) {
+  for (let card of cards) {
+    index = _getCardUpdatedFromOpponentTurnIndex(card.id, card.instance);
+    if (index > -1) {
+      Model.cardsUpdatedFromOpponentTurn[index] = card;
+    } else {
+      Model.cardsUpdatedFromOpponentTurn.push(card);
+    }
+  }
+}
+
+function _getCardUpdatedFromOpponentTurnIndex(cardId, cardInstance) {
+  for (let i = 0; i < Model.cardsUpdatedFromOpponentTurn.length; i++) {
+    let card = Model.cardsUpdatedFromOpponentTurn[i];
+    if (cardId === card.id && cardInstance === card.instance) {
+      return i;
+    }
+  }
+  return -1;
+}
 
 function _getOpponentFieldCards() {
   let cards = [
@@ -35,6 +57,7 @@ function _getOpponentFieldCards() {
 export const refreshPlayerField = () => {
   let fieldCards = _getPlayerFieldCards();
   fieldCards = CardActions.refreshCards(fieldCards);
+  _addToCardsUpdatedOnOpponentTurn(fieldCards);
   Cards.setCards(Model.cards, fieldCards);
 }
 

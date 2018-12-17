@@ -23,20 +23,24 @@ function _action(type, payload = {}) {
   return {type, ...payload};
 }
 
-export const SET_PLAYER_STATUS =  _createRequestRaw('SET_PLAYER_STATUS');
-export const setPlayerStatus = (maxHealth, currentHealth, maxEnergy, currentEnergy) => {
-  return _action(SET_PLAYER_STATUS, {
-    status: {
-      health: {
-        current: currentHealth,
-        max: maxHealth
-      },
-      energy: {
-        current: currentEnergy,
-        max: maxEnergy
+
+export const SET_PLAYER_STATUS = _createRequestTypes('SET_PLAYER_STATUS');
+export const setPlayerStatus = {
+  request: () => _action(SET_PLAYER_STATUS.REQUEST, {}),
+  success: (maxHealth, currentHealth, maxEnergy, currentEnergy) => {
+    return _action(SET_PLAYER_STATUS, {
+      status: {
+        health: {
+          current: currentHealth,
+          max: maxHealth
+        },
+        energy: {
+          current: currentEnergy,
+          max: maxEnergy
+        }
       }
-    }
-  });
+    })
+  }
 };
 
 export const SET_PLAYER_HEALTH =  _createRequestRaw('SET_PLAYER_HEALTH');

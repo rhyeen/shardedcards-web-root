@@ -103,7 +103,7 @@ function _setPlayerMaxEnergy(state, energy) {
 export const sc_status = (state = INITIAL_STATE, action) => {
   let newState, newEnergies;
   switch (action.type) {
-    case ActionType.SET_PLAYER_STATUS:
+    case ActionType.SET_PLAYER_STATUS.SUCCESS:
       newState = _setPlayerCurrentHealth(state, action.status.health.current);
       newState = _setPlayerMaxHealth(newState, action.status.health.max);
       newState = _setPlayerCurrentEnergy(newState, action.status.energy.current);

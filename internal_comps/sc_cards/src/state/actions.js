@@ -80,8 +80,11 @@ export const clearHand = {
   success: (addedToDiscardPile) => _action(CLEAR_HAND.SUCCESS, {addedToDiscardPile})
 };
 
-export const SET_PLAYER_DECKS = _createRequestRaw('SET_PLAYER_DECKS');
-export const setPlayerDecks = (handCards, discardPileCards, lostPileCards, deckSize) => _action(SET_PLAYER_DECKS, {handCards, discardPileCards, lostPileCards, deckSize});
+export const SET_PLAYER_DECKS = _createRequestTypes('SET_PLAYER_DECKS');
+export const setPlayerDecks = {
+  request: () => _action(SET_PLAYER_DECKS.REQUEST, {}),
+  success: (handCards, handRefillSize, discardPileCards, lostPileCards, deckSize) => _action(SET_PLAYER_DECKS, {handCards, handRefillSize, discardPileCards, lostPileCards, deckSize})
+};
 
 export const REFRESH_PLAYER_CARDS = _createRequestTypes('REFRESH_PLAYER_CARDS');
 export const refreshPlayerCards = {
@@ -89,11 +92,17 @@ export const refreshPlayerCards = {
   success: (updatedCards) => _action(REFRESH_PLAYER_CARDS.SUCCESS, {updatedCards})
 };
 
-export const SET_PLAYER_CARDS = _createRequestRaw('SET_PLAYER_CARDS');
-export const setPlayerCards = (cards) => _action(SET_PLAYER_CARDS, {cards});
+export const SET_UPDATED_CARDS = _createRequestTypes('SET_UPDATED_CARDS');
+export const setUpdatedCards = {
+  request: () => _action(SET_UPDATED_CARDS.REQUEST, {}),
+  success: (updatedCards) => _action(SET_UPDATED_CARDS.SUCCESS, {updatedCards})
+};
 
-export const SET_OPPONENT_CARDS = _createRequestRaw('SET_OPPONENT_CARDS');
-export const setOpponentCards = (cards) => _action(SET_OPPONENT_CARDS, {cards});
+export const SET_CARDS = _createRequestTypes('SET_CARDS');
+export const setCards = {
+  request: () => _action(SET_CARDS.REQUEST, {}),
+  success: (cards) => _action(SET_CARDS.SUCCESS, {cards})
+};
 
 export const SET_OPPONENT_FIELD_SLOTS = _createRequestRaw('SET_OPPONENT_FIELD_SLOTS');
 export const setOpponentFieldSlots = (opponentFieldSlots) => _action(SET_OPPONENT_FIELD_SLOTS, {opponentFieldSlots});
