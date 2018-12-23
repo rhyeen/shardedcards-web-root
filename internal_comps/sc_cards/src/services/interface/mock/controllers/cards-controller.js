@@ -84,20 +84,20 @@ function _setOpponentFieldBacklogs() {
   _setOpponentFieldBacklog(2);
 }
 
-function _setOpponentFieldBacklog(playFieldIndex) {
+function _setOpponentFieldBacklog(playAreaIndex) {
   let backlog = [];
-  backlog.push(..._getOpponentCardsByRarity(CARD_RARITIES.COMMON, OPPONENT_BACKLOG_PARTITIONS.COMMON, playFieldIndex));
-  backlog.push(..._getOpponentCardsByRarity(CARD_RARITIES.RARE, OPPONENT_BACKLOG_PARTITIONS.RARE, playFieldIndex));
-  backlog.push(..._getOpponentCardsByRarity(CARD_RARITIES.EPIC, OPPONENT_BACKLOG_PARTITIONS.EPIC, playFieldIndex));
-  backlog.push(..._getOpponentCardsByRarity(CARD_RARITIES.LEGENDARY, OPPONENT_BACKLOG_PARTITIONS.LEGENDARY, playFieldIndex));
-  Model.opponent.field.backlog[playFieldIndex] = backlog;
-  _addOpponentFieldInstancesToOpponentCards(playFieldIndex);
+  backlog.push(..._getOpponentCardsByRarity(CARD_RARITIES.COMMON, OPPONENT_BACKLOG_PARTITIONS.COMMON, playAreaIndex));
+  backlog.push(..._getOpponentCardsByRarity(CARD_RARITIES.RARE, OPPONENT_BACKLOG_PARTITIONS.RARE, playAreaIndex));
+  backlog.push(..._getOpponentCardsByRarity(CARD_RARITIES.EPIC, OPPONENT_BACKLOG_PARTITIONS.EPIC, playAreaIndex));
+  backlog.push(..._getOpponentCardsByRarity(CARD_RARITIES.LEGENDARY, OPPONENT_BACKLOG_PARTITIONS.LEGENDARY, playAreaIndex));
+  Model.opponent.field.backlog[playAreaIndex] = backlog;
+  _addOpponentFieldInstancesToOpponentCards(playAreaIndex);
 }
 
 /**
- * playFieldIndex is used to ensure all fields (0, 1, 2) have different instance numbers for the same cards.
+ * playAreaIndex is used to ensure all fields (0, 1, 2) have different instance numbers for the same cards.
  */
-function _getOpponentCardsByRarity(rarity, size, playFieldIndex) {
+function _getOpponentCardsByRarity(rarity, size, playAreaIndex) {
   let cardsByLevel = _getOpponentCardsByLevel(rarity);
   let cardsPerLevel = Math.floor(size / cardsByLevel.levels.length);
   let cardsInLastLevel = size - (cardsPerLevel * (cardsByLevel.levels.length - 1));
@@ -117,7 +117,7 @@ function _getOpponentCardsByRarity(rarity, size, playFieldIndex) {
       }
     }
   }
-  return _getOffsetInstances(cards, size * playFieldIndex)
+  return _getOffsetInstances(cards, size * playAreaIndex)
 }
 
 function _lastLevelInRarity(level, cardsByLevel) {
@@ -171,8 +171,8 @@ function _getOpponentCardsByLevel(rarity) {
   return cardsByLevel;
 }
 
-function _addOpponentFieldInstancesToOpponentCards(playFieldIndex) {
-  for (let fieldCard of Model.opponent.field.backlog[playFieldIndex]) {
+function _addOpponentFieldInstancesToOpponentCards(playAreaIndex) {
+  for (let fieldCard of Model.opponent.field.backlog[playAreaIndex]) {
     Cards.setNewCardInstance(Model.cards[fieldCard.id], fieldCard.instance);
   }
 }

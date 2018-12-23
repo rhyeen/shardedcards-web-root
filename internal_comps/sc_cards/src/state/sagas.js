@@ -118,7 +118,7 @@ function _getAttackMinionAction(playAreaIndex) {
     },
     targets: [
       {
-        type: ACTION_TARGET_TYPES.ATTACK,
+        type: ACTION_TARGET_TYPES.ATTACK_MINION,
         playAreaIndex,
         id: opponentFieldCard.id,
         instance: opponentFieldCard.instance

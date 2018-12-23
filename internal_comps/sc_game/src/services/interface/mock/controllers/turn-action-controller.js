@@ -101,7 +101,7 @@ function _executePlayMinionTargetedAction(action, target) {
     return false;
   }
   switch(target.type) {
-    case ACTION_TARGET_TYPES.ATTACK:
+    case ACTION_TARGET_TYPES.ATTACK_MINION:
       return _executeActionAttack(action, target);
     case ACTION_TARGET_TYPES.ABILITY_TARGET_OPPONENT_MINION:
       return _executeAbilityTargetOpponentMinion(action, target);

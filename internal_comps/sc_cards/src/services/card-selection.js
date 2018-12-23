@@ -72,6 +72,21 @@ function _deepCopy(obj) {
   return JSON.parse(JSON.stringify(obj))
 }
 
+export function hasHaste(card) {
+  return !!getAbility(card, CARD_ABILITIES.HASTE);
+}
+
+export function isExhausted(card) {
+  if (!card.conditions) {
+    return false;
+  }
+  return card.conditions.exhausted;
+}
+
+export function isDead(card) {
+  return card.health <= 0;
+}
+
 // export function getCardFromHand(player, cards, handCardIndex) {
 //   let { cardId, cardInstance } = _getCardIdentifiersFromHand(player.hand, handCardIndex);
 //   let card = getCard(cards, cardId, cardInstance);

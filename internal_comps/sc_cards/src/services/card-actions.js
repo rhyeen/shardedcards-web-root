@@ -17,15 +17,11 @@ export function summonMinion(selectedCard, playerFieldCard) {
       selectedCard.card.conditions.shield = shield;
     }
   }
-  if (!_hasHaste(selectedCard.card)) {
+  if (!Cards.hasHaste(selectedCard.card)) {
     selectedCard.card.conditions.exhausted = true;
   }
   selectedCard.card.version += 1;
   return updatedCards;
-}
-
-function _hasHaste(card) {
-  return !!Cards.getAbility(card, CARD_ABILITIES.HASTE);
 }
 
 export function attackMinion(cards, attackingCard, attackedCard) {
