@@ -445,7 +445,7 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       newState = _setLostPileCards(newState, aciton.lostPileCards);
       return _setPlayerDeckSize(newState, action.deckSize);
     case ActionType.REFRESH_PLAYER_CARDS.SUCCESS:
-    case ActionType.SET_UPDATED_CARDS.SUCCESS:
+    case ActionType.SET_UPDATED_CARDS:
       newState = state;
       for (let updatedCard of action.updatedCards) {
         newState = _setCard(newState, updatedCard.card, updatedCard.id, updatedCard.instance);

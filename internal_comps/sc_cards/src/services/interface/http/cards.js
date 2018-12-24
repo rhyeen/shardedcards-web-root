@@ -11,7 +11,3 @@ export const getCards = () => {
 export const getPlayingField = () => {
   return Http.get('cardgroups/playingfield');
 }
-
-export const getCardsUpdatedFromOpponentTurn = () => {
-  return Http.get('cards/updated');
-}

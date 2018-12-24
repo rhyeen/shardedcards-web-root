@@ -5,7 +5,7 @@ import { connect } from 'pwa-helpers/connect-mixin.js';
 import store from '../../state/store.js';
 import { Log } from '../../../../sc_shared/src/services/logger.js';
 
-import { finishCrafting, endTurn } from '../../state/actions.js';
+import { endCrafting, endTurn } from '../../state/actions.js';
 import * as GameSelector from '../../state/selectors';
 import { BTN_TYPES } from '../../../../sc_shared/src/entities/sc-btn-types.js';
 import { LOCALE_EN } from '../../../../sc_locale/src/entities/en.js';
@@ -77,7 +77,7 @@ export class ScGameFooter extends connect(store)(LitElement) {
       <div class="item-group right-items">
         <sc-btn
             .btntype="${BTN_TYPES.GENERIC.SECONDARY}"
-            @click="${() => this._finishCrafting()}">
+            @click="${() => this._endCrafting()}">
           ${LOCALE_EN.SC_BTN.OTHER.FINISH_CRAFTING}</sc-btn>
       </div>
     `
@@ -87,8 +87,8 @@ export class ScGameFooter extends connect(store)(LitElement) {
     store.dispatch(endTurn.request())
   }
 
-  _finishCrafting() {
-    store.dispatch(finishCrafting.request())
+  _endCrafting() {
+    store.dispatch(endCrafting.request())
   }
 
   stateChanged(state) {

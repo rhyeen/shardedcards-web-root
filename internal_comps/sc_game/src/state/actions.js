@@ -51,16 +51,16 @@ export const beginTurn = {
   success: () => _action(BEGIN_TURN.SUCCESS, {})
 };
 
-export const START_CRAFTING = _createRequestTypes('START_CRAFTING');
-export const startCrafting = {
-  request: () => _action(START_CRAFTING.REQUEST, {}),
-  success: () => _action(START_CRAFTING.SUCCESS, {})
+export const BEGIN_CRAFTING = _createRequestTypes('BEGIN_CRAFTING');
+export const beginCrafting = {
+  request: () => _action(BEGIN_CRAFTING.REQUEST, {}),
+  success: () => _action(BEGIN_CRAFTING.SUCCESS, {})
 };
 
-export const FINISH_CRAFTING = _createRequestTypes('FINISH_CRAFTING');
-export const finishCrafting = {
-  request: () => _action(FINISH_CRAFTING.REQUEST, {}),
-  success: () => _action(FINISH_CRAFTING.SUCCESS, {})
+export const END_CRAFTING = _createRequestTypes('END_CRAFTING');
+export const endCrafting = {
+  request: () => _action(END_CRAFTING.REQUEST, {}),
+  success: () => _action(END_CRAFTING.SUCCESS, {})
 };
 
 export const WIN_GAME = _createRequestTypes('WIN_GAME');

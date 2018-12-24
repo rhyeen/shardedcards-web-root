@@ -7,7 +7,6 @@ export const Model = _getInitialModel();
 function _getInitialModel() {
   return {
     cards: {},
-    cardsUpdatedFromOpponentTurn: [],
     player: {
       hand: {
         cards: [],

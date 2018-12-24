@@ -62,16 +62,3 @@ export const getCards = () => {
     }, CALLBACK_TIME.GET);
   });
 };
-
-export const getCardsUpdatedFromOpponentTurn = () => {
-  return new Promise((resolve) => {
-    Mock.debugRequest(getCardsUpdatedFromOpponentTurn);
-    setTimeout(() => {
-      let response = {
-        cards: Model.cardsUpdatedFromOpponentTurn
-      };
-      Mock.debugSuccessfulResponse(getCardsUpdatedFromOpponentTurn, response);
-      resolve(Mock.prepareResponse(response));
-    }, CALLBACK_TIME.GET);
-  });
-};

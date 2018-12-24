@@ -38,14 +38,3 @@ export const getPlayingField = () => {
       return invalidInterfaceState();
   }
 };
-
-export const getCardsUpdatedFromOpponentTurn = () => {
-  switch(interfaceState()) {
-    case INTERFACE.HTTP:
-      return CallHttp.getCardsUpdatedFromOpponentTurn();
-    case INTERFACE.MOCK:
-      return CallMock.getCardsUpdatedFromOpponentTurn();
-    default:
-      return invalidInterfaceState();
-  }
-};

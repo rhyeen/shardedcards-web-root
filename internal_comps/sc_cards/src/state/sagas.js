@@ -11,21 +11,12 @@ import { Log } from '../../../sc_shared/src/services/logger.js';
 import { CARD_TARGETS } from '../entities/selected-card.js';
 import * as CardsInterface from '../services/interface/cards.js';
 
-function* _setUpdatedCards() {
-  try {
-    let { cards } = yield call(CardsInterface.getCardsUpdatedFromOpponentTurn);
-    yield put(Actions.setUpdatedCards.success(cards));
-  } catch (e) {
-    yield Log.error(`@TODO: unable to getCardsUpdatedFromOpponentTurn(): ${e}`);
-  }
-}
-
 function* _setCards() {
   try {
     let { cards } = yield call(CardsInterface.getCards);
     yield put(Actions.setCards.success(cards));
   } catch (e) {
-    yield Log.error(`@TODO: unable to getCardsUpdatedFromOpponentTurn(): ${e}`);
+    yield Log.error(`@TODO: unable to getCards(): ${e}`);
   }
 }
 
@@ -255,6 +246,5 @@ export default function* root() {
     takeEvery(Actions.USE_CARD_ABILITY.REQUEST, _useCardAbility),
     takeEvery(Actions.SET_PLAYER_DECKS.REQUEST, _setPlayerDecks),
     takeEvery(Actions.SET_CARDS.REQUEST, _setCards),
-    takeEvery(Actions.SET_UPDATED_CARDS.REQUEST, _setUpdatedCards),
   ]);
 }

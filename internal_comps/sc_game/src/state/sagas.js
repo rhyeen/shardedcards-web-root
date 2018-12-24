@@ -24,12 +24,19 @@ function _callBeginGame() {
   GameInterface.beginGame();
 }
 
-function* _startCrafting() {
-  yield put(Actions.startCrafting.success());
+function* _beginCrafting() {
+  yield put(Actions.beginCrafting.success());
 }
 
-function* _finishCrafting() {
-  yield put(Actions.finishCrafting.success());
+function* _endCrafting(turn) {
+  try {
+    let { opponentTurn, updatedCards } = yield call(GameInterface.endCrafting(turn));
+    console.trace('@TODO: update turn history with opponent turn');
+    yield put(Actions.endCrafting.success());
+    yield put(CardsDispatchActions.setUpdatedCards(updatedCards))
+  } catch (e) {
+    yield Log.error(`@TODO: unable to endCrafting(): ${e}`);
+  }
 }
 
 function* _winGame() {
@@ -45,7 +52,7 @@ function* _loseGame() {
 function* _endTurn() {
   yield _callEndTurn();
   yield put(Actions.endTurn.success());
-  yield put(Actions.startCrafting.request());
+  yield put(Actions.beginCrafting.request());
 }
 
 function _callEndTurn() {
@@ -57,8 +64,8 @@ function _callEndTurn() {
 export default function* root() {
   yield all([
     takeEvery(Actions.RESET_GAME.REQUEST, _resetGame),
-    takeEvery(Actions.START_CRAFTING.REQUEST, _startCrafting),
-    takeEvery(Actions.FINISH_CRAFTING.REQUEST, _finishCrafting),
+    takeEvery(Actions.BEGIN_CRAFTING.REQUEST, _beginCrafting),
+    takeEvery(Actions.END_CRAFTING.REQUEST, _endCrafting),
     takeEvery(Actions.WIN_GAME.REQUEST, _winGame),
     takeEvery(Actions.LOSE_GAME.REQUEST, _loseGame),
     takeEvery(Actions.END_TURN.REQUEST, _endTurn),

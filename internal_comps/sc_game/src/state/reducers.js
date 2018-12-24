@@ -53,7 +53,7 @@ function _updatePendingTurn(state, action) {
   };
 }
 
-function _finishTurn(state) {
+function _endTurn(state) {
   return {
     ...state,
     entities: {
@@ -74,9 +74,9 @@ export const sc_game = (state = INITIAL_STATE, action) => {
     case ActionType.RESET_GAME.SUCCESS:
       newState = _toggleMenuState(state, false);
       return _updateGameState(newState, GAME_STATES.PLAYING);
-    case ActionType.START_CRAFTING.SUCCESS:
+    case ActionType.BEGIN_CRAFTING.SUCCESS:
       return _updateGameState(state, GAME_STATES.CRAFTING);
-    case ActionType.FINISH_CRAFTING.SUCCESS:
+    case ActionType.END_CRAFTING.SUCCESS:
       return _updateGameState(state, GAME_STATES.PLAYING);
     case ActionType.WIN_GAME.SUCCESS:
       return _updateGameState(state, GAME_STATES.WIN);
@@ -85,7 +85,7 @@ export const sc_game = (state = INITIAL_STATE, action) => {
     case ActionType.RECORD_ACTION:
       return _updatePendingTurn(state, action.action);
     case ActionType.END_TURN.SUCCESS:
-      return _finishTurn(state);
+      return _endTurn(state);
     default:
       return state;
   }
