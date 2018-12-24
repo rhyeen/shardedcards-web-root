@@ -240,6 +240,6 @@ export default function* root() {
     takeEvery(Actions.USE_CARD_ABILITY.REQUEST, _useCardAbility),
     takeEvery(Actions.SET_PLAYER_DECKS.REQUEST, _setPlayerDecks),
     takeEvery(Actions.SET_CARDS.REQUEST, _setCards),
-    takeEvery(Actions.SET_UPDATED_CARDS.REQUEST, _setUpadedCards),
+    takeEvery(Actions.SET_UPDATED_CARDS.REQUEST, _setUpdatedCards),
   ]);
 }

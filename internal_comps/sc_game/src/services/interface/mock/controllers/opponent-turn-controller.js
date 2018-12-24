@@ -6,16 +6,41 @@ import { Cards } from '../../../../../../sc_cards/src/services/card-selection.js
 import * as CardActions from '../../../../../../sc_cards/src/services/card-actions.js';
 import { ACTION_TYPES, ACTION_TARGET_TYPES } from '../../../../../../sc_shared/src/entities/turn-keywords.js';
 
-const MAX_LOOP_ITERATIONS = 10;
+const MAX_CARD_ACTIONS = 10;
 
-export const executeOpponentTurn = () => {
+export const fulfillOpponentTurn = () => {
   let fieldPlayOrder = _getOpponentMinionPlayOrder();
   let turn = [];
+  let turnUpdatedCards = [];
   for (let fieldPlayCard of fieldPlayOrder) {
-    let cardActions = _getFieldMinionActions(fieldPlayCard);
-    turn.push(...cardActions);
+    let { actions, updatedCards } = _getFieldMinionActions(fieldPlayCard);
+    turn.push(...actions);
+    turnUpdatedCards.push(...updatedCards);
   }
-  GameModel.recordOpponentTurn(turn);
+  turnUpdatedCards = _prepareUpdatedCards(turnUpdatedCards);
+  GameModel.recordOpponentTurn(turn, turnUpdatedCards);
+}
+
+function _prepareUpdatedCards(updatedCards) {
+  updatedCardsSet = [];
+  for (let updatedCard of updatedCards) {
+    if (!_cardInSet(updatedCardsSet, updatedCard)) {
+      updatedCardsSet.push({
+        id: updatedCard.id,
+        instance: updatedCard.instance
+      });
+    }
+  }
+  return updatedCardsSet;
+}
+
+function _cardInSet(cardSet, cardContext) {
+  for (let cardSetItem of cardSet) {
+    if (cardSetItem.id === cardContext.id && cardSetItem.instance === cardContext.instance) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function _getOpponentMinionPlayOrder() {
@@ -66,9 +91,10 @@ function _getPlayerMinionCardContext(playAreaIndex) {
 
 function _getFieldMinionActions(minionCard) {
   let actions = [];
+  let actionsUpdatedCards = [];
   let iterations = 0;
   while (true) {
-    if (iterations > MAX_LOOP_ITERATIONS) {
+    if (iterations > MAX_CARD_ACTIONS) {
       Log.error('Max iterations met');
       break;
     }
@@ -77,33 +103,45 @@ function _getFieldMinionActions(minionCard) {
       break;
     }
     if (CardActions.canAttackPlayer(minionCard, CardsModel.Model.opponent.field.slots, CardsModel.Model.cards)) {
-      let results = _attackPlayer(minionCard);
-      minionCard = results.minionCard;
-      actions.push(results.action);
+      let { action, updatedMinionCard } = _attackPlayer(minionCard);
+      minionCard = updatedMinionCard;
+      actionsUpdatedCards.push(updatedMinionCard);
+      actions.push(action);
       continue;
     }
     let possibleTargetIndices = CardActions.indicesInAttackRange(minionCard);
+    if (!possibleTargetIndices.length) {
+      break;
+    }
     possibleTargetIndices = _targetsThatCanBeDealtMaxDamage(minionCard, possibleTargetIndices);
     if (possibleTargetIndices.length === 0) {
       break;
     }
     if (possibleTargetIndices.length === 1) {
-      actions.push(_attackTarget(minionCard, possibleTargetIndices[0]));
+      let { action, updatedCards } = _attackTarget(minionCard, possibleTargetIndices[0]);
+      actions.push(action);
+      actionsUpdatedCards.push(updatedCards);
       continue;
     }
     let previousPossibleTargets = [...possibleTargetIndices];
     possibleTargetIndices = _targetsThatCanBeKilled(minionCard, possibleTargetIndices);
     if (possibleTargetIndices.length === 0) {
-      actions.push(_attackRandomTarget(minionCard, previousPossibleTargets));
+      let { action, updatedCards } = _attackRandomTarget(minionCard, previousPossibleTargets);
+      actions.push(action);
+      actionsUpdatedCards.push(updatedCards);
       continue;
     }
     if (possibleTargetIndices.length === 1) {
-      actions.push(_attackTarget(minionCard, possibleTargetIndices[0]));
+      let { action, updatedCards } = _attackTarget(minionCard, possibleTargetIndices[0]);
+      actions.push(action);
+      actionsUpdatedCards.push(updatedCards);
       continue;
     }
-    actions.push(_attackRandomTarget(minionCard, possibleTargetIndices));
+    let { action, updatedCards } = _attackRandomTarget(minionCard, possibleTargetIndices);
+    actions.push(action);
+    actionsUpdatedCards.push(updatedCards);
   }
-  return actions;
+  return { actions, actionsUpdatedCards };
 }
 
 function _attackPlayer(minionCard) {
@@ -128,7 +166,7 @@ function _attackPlayer(minionCard) {
     ]
   };
   return {
-    minionCard: updatedMinionCard,
+    updatedMinionCard,
     action
   };
 }
@@ -186,7 +224,7 @@ function _attackTarget(minionCard, targetAreaIndex) {
       instance: null
     };
   }
-  return {
+  let action = {
     type: ACTION_TYPES.PLAY_MINION,
     source: {
       id: minionCard.id,
@@ -202,6 +240,10 @@ function _attackTarget(minionCard, targetAreaIndex) {
       }
     ]
   };
+  return {
+    action,
+    updatedCards
+  }
 }
 
 function _attackRandomTarget(minionCard, targetAreaIndices) {

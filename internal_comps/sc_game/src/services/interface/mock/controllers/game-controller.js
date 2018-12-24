@@ -1,4 +1,4 @@
-import { Model, initializeModel, recordPlayerTurn, getLastOpponentTurn } from '../models/model.js';
+import { initializeModel, recordPlayerTurn, getLastOpponentTurn } from '../models/model.js';
 import * as CardsModel from '../../../../../../sc_cards/src/services/interface/mock/models/model.js';
 import * as StatusController from '../../../../../../sc_status/src/services/interface/mock/controllers/status-controller.js';
 import * as CardController from '../../../../../../sc_cards/src/services/interface/mock/controllers/cards-controller.js';

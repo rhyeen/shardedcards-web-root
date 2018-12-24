@@ -8,8 +8,8 @@ import * as OpponentTurnController from './controllers/opponent-turn-controller.
 export const beginGame = () => {
   return new Promise((resolve) => {
     Mock.debugRequest(beginGame);
+    GameController.initializeGame();
     setTimeout(() => {
-      GameController.initializeGame();
       resolve();
     }, CALLBACK_TIME.POST);
   });
@@ -18,11 +18,12 @@ export const beginGame = () => {
 export const endCrafting = (turn) => {
   return new Promise((resolve) => {
     Mock.debugRequest(endCrafting);
+    GameController.executeCraftingTurn(turn);
+    opponentTurn = GameController.getOpponentTurn();
     setTimeout(() => {
-      GameController.executeCraftingTurn(turn);
-      OpponentTurnController.executeOpponentTurn();
       let response = {
-        opponentTurn: GameController.getOpponentTurn()
+        opponentTurn: opponentTurn.actions,
+        updatedCards: opponentTurn.updatedCards
       };
       Mock.debugSuccessfulResponse(endCrafting, response);
       resolve(Mock.prepareResponse(response));
@@ -33,8 +34,9 @@ export const endCrafting = (turn) => {
 export const endTurn = (turn) => {
   return new Promise((resolve) => {
     Mock.debugRequest(endTurn);
+    GameController.executePlayTurn(turn);
+    OpponentTurnController.fulfillOpponentTurn();
     setTimeout(() => {
-      GameController.executePlayTurn(turn);
       resolve();
     }, CALLBACK_TIME.POST);
   })

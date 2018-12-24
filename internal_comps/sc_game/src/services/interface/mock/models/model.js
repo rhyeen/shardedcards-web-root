@@ -21,10 +21,11 @@ export function recordPlayerTurn(turn) {
   });
 }
 
-export function recordOpponentTurn(turn) {
+export function recordOpponentTurn(turn, updatedCards) {
   Model.turnHistory.push({
-    turn,
-    takenBy: TURN_TAKERS.OPPONENT
+    actions: turn,
+    takenBy: TURN_TAKERS.OPPONENT,
+    updatedCards: updatedCards
   });
 }
 
@@ -33,13 +34,13 @@ export function getLastOpponentTurn() {
     Log.error('Cannot retrieve opponent turn, no history is recorded');
   }
   if (Model.turnHistory[Model.turnHistory.length - 1].takenBy === TURN_TAKERS.OPPONENT) {
-    return Model.turnHistory[Model.turnHistory.length - 1].turn;
+    return Model.turnHistory[Model.turnHistory.length - 1];
   }
   if (Model.turnHistory.length < 2) {
     Log.error('Cannot retrieve opponent turn, only player turn has been recorded');
   }
   if (Model.turnHistory[Model.turnHistory.length - 2].takenBy === TURN_TAKERS.OPPONENT) {
-    return Model.turnHistory[Model.turnHistory.length - 1].turn;
+    return Model.turnHistory[Model.turnHistory.length - 1];
   }
   Log.error('Cannot retrieve opponent turn, opponent turn does not exist within two consecutive turns');
 }
