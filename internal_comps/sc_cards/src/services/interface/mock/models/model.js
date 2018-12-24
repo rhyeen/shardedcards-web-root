@@ -1,4 +1,5 @@
 import { getInitialCards } from './initial-cards.js';
+import { getInitialOpponentCards } from './initial-opponent-cards.js';
 import { getInitialDeck } from './initial-deck.js';
 
 export const Model = _getInitialModel();
@@ -74,6 +75,6 @@ export function initializeModel() {
   let model = _getInitialModel();
   Model.cards = { ...getInitialCards(), ...getInitialOpponentCards() };
   Model.player = model.player;
-  Model.player.deck = getInitialDeck();
+  Model.player.deck.cards = getInitialDeck();
   Model.opponent = model.opponent;
 }

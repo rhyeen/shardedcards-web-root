@@ -90,7 +90,7 @@ function _setOpponentFieldBacklog(playAreaIndex) {
   backlog.push(..._getOpponentCardsByRarity(CARD_RARITIES.RARE, OPPONENT_BACKLOG_PARTITIONS.RARE, playAreaIndex));
   backlog.push(..._getOpponentCardsByRarity(CARD_RARITIES.EPIC, OPPONENT_BACKLOG_PARTITIONS.EPIC, playAreaIndex));
   backlog.push(..._getOpponentCardsByRarity(CARD_RARITIES.LEGENDARY, OPPONENT_BACKLOG_PARTITIONS.LEGENDARY, playAreaIndex));
-  Model.opponent.field.backlog[playAreaIndex] = backlog;
+  Model.opponent.field.backlog[playAreaIndex].cards = backlog;
   _addOpponentFieldInstancesToOpponentCards(playAreaIndex);
 }
 
@@ -172,7 +172,7 @@ function _getOpponentCardsByLevel(rarity) {
 }
 
 function _addOpponentFieldInstancesToOpponentCards(playAreaIndex) {
-  for (let fieldCard of Model.opponent.field.backlog[playAreaIndex]) {
+  for (let fieldCard of Model.opponent.field.backlog[playAreaIndex].cards) {
     Cards.setNewCardInstance(Model.cards[fieldCard.id], fieldCard.instance);
   }
 }

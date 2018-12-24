@@ -1,4 +1,4 @@
-import { put, takeEvery, all } from 'redux-saga/effects';
+import { put, takeEvery, all, call } from 'redux-saga/effects';
 
 import * as Actions from './actions.js';
 import * as StatusInterface from '../services/interface/status.js';
@@ -12,8 +12,12 @@ function* _modifyPlayerEnergy({maxEnergyModifier, currentEnergyModifier}) {
 }
 
 function* _setPlayerStatus() {
-  let { player } = StatusInterface.getPlayerStatus();
-  yield put(Actions.setPlayerStatus.success(player.health.max, player.health.current, player.energy.max, player.energy.current));
+  try {
+    let { player } = yield call(StatusInterface.getPlayerStatus);
+    yield put(Actions.setPlayerStatus.success(player.health.max, player.health.current, player.energy.max, player.energy.current));
+  } catch (e) {
+    yield Log.error(`@TODO: unable to getPlayerStatus(): ${e}`);
+  }
 }
 
 export default function* root() {

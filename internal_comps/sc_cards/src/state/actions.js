@@ -68,10 +68,10 @@ export const attackMinion = {
   success: (updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots) => _action(ATTACK_MINION.SUCCESS, {updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots})
 };
 
-export const SET_FIELD_FROM_OPPONENT_TURN = _createRequestTypes('SET_FIELD_FROM_OPPONENT_TURN');
-export const setFieldFromOpponentTurn = {
-  request: () => _action(SET_FIELD_FROM_OPPONENT_TURN.REQUEST, {}),
-  success: (updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots) => _action(SET_FIELD_FROM_OPPONENT_TURN.SUCCESS, {updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots})
+export const SET_PLAYING_FIELD = _createRequestTypes('SET_PLAYING_FIELD');
+export const setPlayingField = {
+  request: () => _action(SET_PLAYING_FIELD.REQUEST, {}),
+  success: (opponentFieldSlots, opponentFieldBacklog, playerFieldSlots) => _action(SET_PLAYING_FIELD.SUCCESS, {opponentFieldSlots, opponentFieldBacklog, playerFieldSlots})
 };
 
 export const CLEAR_HAND = _createRequestTypes('CLEAR_HAND');
@@ -103,9 +103,6 @@ export const setCards = {
   request: () => _action(SET_CARDS.REQUEST, {}),
   success: (cards) => _action(SET_CARDS.SUCCESS, {cards})
 };
-
-export const SET_OPPONENT_FIELD_SLOTS = _createRequestRaw('SET_OPPONENT_FIELD_SLOTS');
-export const setOpponentFieldSlots = (opponentFieldSlots) => _action(SET_OPPONENT_FIELD_SLOTS, {opponentFieldSlots});
 
 export const RESET_CARDS = _createRequestRaw('RESET_CARDS');
 export const resetCards = () => _action(RESET_CARDS, {});

@@ -15,13 +15,13 @@ export const Log = {
 }
 
 function logDebug(message) {
-  if (logLevel() === DEBUG) {
+  if (logLevel() === LOG_LEVEL.DEBUG) {
     console.log(_freezeMessage(message));
   }
 }
 
 function logInfo(message) {
-  if (logLevel() === DEBUG || logLevel() === INFO) {
+  if (logLevel() === LOG_LEVEL.DEBUG || logLevel() === LOG_LEVEL.INFO) {
     console.log(_freezeMessage(message));
   }
 }

@@ -8,8 +8,8 @@ export const getCards = () => {
   return Http.get('cards');
 }
 
-export const getOpponentField = () => {
-  return Http.get('cardgroups/opponentfield');
+export const getPlayingField = () => {
+  return Http.get('cardgroups/playingfield');
 }
 
 export const getCardsUpdatedFromOpponentTurn = () => {

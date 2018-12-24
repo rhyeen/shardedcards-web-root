@@ -1,5 +1,8 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { ScSharedStyles } from '../../../sc_shared/src/entities/sc-shared-styles.js';
+import store from '../state/store.js';
+
+import { resetGame } from '../state/actions.js';
 
 import './game-area/sc-game-footer.js';
 import './game-area/sc-game-header.js';
@@ -22,6 +25,19 @@ class ScGame extends LitElement {
       <sc-game-footer></sc-game-footer>
       <sc-game-overlay></sc-game-overlay>
     `;
+  }
+
+  constructor() {
+    super();
+    if (!this.gameId) {
+      store.dispatch(resetGame.request());
+    }
+  }
+
+  static get properties() { 
+    return {
+      gameId: { type: String }
+    }
   }
 }
 

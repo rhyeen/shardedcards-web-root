@@ -8,7 +8,7 @@ import * as StatusDispatchActions  from '../../../sc_status/src/state/actions.js
 
 function* _beginTurn() {
   yield put(CardsDispatchActions.setPlayerDecks.request());
-  yield put(CardsDispatchActions.setFieldFromOpponentTurn.request());
+  yield put(CardsDispatchActions.setPlayingField.request());
   yield put(StatusDispatchActions.setPlayerStatus.request());
   yield put(Actions.beginTurn.success());
 }

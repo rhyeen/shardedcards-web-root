@@ -23,25 +23,30 @@ export const getPlayerDecks = () => {
           cards: Model.player.lostCards.cards
         }
       };
-      Mock.debugSuccessfulResponse(getHand, response);
+      Mock.debugSuccessfulResponse(getPlayerDecks, response);
       resolve(Mock.prepareResponse(response));
     }, CALLBACK_TIME.GET);
   });
 };
 
-export const getOpponentField = () => {
+export const getPlayingField = () => {
   return new Promise((resolve) => {
-    Mock.debugRequest(getOpponentField);
+    Mock.debugRequest(getPlayingField);
     setTimeout(() => {
       let response = {
-        backlog: [
-          { size: Model.opponent.field.backlog[0].cards.length },
-          { size: Model.opponent.field.backlog[1].cards.length },
-          { size: Model.opponent.field.backlog[2].cards.length }
-        ],
-        slots: Model.opponent.field.slots
+        opponent: {
+          backlog: [
+            { size: Model.opponent.field.backlog[0].cards.length },
+            { size: Model.opponent.field.backlog[1].cards.length },
+            { size: Model.opponent.field.backlog[2].cards.length }
+          ],
+          slots: Model.opponent.field.slots
+        },
+        player: {
+          slots: Model.player.field.slots
+        }
       };
-      Mock.debugSuccessfulResponse(getOpponentField, response);
+      Mock.debugSuccessfulResponse(getPlayingField, response);
       resolve(Mock.prepareResponse(response));
     }, CALLBACK_TIME.GET);
   });

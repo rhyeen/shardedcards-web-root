@@ -72,7 +72,7 @@ export const sc_game = (state = INITIAL_STATE, action) => {
     case ActionType.HIDE_IN_GAME_MENU:
       return _toggleMenuState(state, false);
     case ActionType.RESET_GAME.SUCCESS:
-      newState = _toggleMenuState(newState, false);
+      newState = _toggleMenuState(state, false);
       return _updateGameState(newState, GAME_STATES.PLAYING);
     case ActionType.START_CRAFTING.SUCCESS:
       return _updateGameState(state, GAME_STATES.CRAFTING);

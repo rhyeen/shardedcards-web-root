@@ -1,4 +1,4 @@
-import { put, takeEvery, all } from 'redux-saga/effects';
+import { put, takeEvery, all, call } from 'redux-saga/effects';
 import { ACTION_TYPES, ACTION_TARGET_TYPES } from '../../../sc_shared/src/entities/turn-keywords.js';
 import { CARD_TYPES } from '../../../sc_shared/src/entities/card-keywords.js';
 import store from './store.js';
@@ -12,18 +12,30 @@ import { CARD_TARGETS } from '../entities/selected-card.js';
 import * as CardsInterface from '../services/interface/cards.js';
 
 function* _setUpdatedCards() {
-  let { cards } = CardsInterface.getCardsUpdatedFromOpponentTurn();
-  Actions.setUpdatedCards.success(cards);
+  try {
+    let { cards } = yield call(CardsInterface.getCardsUpdatedFromOpponentTurn);
+    yield put(Actions.setUpdatedCards.success(cards));
+  } catch (e) {
+    yield Log.error(`@TODO: unable to getCardsUpdatedFromOpponentTurn(): ${e}`);
+  }
 }
 
 function* _setCards() {
-  let { cards } = CardsInterface.getCards();
-  Actions.setCards.success(cards);
+  try {
+    let { cards } = yield call(CardsInterface.getCards);
+    yield put(Actions.setCards.success(cards));
+  } catch (e) {
+    yield Log.error(`@TODO: unable to getCardsUpdatedFromOpponentTurn(): ${e}`);
+  }
 }
 
 function* _setPlayerDecks() {
-  let { hand, deck, discardPile, lostCards } = CardsInterface.getPlayerDecks();
-  Actions.setPlayerDecks.success(hand.cards, hand.refillSize, discardPile.cards, lostCards.cards, deck.size);
+  try {
+    let { hand, deck, discardPile, lostCards } = yield call(CardsInterface.getPlayerDecks);
+    yield put(Actions.setPlayerDecks.success(hand.cards, hand.refillSize, discardPile.cards, lostCards.cards, deck.size));
+  } catch (e) {
+    yield Log.error(`@TODO: unable to getPlayerDecks(): ${e}`);
+  }
 }
 
 function* _summonMinion({playAreaIndex}) {
@@ -127,10 +139,13 @@ function _getAttackMinionAction(playAreaIndex) {
   };
 }
 
-function* _setFieldFromOpponentTurn() {
-  let { slots, backlog } = CardsInterface.getOpponentField();
-  console.trace('@TODO');
-  yield put(Actions.setFieldFromOpponentTurn.success(updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots));
+function* _setPlayingField() {
+  try {
+    let { opponent, player } = yield call(CardsInterface.getPlayingField);
+    yield put(Actions.setPlayingField.success(opponent.slots, opponent.backlog, player.slots));
+  } catch (e) {
+    yield Log.error(`@TODO: unable to getPlayingField(): ${e}`);
+  }
 }
 
 function* _clearHand() {
@@ -234,7 +249,7 @@ export default function* root() {
   yield all([
     takeEvery(Actions.SUMMON_MINION.REQUEST, _summonMinion),
     takeEvery(Actions.ATTACK_MINION.REQUEST, _attackMinion),
-    takeEvery(Actions.SET_FIELD_FROM_OPPONENT_TURN.REQUEST, _setFieldFromOpponentTurn),
+    takeEvery(Actions.SET_PLAYING_FIELD.REQUEST, _setPlayingField),
     takeEvery(Actions.CLEAR_HAND.REQUEST, _clearHand),
     takeEvery(Actions.REFRESH_PLAYER_CARDS.REQUEST, _refreshPlayerCards),
     takeEvery(Actions.USE_CARD_ABILITY.REQUEST, _useCardAbility),

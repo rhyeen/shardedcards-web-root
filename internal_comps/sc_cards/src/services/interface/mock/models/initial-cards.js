@@ -57,7 +57,7 @@ export function getInitialCards() {
     }, 5),
     monster: _getCard({
       title: 'Monster',
-      rarity: CARD_RARITY_LEGENDARY,
+      rarity: CARD_RARITIES.LEGENDARY,
       type: CARD_TYPES.MINION,
       cost: 1,
       range: 1,
@@ -78,7 +78,7 @@ export function getInitialCards() {
   cards[ENERGY_SHARD.ID] = _getCard({
     title: 'Energy Shard',
     type: CARD_TYPES.SPELL,
-    rarity: CARD_RARITY_STANDARD,
+    rarity: CARD_RARITIES.STANDARD,
     cost: 0,
     abilities: [
       {

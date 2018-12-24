@@ -28,12 +28,12 @@ export const getCards = () => {
   }
 };
 
-export const getOpponentField = () => {
+export const getPlayingField = () => {
   switch(interfaceState()) {
     case INTERFACE.HTTP:
-      return CallHttp.getOpponentField();
+      return CallHttp.getPlayingField();
     case INTERFACE.MOCK:
-      return CallMock.getOpponentField();
+      return CallMock.getPlayingField();
     default:
       return invalidInterfaceState();
   }
