@@ -13,7 +13,7 @@ import * as CardsInterface from '../services/interface/cards.js';
 
 function* _setCards() {
   try {
-    let { cards } = yield call(CardsInterface.getCards);
+    let cards = yield call(CardsInterface.getCards);
     yield put(Actions.setCards.success(cards));
   } catch (e) {
     yield Log.error(`@TODO: unable to getCards(): ${e}`);

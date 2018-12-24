@@ -151,8 +151,8 @@ function _shallowCopyHandCards(state) {
       player: {
         ...state.entities.player,
         hand: {
-          ...state.entities.hand,
-          cards: [...state.entities.hand.cards]
+          ...state.entities.player.hand,
+          cards: [...state.entities.player.hand.cards]
         }
       }
     }
@@ -262,6 +262,18 @@ function _shallowCopyPlayerCards(state) {
   };
 }
 
+function _setDiscardedPileCards(state, discardedCards) {
+  let newState = _shallowCopyDiscardCards(state);
+  newState.entities.player.discardPile.cards = discardedCards;
+  return newState;
+}
+
+function _setLostPileCards(state, lostPileCards) {
+  let newState = _shallowCopyLostPileCards(state);
+  newState.entities.player.lostCards.cards = lostPileCards;
+  return newState;
+}
+
 function _discardCard(state, cardId, cardInstance) {
   let newState = _shallowCopyDiscardCards(state);
   newState.entities.player.hand.cards.push({
@@ -279,8 +291,24 @@ function _shallowCopyDiscardCards(state) {
       player: {
         ...state.entities.player,
         discardPile: {
-          ...state.entities.discardPile,
-          cards: [...state.entities.discardPile.cards]
+          ...state.entities.player.discardPile,
+          cards: [...state.entities.player.discardPile.cards]
+        }
+      }
+    }
+  };
+}
+
+function _shallowCopyLostPileCards(state) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      player: {
+        ...state.entities.player,
+        lostCards: {
+          ...state.entities.player.lostCards,
+          cards: [...state.entities.player.lostCards.cards]
         }
       }
     }
@@ -442,7 +470,7 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       newState = _setHandCards(newState, action.handCards);
       newState = _setHandRefillSize(newState, action.handRefillSize);
       newState = _setDiscardedPileCards(newState, action.discardPileCards);
-      newState = _setLostPileCards(newState, aciton.lostPileCards);
+      newState = _setLostPileCards(newState, action.lostPileCards);
       return _setPlayerDeckSize(newState, action.deckSize);
     case ActionType.REFRESH_PLAYER_CARDS.SUCCESS:
     case ActionType.SET_UPDATED_CARDS:

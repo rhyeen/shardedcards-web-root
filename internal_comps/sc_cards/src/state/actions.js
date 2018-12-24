@@ -83,7 +83,7 @@ export const clearHand = {
 export const SET_PLAYER_DECKS = _createRequestTypes('SET_PLAYER_DECKS');
 export const setPlayerDecks = {
   request: () => _action(SET_PLAYER_DECKS.REQUEST, {}),
-  success: (handCards, handRefillSize, discardPileCards, lostPileCards, deckSize) => _action(SET_PLAYER_DECKS, {handCards, handRefillSize, discardPileCards, lostPileCards, deckSize})
+  success: (handCards, handRefillSize, discardPileCards, lostPileCards, deckSize) => _action(SET_PLAYER_DECKS.SUCCESS, {handCards, handRefillSize, discardPileCards, lostPileCards, deckSize})
 };
 
 export const REFRESH_PLAYER_CARDS = _createRequestTypes('REFRESH_PLAYER_CARDS');
