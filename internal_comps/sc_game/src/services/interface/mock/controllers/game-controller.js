@@ -3,6 +3,7 @@ import * as CardsModel from '../../../../../../sc_cards/src/services/interface/m
 import * as StatusController from '../../../../../../sc_status/src/services/interface/mock/controllers/status-controller.js';
 import * as CardController from '../../../../../../sc_cards/src/services/interface/mock/controllers/cards-controller.js';
 import * as TurnActionController from './turn-action-controller.js';
+import * as OpponentTurnController from './opponent-turn-controller.js';
 import { Log } from '../../../../../../sc_shared/src/services/logger.js';
 
 export const initializeGame = () => {
@@ -26,6 +27,7 @@ export const executePlayTurn = (turn) => {
   if (validTurn) {
     recordPlayerTurn(turn);
   }
+  OpponentTurnController.fulfillOpponentTurn();
   CardController.redrawHand();
   CardController.refreshOpponentField();
   CardController.refreshPlayerField();

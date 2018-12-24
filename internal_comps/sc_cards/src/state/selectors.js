@@ -24,7 +24,7 @@ export const getHandCards = createSelector(
   _cardsSelector,
   (handCardsIds, cards) => {
     let handCards = [];
-    for (handCardIds of handCardsIds) {
+    for (let handCardIds of handCardsIds) {
       handCards.push(_getHandCard(handCardsIds, cards));
     }
     return handCards;

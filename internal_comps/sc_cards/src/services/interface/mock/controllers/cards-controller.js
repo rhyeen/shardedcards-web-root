@@ -20,30 +20,9 @@ const OPPONENT_BACKLOG_PARTITIONS = {
 export const refreshOpponentField = () => {
   let fieldCards = _getOpponentFieldCards();
   fieldCards = CardActions.refreshCards(fieldCards);
-  _addToCardsUpdatedOnOpponentTurn(fieldCards);
   Cards.setCards(Model.cards, fieldCards);
+  _refillOpponentField();
 };
-
-function _addToCardsUpdatedOnOpponentTurn(cards) {
-  for (let card of cards) {
-    index = _getCardUpdatedFromOpponentTurnIndex(card.id, card.instance);
-    if (index > -1) {
-      Model.cardsUpdatedFromOpponentTurn[index] = card;
-    } else {
-      Model.cardsUpdatedFromOpponentTurn.push(card);
-    }
-  }
-}
-
-function _getCardUpdatedFromOpponentTurnIndex(cardId, cardInstance) {
-  for (let i = 0; i < Model.cardsUpdatedFromOpponentTurn.length; i++) {
-    let card = Model.cardsUpdatedFromOpponentTurn[i];
-    if (cardId === card.id && cardInstance === card.instance) {
-      return i;
-    }
-  }
-  return -1;
-}
 
 function _getOpponentFieldCards() {
   let cards = [
@@ -54,10 +33,27 @@ function _getOpponentFieldCards() {
   return Cards.getCards(Model.cards, cards);
 }
 
+function _refillOpponentField() {
+  _refillOpponentFieldSlot(0);
+  _refillOpponentFieldSlot(1);
+  _refillOpponentFieldSlot(2);
+}
+
+function _refillOpponentFieldSlot(slotIndex) {
+  if (!!Model.opponent.field.slots[slotIndex].id) {
+    return;
+  }
+  if (!Model.opponent.field.backlog[slotIndex].cards.length) {
+    return;
+  }
+  let newCards = Model.opponent.field.backlog[slotIndex].cards.splice(0, 1);
+  Model.opponent.field.slots[slotIndex].id = newCards[0].id;
+  Model.opponent.field.slots[slotIndex].instance = newCards[0].instance;
+}
+
 export const refreshPlayerField = () => {
   let fieldCards = _getPlayerFieldCards();
   fieldCards = CardActions.refreshCards(fieldCards);
-  _addToCardsUpdatedOnOpponentTurn(fieldCards);
   Cards.setCards(Model.cards, fieldCards);
 }
 
@@ -74,8 +70,8 @@ export const initializeCards = () => {
   initializeModel();
   _setOpponentFieldBacklogs();
   shuffleDrawDeck(true);
-  // @NOTE: no idea why this would be necessary.
-  // refreshOpponentField();
+  drawCards();
+  _refillOpponentField();
 };
 
 function _setOpponentFieldBacklogs() {
@@ -214,10 +210,11 @@ export const redrawHand = () => {
   CardActions.resetCards(Model.cards, Model.player.hand.cards);
   Model.player.discardPile.cards.push(...Model.player.hand.cards);
   Model.player.hand.cards = [];
-  drawCards(Model.player.hand.refillSize);
+  drawCards();
 };
 
-export const drawCards = (amount) => {
+export const drawCards = () => {
+  let amount = Model.player.hand.refillSize;
   let remainingDeckCards = Model.player.deck.cards.length;
   if (remainingDeckCards < amount) {
     _drawCards(remainingDeckCards);

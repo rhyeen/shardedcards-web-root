@@ -39,7 +39,7 @@ function _getInitialModel() {
       }
     },
     opponent: {
-      field: {
+      field: { // @DEBUG: should probably be field: [ { backlog, slot }] instead
         backlog: [
           {
             cards: []

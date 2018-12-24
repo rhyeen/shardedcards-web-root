@@ -3,7 +3,6 @@ import {
   CALLBACK_TIME } from '../../../../../sc_shared/src/services/mock.js';
 
 import * as GameController from './controllers/game-controller.js';
-import * as OpponentTurnController from './controllers/opponent-turn-controller.js';
 
 export const beginGame = () => {
   return new Promise((resolve) => {
@@ -35,7 +34,6 @@ export const endTurn = (turn) => {
   return new Promise((resolve) => {
     Mock.debugRequest(endTurn);
     GameController.executePlayTurn(turn);
-    OpponentTurnController.fulfillOpponentTurn();
     setTimeout(() => {
       resolve();
     }, CALLBACK_TIME.POST);
