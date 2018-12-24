@@ -2,12 +2,12 @@ import { LitElement, html } from '@polymer/lit-element';
 import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
 import { ScCardStyles, CARDS, AREAS } from '../../entities/sc_card-styles.js';
 import { connect } from 'pwa-helpers/connect-mixin.js';
-import store from '../../state/store.js';
+import { localStore } from '../../state/store.js';
 
 import * as CardSelector from '../../state/selectors.js';
 import { selectCardFromHand } from '../../state/actions.js';
 
-class ScPlayerHand extends connect(store)(LitElement) {
+class ScPlayerHand extends connect(localStore)(LitElement) {
   render() {
     return html`
       ${ScSharedStyles}
@@ -101,7 +101,7 @@ class ScPlayerHand extends connect(store)(LitElement) {
   }
 
   _selectCard(index) {
-    store.dispatch(selectCardFromHand(index));
+    localStore.dispatch(selectCardFromHand(index));
   }
 
   _isActiveCard(card) {

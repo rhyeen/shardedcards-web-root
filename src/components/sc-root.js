@@ -1,6 +1,6 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { connect } from 'pwa-helpers/connect-mixin.js';
-import store from '../state/store.js';
+import { localStore } from '../state/store.js';
 import { installRouter } from 'pwa-helpers/router.js';
 import { updateMetadata } from 'pwa-helpers/metadata.js';
 import { Log } from '../../internal_comps/sc_shared/src/services/logger.js';
@@ -14,7 +14,7 @@ import * as RootSelector from '../state/selectors.js';
 import { ROUTES } from '../entities/root.js';
 import './sc-404.js';
 
-class ScRoot extends connect(store)(LitElement) {
+class ScRoot extends connect(localStore)(LitElement) {
   render() {
     return html`
     ${ScSharedStyles}
@@ -44,7 +44,7 @@ class ScRoot extends connect(store)(LitElement) {
   }
 
   firstUpdated() {
-    installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname))));
+    installRouter((location) => localStore.dispatch(navigate(decodeURIComponent(location.pathname))));
   }
 
   updated(changedProps) {

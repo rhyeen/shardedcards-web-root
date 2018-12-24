@@ -6,4 +6,4 @@ store.addReducers({ sc_game });
 
 store.runSaga(sc_gameSaga);
 
-export default store;
+export const localStore = store;

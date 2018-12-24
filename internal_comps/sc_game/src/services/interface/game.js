@@ -28,7 +28,7 @@ export const endCrafting = (turn) => {
   }
 };
 
-export const endTurn = () => {
+export const endTurn = (turn) => {
   switch(interfaceState()) {
     case INTERFACE.HTTP:
       return CallHttp.endTurn(turn);

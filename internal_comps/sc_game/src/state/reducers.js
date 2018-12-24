@@ -58,7 +58,7 @@ function _endTurn(state) {
     ...state,
     entities: {
       ...state.entities,
-      turnHistory: [...turnHistory, state.entities.pendingTurn],
+      turnHistory: [...state.entities.turnHistory, state.entities.pendingTurn],
       pendingTurn: []
     }
   };

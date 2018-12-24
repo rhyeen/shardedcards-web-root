@@ -1,7 +1,7 @@
 import { put, takeEvery, all, call } from 'redux-saga/effects';
 import { ACTION_TYPES, ACTION_TARGET_TYPES } from '../../../sc_shared/src/entities/turn-keywords.js';
 import { CARD_TYPES } from '../../../sc_shared/src/entities/card-keywords.js';
-import store from './store.js';
+import { localStore } from './store.js';
 import * as CardsSelector from './selectors.js';
 import * as CardActions from '../services/card-actions.js';
 import * as StatusDispatchActions from '../../../sc_status/src/state/actions.js';
@@ -37,7 +37,7 @@ function* _summonMinion({playAreaIndex}) {
 }
 
 function _prepareSummonMinion(playAreaIndex) {
-  const state = store.getState();
+  const state = localStore.getState();
   let selectedCard = CardsSelector.getSelectedCard(state);
   let playerFieldCard = CardsSelector.getPlayerFieldSlots(state)[playAreaIndex];
   let discardedCard = {
@@ -49,7 +49,7 @@ function _prepareSummonMinion(playAreaIndex) {
 }
 
 function _getSummonMinionAction(playAreaIndex) {
-  const state = store.getState();
+  const state = localStore.getState();
   let selectedCard = CardsSelector.getSelectedCard(state);
   let playerFieldCard = CardsSelector.getPlayerFieldSlots(state)[playAreaIndex];
   return {
@@ -79,7 +79,7 @@ function* _attackMinion({playAreaIndex}) {
 }
 
 function _prepareAttackMinion(playAreaIndex) {
-  const state = store.getState();
+  const state = localStore.getState();
   let selectedCard = CardsSelector.getSelectedCard(state);
   let playerFieldSlots = CardsSelector.getPlayerFieldSlots(state);
   let opponentFieldSlots = CardsSelector.getOpponentFieldSlots(state);
@@ -108,7 +108,7 @@ function _prepareAttackMinion(playAreaIndex) {
 }
 
 function _getAttackMinionAction(playAreaIndex) {
-  const state = store.getState();
+  const state = localStore.getState();
   let selectedCard = CardsSelector.getSelectedCard(state);
   let opponentFieldCard = CardsSelector.getOpponentFieldSlots(state)[playAreaIndex];
   return {
@@ -145,7 +145,7 @@ function* _clearHand() {
 }
 
 function _prepareClearHand() {
-  const state = store.getState();
+  const state = localStore.getState();
   return CardsSelector.getHandCards(state);
 }
 
@@ -155,7 +155,7 @@ function* _refreshPlayerCards() {
 }
 
 function _prepareRefreshPlayerCards() {
-  const state = store.getState();
+  const state = localStore.getState();
   let handCards = CardsSelector.getHandCards(state);
   let playerFieldSlots = CardsSelector.getPlayerFieldSlots(state);
   let refreshReadyCards = [...handCards, ...playerFieldSlots];
@@ -171,7 +171,7 @@ function* _useCardAbility({playAreaIndex}) {
 }
 
 function _prepareUseCardAbility(playAreaIndex) {
-  const state = store.getState();
+  const state = localStore.getState();
   let selectedAbility = CardsSelector.getSelectedAbility(state);
   let playerFieldSlots = CardsSelector.getPlayerFieldSlots(state);
   let opponentFieldSlots = CardsSelector.getOpponentFieldSlots(state);
@@ -187,7 +187,7 @@ function _handleStatusUpdates(statusUpdates) {
 }
 
 function _getUseCardAbilityAction(playAreaIndex) {
-  const state = store.getState();
+  const state = localStore.getState();
   let selectedAbility = CardsSelector.getSelectedAbility(state);
   let opponentFieldCard = CardsSelector.getOpponentFieldSlots(state)[playAreaIndex];
   return {

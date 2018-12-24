@@ -1,13 +1,13 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { connect } from 'pwa-helpers/connect-mixin.js';
-import store from '../../state/store.js';
+import { localStore } from '../../state/store.js';
 
 import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
 import { ScIconsStyles, HealthIcon } from '../../../../sc_shared/src/entities/sc-icons.js';
 
 import * as StatusSelector from '../../state/selectors.js';
 
-export class ScHealthBarItem extends connect(store)(LitElement) {
+export class ScHealthBarItem extends connect(localStore)(LitElement) {
   render() {
     return html`
     ${ScSharedStyles}

@@ -2,13 +2,13 @@ import { LitElement, html } from '@polymer/lit-element';
 import { ScSharedStyles, APP_COLORS } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
 import { ScGameStyles, NAV } from '../../entities/sc_game-styles.js';
 import { connect } from 'pwa-helpers/connect-mixin.js';
-import store from '../../state/store.js';
+import { localStore } from '../../state/store.js';
 
 import * as GameSelector from '../../state/selectors.js';
 
 import '../overlay/sc-game-menu-pane.js';
 
-class ScGameOverlay extends connect(store)(LitElement) {
+class ScGameOverlay extends connect(localStore)(LitElement) {
   render() {
     return html`
       ${ScSharedStyles}

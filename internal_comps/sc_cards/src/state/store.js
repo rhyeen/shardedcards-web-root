@@ -6,4 +6,4 @@ store.addReducers({ sc_cards });
 
 store.runSaga(sc_cardsSaga);
 
-export default store;
+export const localStore = store;

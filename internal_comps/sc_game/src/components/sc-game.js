@@ -1,6 +1,6 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { ScSharedStyles } from '../../../sc_shared/src/entities/sc-shared-styles.js';
-import store from '../state/store.js';
+import { localStore } from '../state/store.js';
 
 import { resetGame } from '../state/actions.js';
 
@@ -30,7 +30,7 @@ class ScGame extends LitElement {
   constructor() {
     super();
     if (!this.gameId) {
-      store.dispatch(resetGame.request());
+      localStore.dispatch(resetGame.request());
     }
   }
 

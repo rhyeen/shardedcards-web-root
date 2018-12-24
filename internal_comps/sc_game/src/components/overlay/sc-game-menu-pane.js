@@ -1,7 +1,7 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
 
-import store from '../../state/store.js';
+import { localStore } from '../../state/store.js';
 
 import {
   hideInGameMenu,
@@ -46,11 +46,11 @@ export class ScGameMenuPane extends LitElement {
   }
 
   _cancel() {
-    store.dispatch(hideInGameMenu())
+    localStore.dispatch(hideInGameMenu())
   }
 
   _resetGame() {
-    store.dispatch(resetGame.request())
+    localStore.dispatch(resetGame.request())
   }
 }
 

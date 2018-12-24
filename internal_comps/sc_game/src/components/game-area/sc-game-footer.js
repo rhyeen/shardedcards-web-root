@@ -2,7 +2,7 @@ import { LitElement, html } from '@polymer/lit-element';
 import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
 import { ScGameStyles, NAV } from '../../entities/sc_game-styles.js';
 import { connect } from 'pwa-helpers/connect-mixin.js';
-import store from '../../state/store.js';
+import { localStore } from '../../state/store.js';
 import { Log } from '../../../../sc_shared/src/services/logger.js';
 
 import { endCrafting, endTurn } from '../../state/actions.js';
@@ -14,7 +14,7 @@ import '../../../../sc_cards/src/components/bar-items/sc-discard-pile-bar-item.j
 import '../../../../sc_cards/src/components/bar-items/sc-draw-pile-bar-item.js';
 import '../../../../sc_cards/src/components/bar-items/sc-lost-pile-bar-item.js';
 
-export class ScGameFooter extends connect(store)(LitElement) {
+export class ScGameFooter extends connect(localStore)(LitElement) {
   render() {
     return html`
     ${ScSharedStyles}
@@ -84,11 +84,11 @@ export class ScGameFooter extends connect(store)(LitElement) {
   }
 
   _endTurn() {
-    store.dispatch(endTurn.request())
+    localStore.dispatch(endTurn.request())
   }
 
   _endCrafting() {
-    store.dispatch(endCrafting.request())
+    localStore.dispatch(endCrafting.request())
   }
 
   stateChanged(state) {

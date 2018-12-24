@@ -1,13 +1,13 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { connect } from 'pwa-helpers/connect-mixin.js';
-import store from '../../state/store.js';
+import { localStore } from '../../state/store.js';
 
 import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
 import { ScIconsStyles, LostCardsIcon } from '../../../../sc_shared/src/entities/sc-icons.js';
 
 import * as CardsSelector from '../../state/selectors.js';
 
-export class ScLostPileBarItem extends connect(store)(LitElement) {
+export class ScLostPileBarItem extends connect(localStore)(LitElement) {
   render() {
     return html`
     ${ScSharedStyles}

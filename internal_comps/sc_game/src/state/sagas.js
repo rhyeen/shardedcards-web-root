@@ -1,6 +1,7 @@
 import { put, takeEvery, all } from 'redux-saga/effects';
 import * as GameInterface from '../services/interface/game.js';
 import * as GameSelector from './selectors.js';
+import { localStore } from './store.js';
 
 import * as Actions from './actions.js';
 import * as CardsDispatchActions  from '../../../sc_cards/src/state/actions.js';
@@ -56,7 +57,7 @@ function* _endTurn() {
 }
 
 function _callEndTurn() {
-  const state = store.getState();
+  const state = localStore.getState();
   let turn = GameSelector.getPendingTurn(state);
   GameInterface.endTurn(turn);
 }
