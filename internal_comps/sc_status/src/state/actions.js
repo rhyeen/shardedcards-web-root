@@ -28,7 +28,7 @@ export const SET_PLAYER_STATUS = _createRequestTypes('SET_PLAYER_STATUS');
 export const setPlayerStatus = {
   request: () => _action(SET_PLAYER_STATUS.REQUEST, {}),
   success: (maxHealth, currentHealth, maxEnergy, currentEnergy) => {
-    return _action(SET_PLAYER_STATUS, {
+    return _action(SET_PLAYER_STATUS.SUCCESS, {
       status: {
         health: {
           current: currentHealth,
