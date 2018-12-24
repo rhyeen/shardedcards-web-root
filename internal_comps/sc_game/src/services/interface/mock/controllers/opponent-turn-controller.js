@@ -2,7 +2,7 @@ import * as CardsModel from '../../../../../../sc_cards/src/services/interface/m
 import * as StatusModel from '../../../../../../sc_status/src/services/interface/mock/models/model.js';
 import * as GameModel from '../models/model.js';
 import { Log } from '../../../../../../sc_shared/src/services/logger.js';
-import { Cards } from '../../../../../../sc_cards/src/services/card-selection.js';
+import * as Cards from '../../../../../../sc_cards/src/services/card-selection.js';
 import * as CardActions from '../../../../../../sc_cards/src/services/card-actions.js';
 import { ACTION_TYPES, ACTION_TARGET_TYPES } from '../../../../../../sc_shared/src/entities/turn-keywords.js';
 
