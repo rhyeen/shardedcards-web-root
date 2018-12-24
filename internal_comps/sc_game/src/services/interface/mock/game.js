@@ -2,9 +2,8 @@ import {
   Mock,
   CALLBACK_TIME } from '../../../../../sc_shared/src/services/mock.js';
 
-import { Model } from './models/model.js';
-
 import * as GameController from './controllers/game-controller.js';
+import * as OpponentTurnController from './controllers/opponent-turn-controller.js';
 
 export const beginGame = () => {
   return new Promise((resolve) => {
@@ -21,6 +20,7 @@ export const endCrafting = (turn) => {
     Mock.debugRequest(endCrafting);
     setTimeout(() => {
       GameController.executeCraftingTurn(turn);
+      OpponentTurnController.executeOpponentTurn();
       let response = {
         opponentTurn: GameController.getOpponentTurn()
       };

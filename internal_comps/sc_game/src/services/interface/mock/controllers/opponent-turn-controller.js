@@ -1,5 +1,6 @@
 import * as CardsModel from '../../../../../../sc_cards/src/services/interface/mock/models/model.js';
 import * as StatusModel from '../../../../../../sc_status/src/services/interface/mock/models/model.js';
+import * as GameModel from '../models/model.js';
 import { Log } from '../../../../../../sc_shared/src/services/logger.js';
 import { Cards } from '../../../../../../sc_cards/src/services/card-selection.js';
 import * as CardActions from '../../../../../../sc_cards/src/services/card-actions.js';
@@ -7,14 +8,14 @@ import { ACTION_TYPES, ACTION_TARGET_TYPES } from '../../../../../../sc_shared/s
 
 const MAX_LOOP_ITERATIONS = 10;
 
-export const getOpponentTurn = () => {
+export const executeOpponentTurn = () => {
   let fieldPlayOrder = _getOpponentMinionPlayOrder();
   let turn = [];
   for (let fieldPlayCard of fieldPlayOrder) {
     let cardActions = _getFieldMinionActions(fieldPlayCard);
     turn.push(...cardActions);
   }
-  return turn;
+  GameModel.recordOpponentTurn(turn);
 }
 
 function _getOpponentMinionPlayOrder() {
@@ -26,13 +27,13 @@ function _getOpponentMinionPlayOrder() {
 function _getMinionIndicesOnField() {
   let minionCard = [];
   if (_minionOnFieldIndex(0)) {
-    minionCard.push(_getMinionCardDetails(0));
+    minionCard.push(_getOpponentMinionCardContext(0));
   }
   if (_minionOnFieldIndex(1)) {
-    minionCard.push(_getMinionCardDetails(1));
+    minionCard.push(_getOpponentMinionCardContext(1));
   }
   if (_minionOnFieldIndex(2)) {
-    minionCard.push(_getMinionCardDetails(2));
+    minionCard.push(_getOpponentMinionCardContext(2));
   }
   return minionCard;
 }
@@ -41,9 +42,20 @@ function _minionOnFieldIndex(playAreaIndex) {
   return !!CardsModel.Model.opponent.field.slots[playAreaIndex].id;
 }
 
-function _getMinionCardDetails(playAreaIndex) {
+function _getOpponentMinionCardContext(playAreaIndex) {
   let id = CardsModel.Model.opponent.field.slots[playAreaIndex].id;
   let instance = CardsModel.Model.opponent.field.slots[playAreaIndex].instance;
+  return {
+    playAreaIndex: playAreaIndex,
+    card: Cards.getCard(CardsModel.Model.cards, id, instance),
+    id,
+    instance
+  };
+}
+
+function _getPlayerMinionCardContext(playAreaIndex) {
+  let id = CardsModel.Model.player.field.slots[playAreaIndex].id;
+  let instance = CardsModel.Model.player.field.slots[playAreaIndex].instance;
   return {
     playAreaIndex: playAreaIndex,
     card: Cards.getCard(CardsModel.Model.cards, id, instance),
@@ -70,26 +82,26 @@ function _getFieldMinionActions(minionCard) {
       actions.push(results.action);
       continue;
     }
-    let possibleTargets = _playerMinionsThatCanBeReached(minionCard);
-    possibleTargets = _targetsThatCanBeDealtMaxDamage(minionCard, possibleTargets);
-    if (possibleTargets.length === 0) {
+    let possibleTargetIndices = CardActions.indicesInAttackRange(minionCard);
+    possibleTargetIndices = _targetsThatCanBeDealtMaxDamage(minionCard, possibleTargetIndices);
+    if (possibleTargetIndices.length === 0) {
       break;
     }
-    if (possibleTargets.length === 1) {
-      actions.push(_attackTarget(minionCard, possibleTargets[0]));
+    if (possibleTargetIndices.length === 1) {
+      actions.push(_attackTarget(minionCard, possibleTargetIndices[0]));
       continue;
     }
-    let previousPossibleTargets = [...possibleTargets];
-    possibleTargets = _targetsThatCanBeKilledAtMaxDamage(minionCard, possibleTargets);
-    if (possibleTargets.length === 0) {
+    let previousPossibleTargets = [...possibleTargetIndices];
+    possibleTargetIndices = _targetsThatCanBeKilled(minionCard, possibleTargetIndices);
+    if (possibleTargetIndices.length === 0) {
       actions.push(_attackRandomTarget(minionCard, previousPossibleTargets));
       continue;
     }
-    if (possibleTargets.length === 1) {
-      actions.push(_attackTarget(minionCard, possibleTargets[0]));
+    if (possibleTargetIndices.length === 1) {
+      actions.push(_attackTarget(minionCard, possibleTargetIndices[0]));
       continue;
     }
-    actions.push(_attackRandomTarget(minionCard, possibleTargets));
+    actions.push(_attackRandomTarget(minionCard, possibleTargetIndices));
   }
   return actions;
 }
@@ -121,178 +133,97 @@ function _attackPlayer(minionCard) {
   };
 }
 
-    // @TODO: continue here
-    console.trace('HERE');
-
-
-function _canAttackPlayer(state, playAreaIndex) {
-  const inRangeTargets = _possibleTargetsInRange(state, playAreaIndex)
-  for (let targetFieldIndex of inRangeTargets) {
-    if (!_playerCardOnFieldIndex(state, targetFieldIndex)) {
-      return true
+function _targetsThatCanBeDealtMaxDamage(minionCard, possibleTargetIndices) {
+  let maxDamage = 1;
+  let possibleMaxDamageTargetIndices = [];
+  for (let targetAreaIndex of possibleTargetIndices) {
+    let damageDealt = _healthLostFromAttack(minionCard, targetAreaIndex);
+    if (damageDealt > maxDamage) {
+      possibleMaxDamageTargetIndices = [];
+      maxDamage = damageDealt;
+    }
+    if (damageDealt === maxDamage) {
+      possibleMaxDamageTargetIndices.push(targetAreaIndex);
     }
   }
-  return false
+  return possibleMaxDamageTargetIndices;
 }
 
-function _possibleTargetsInRange(state, playAreaIndex) {
-  const inRangeFieldIndices = []
-  const cardId = state.opponentField[playAreaIndex].id
-  const cardInstance = state.opponentField[playAreaIndex].instance
-  const card = GetCard(state.opponentCards, cardId, cardInstance)
-  if (card.conditions.exhausted) {
-    return inRangeFieldIndices
-  }
-  if (_indexWithinRange(card.range, playAreaIndex, 0)) {
-    inRangeFieldIndices.push(0)
-  }
-  if (_indexWithinRange(card.range, playAreaIndex, 1)) {
-    inRangeFieldIndices.push(1)
-  }
-  if (_indexWithinRange(card.range, playAreaIndex, 2)) {
-    inRangeFieldIndices.push(2)
-  }
-  return inRangeFieldIndices
+function _healthLostFromAttack(minionCard, targetAreaIndex) {
+  let playerCard = _getPlayerMinionCardContext(targetAreaIndex);
+  let { updatedCards } = CardActions.attackMinion(CardsModel.Model.cards, minionCard, playerCard);
+  let updatedPlayerCard = _getUpdatedCard(playerCard, updatedCards);
+  return playerCard.card.health - updatedPlayerCard.card.health;
 }
 
-function _indexWithinRange(range, playAreaIndex, targetFieldIndex) {
-  return Math.abs(targetFieldIndex - playAreaIndex) < range
+function _getUpdatedCard(cardContext, updatedCards) {
+  for (let updatedCard of updatedCards) {
+    if (updatedCard.id === cardContext.id && updatedCard.instance === cardContext.instance) {
+      return updatedCard;
+    }
+  }
+  Log.error(`Unable to find the updated card: ${cardContext.id}::${cardContext.instance}, returning original`);
+  return cardContext;
 }
 
-function _playerCardOnFieldIndex(state, playAreaIndex) {
-  return !!state.playerField[playAreaIndex].id
-}
-
-function _attackPlayer(state, playAreaIndex) {
-  const cardId = state.opponentField[playAreaIndex].id
-  const cardInstance = state.opponentField[playAreaIndex].instance
-  const opponentCard = GetCard(state.opponentCards, cardId, cardInstance)
-  GetAttackingPlayerResults(opponentCard)
+function _attackTarget(minionCard, targetAreaIndex) {
+  let playerCard = _getPlayerMinionCardContext(targetAreaIndex);
+  let { updatedCards, attackedDiscarded, attackerDiscarded } = CardActions.attackMinion(CardsModel.Model.cards, minionCard, playerCard);
+  Cards.setCards(CardsModel.Model.cards, updatedCards);
+  if (attackedDiscarded) {
+    CardsModel.Model.player.discardPile.push({
+      id: playerCard.id,
+      instance: playerCard.instance
+    });
+    CardsModel.Model.player.field.slots[targetAreaIndex] = {
+      id: null,
+      instance: null
+    };
+  }
+  if (attackerDiscarded) {
+    CardsModel.Model.opponent.field.slots[minionCard.playAreaIndex] = {
+      id: null,
+      instance: null
+    };
+  }
   return {
-    type: ATTACK_PLAYER,
-    opponentFieldCardIndex: playAreaIndex
-  }
+    type: ACTION_TYPES.PLAY_MINION,
+    source: {
+      id: minionCard.id,
+      instance: minionCard.instance,
+      playAreaIndex: minionCard.playAreaIndex
+    },
+    targets: [
+      {
+        type: ACTION_TARGET_TYPES.ATTACK_MINION,
+        playAreaIndex: playerCard.playAreaIndex,
+        id: playerCard.id,
+        instance: playerCard.instance
+      }
+    ]
+  };
 }
 
-// @NOTE: pretty sure we don't need because _targetsThatCanBeDealtMaxDamage
-// already checks targets that can be damaged.
-// function _targetsThatCanBeDamaged(state, playAreaIndex) {
-//   const possibleTargets = []
-//   const inRangeTargets = _possibleTargetsInRange(state, playAreaIndex)
-//   for (let targetFieldIndex of inRangeTargets) {
-//     if (_healthLostFromAttack(state, playAreaIndex, targetFieldIndex) > 0) {
-//       possibleTargets.push(targetFieldIndex)
-//     }
-//   }
-//   return possibleTargets
-// }
-
-function _healthLostFromAttack(state, playAreaIndex, targetFieldIndex) {
-  let cardId = state.opponentField[playAreaIndex].id
-  let cardInstance = state.opponentField[playAreaIndex].instance
-  const opponentCard = GetCard(state.opponentCards, cardId, cardInstance)
-  cardId = state.playerField[targetFieldIndex].id
-  cardInstance = state.playerField[targetFieldIndex].instance
-  const playerCard = GetCard(state.cards, cardId, cardInstance)
-  const resultingPlayerCard = GetAttackedCardResults(opponentCard, playerCard)
-  if (resultingPlayerCard.health < 0) {
-    resultingPlayerCard.health = 0
-  }
-  return playerCard.health - resultingPlayerCard.health
-}
-
-function _attackTarget(state, playAreaIndex, targetFieldIndex) {
-  let cardId = state.opponentField[playAreaIndex].id
-  let cardInstance = state.opponentField[playAreaIndex].instance
-  const opponentCard = GetCard(state.opponentCards, cardId, cardInstance)
-  cardId = state.playerField[targetFieldIndex].id
-  cardInstance = state.playerField[targetFieldIndex].instance
-  const playerCard = GetCard(state.cards, cardId, cardInstance)
-  GetAttackedCardResults(opponentCard, playerCard, true)
-  GetAttackingCardResults(opponentCard, playerCard, true)
-  return {
-    type: ATTACK_CARD,
-    playerFieldCardIndex: targetFieldIndex,
-    opponentFieldCardIndex: playAreaIndex
-  }
-}
-
-function _targetsThatCanBeDealtMaxDamage(state, playAreaIndex) {
-  const possibleTargets = []
-  const damageDealtPairings = []
-  let maxDamage = 1
-  const inRangeTargets = _possibleTargetsInRange(state, playAreaIndex)
-  for (let targetFieldIndex of inRangeTargets) {
-    let damageDealt = _healthLostFromAttack(state, playAreaIndex, targetFieldIndex)
-    if (damageDealt >= maxDamage) {
-      maxDamage = damageDealt
-      possibleTargets.push(targetFieldIndex)
-      damageDealtPairings.push(damageDealt)
-    }
-  }
-  const possibleMaxDamageTargets = []
-  for (let index of possibleTargets.keys()) {
-    if (damageDealtPairings[index] === maxDamage) {
-      possibleMaxDamageTargets.push(possibleTargets[index])
-    }
-  }
-  return possibleMaxDamageTargets
-}
-
-function _attackRandomTarget(state, playAreaIndex, targetFieldIndices) {
-  return _attackTarget(state, playAreaIndex, _getRandomItemFromArray(targetFieldIndices))
+function _attackRandomTarget(minionCard, targetAreaIndices) {
+  return _attackTarget(minionCard, _getRandomItemFromArray(targetAreaIndices))
 }
 
 function _getRandomItemFromArray(arr) {
   return arr[Math.floor(Math.random()*arr.length)]
 }
 
-function _targetsThatCanBeKilledAtMaxDamage(state, playAreaIndex, possibleTargets) {
-  const possibleKilledTargets = []
-  for (let targetFieldIndex of possibleTargets) {
-    if (_healthRemainingFromAttack(state, playAreaIndex, targetFieldIndex) <= 0) {
-      possibleKilledTargets.push(targetFieldIndex)
+function _targetsThatCanBeKilled(minionCard, possibleTargetIndices) {
+  const possibleKilledTargetIndices = [];
+  for (let targetAreaIndex of possibleTargetIndices) {
+    if (_killedFromAttack(minionCard, targetAreaIndex)) {
+      possibleKilledTargetIndices.push(targetAreaIndex);
     }
   }
-  return possibleKilledTargets
+  return possibleKilledTargetIndices;
 }
 
-function _healthRemainingFromAttack(state, playAreaIndex, targetFieldIndex) {
-  let cardId = state.opponentField[playAreaIndex].id
-  let cardInstance = state.opponentField[playAreaIndex].instance
-  const opponentCard = GetCard(state.opponentCards, cardId, cardInstance)
-  cardId = state.playerField[targetFieldIndex].id
-  cardInstance = state.playerField[targetFieldIndex].instance
-  const playerCard = GetCard(state.cards, cardId, cardInstance)
-  const resultingPlayerCard = GetAttackedCardResults(opponentCard, playerCard)
-  return resultingPlayerCard.health
-}
-
-export const SetOpponentTurnResults = (turn, state = null, status = null) => {
-  for (let action of turn) {
-    _recordOpponentAction(state, status, action)
-  }
-  if (!status) {
-    return null
-  }
-  return status.health.current
-}
-
-const _recordOpponentAction = (state, status, action) => {
-  switch(action.type) {
-    case ATTACK_CARD:
-      return _recordAttackPlayerCardAction(state, action)
-    case ATTACK_PLAYER:
-      return _recordAttackPlayerAction(state, status, action)
-    default:
-      console.error(`Unexpected action type: ${action.type}`)
-  }
-}
-
-const _recordAttackPlayerCardAction = (state, action) => {
-  AttackPlayerCardResults(state, action.playerFieldCardIndex, action.opponentFieldCardIndex)
-}
-
-const _recordAttackPlayerAction = (state, status, action) => {
-  AttackPlayerResults(state, action.opponentFieldCardIndex, status)
+function _killedFromAttack(minionCard, targetAreaIndex) {
+  let playerCard = _getPlayerMinionCardContext(targetAreaIndex);
+  let { attackedDiscarded } = CardActions.attackMinion(CardsModel.Model.cards, minionCard, playerCard);
+  return attackedDiscarded;
 }

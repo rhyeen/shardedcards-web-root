@@ -3,6 +3,41 @@ import { CARD_ABILITIES } from '../../../sc_shared/src/entities/card-keywords.js
 import { Log } from '../../../sc_shared/src/services/logger.js';
 import { CARD_TARGETS } from '../entities/selected-card.js';
 
+export function canAttackPlayer(selectedCard, playerFieldSlots, cards) {
+  let indices = indicesInAttackRange(selectedCard);
+  for (let i of indices) {
+    if (!_minionOnPlayAreaIndex(playerFieldSlots, i)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function indicesInAttackRange(selectedCard) {
+  let inRangeFieldIndices = [];
+  if (selectedCard.card.conditions.exhausted) {
+    return inRangeFieldIndices;
+  }
+  if (_indexWithinRange(selectedCard.card.range, selectedCard.playAreaIndex, 0)) {
+    inRangeFieldIndices.push(0);
+  }
+  if (_indexWithinRange(selectedCard.card.range, selectedCard.playAreaIndex, 1)) {
+    inRangeFieldIndices.push(1);
+  }
+  if (_indexWithinRange(selectedCard.card.range, selectedCard.playAreaIndex, 2)) {
+    inRangeFieldIndices.push(2);
+  }
+  return inRangeFieldIndices;
+}
+
+function _indexWithinRange(range, playAreaIndex, targetFieldIndex) {
+  return Math.abs(targetFieldIndex - playAreaIndex) < range;
+}
+
+function _minionOnPlayAreaIndex(fieldSlots, playAreaIndex) {
+  return !!fieldSlots[playAreaIndex].id;
+}
+
 export function summonMinion(selectedCard, playerFieldCard) {
   let updatedCards = [selectedCard];
   if (playerFieldCard.card) {
@@ -66,11 +101,14 @@ function _damageCard(damage, card) {
     card.health -= damage - card.conditions.shield;
     card.conditions.shield = 0;
   }
+  if (card.health < 0) {
+    card.health = 0;
+  }
   card.version += 1;
 }
 
 function _prepareCardForDiscard(cards, card, cardId) {
-  if (card.health > 0) {
+  if (Cards.isDead(card)) {
     return false;
   }
   _resetCard(cards, card, cardId);
