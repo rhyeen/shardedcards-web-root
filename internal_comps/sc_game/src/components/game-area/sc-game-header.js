@@ -1,7 +1,7 @@
 import { html, LitElement } from '@polymer/lit-element';
 import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
 
-import store from '../../state/store.js';
+import { localStore } from '../../state/store.js';
 
 import '../../../../sc_status/src/components/bar-items/sc-energy-bar-item.js';
 import '../../../../sc_status/src/components/bar-items/sc-health-bar-item.js';
@@ -39,7 +39,7 @@ export class ScGameHeader extends LitElement {
   }
 
   _openMenu() {
-    store.dispatch(showInGameMenu());
+    localStore.dispatch(showInGameMenu());
   }
 }
 

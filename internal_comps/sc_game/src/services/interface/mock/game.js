@@ -18,7 +18,7 @@ export const endCrafting = (turn) => {
   return new Promise((resolve) => {
     Mock.debugRequest(endCrafting);
     GameController.executeCraftingTurn(turn);
-    opponentTurn = GameController.getOpponentTurn();
+    let opponentTurn = GameController.getOpponentTurn();
     setTimeout(() => {
       let response = {
         opponentTurn: opponentTurn.actions,

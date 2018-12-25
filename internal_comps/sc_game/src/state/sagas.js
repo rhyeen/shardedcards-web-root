@@ -2,6 +2,7 @@ import { put, takeEvery, all, call } from 'redux-saga/effects';
 import * as GameInterface from '../services/interface/game.js';
 import * as GameSelector from './selectors.js';
 import { localStore } from './store.js';
+import { Log } from '../../../sc_shared/src/services/logger.js';
 
 import * as Actions from './actions.js';
 import * as CardsDispatchActions  from '../../../sc_cards/src/state/actions.js';
@@ -27,7 +28,7 @@ function* _beginCrafting() {
 
 function* _endCrafting(turn) {
   try {
-    let { opponentTurn, updatedCards } = yield call(GameInterface.endCrafting(turn));
+    let { opponentTurn, updatedCards } = yield call(GameInterface.endCrafting, turn);
     console.trace('@TODO: update turn history with opponent turn');
     yield put(Actions.endCrafting.success());
     yield put(CardsDispatchActions.setUpdatedCards(updatedCards))
