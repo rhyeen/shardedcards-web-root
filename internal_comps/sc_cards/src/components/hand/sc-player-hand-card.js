@@ -17,7 +17,7 @@ class ScPlayerHandCard extends LitElement {
           justify-content: space-between;
           align-items: top;
           max-width: calc(var(${CARDS.HAND.WIDTH}) - 2*var(${CARDS.HAND.PADDING}));
-          background-color: var(${CardRarityColor(card.rarity)});
+          background-color: var(${CardRarityColor(this.card.rarity)});
           box-shadow: var(${CARDS.HAND.ELEVATION});
           border-top-left-radius: var(${CARDS.HAND.BORDER_RADIUS});
           border-top-right-radius: var(${CARDS.HAND.BORDER_RADIUS});

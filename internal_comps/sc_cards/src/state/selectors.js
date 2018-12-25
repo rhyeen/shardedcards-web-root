@@ -22,19 +22,19 @@ export const getCards = createSelector(
 export const getHandCards = createSelector(
   _playerHandCardsSelector,
   _cardsSelector,
-  (handCardsIds, cards) => {
+  (hand, cards) => {
     let handCards = [];
-    for (let handCardIds of handCardsIds) {
-      handCards.push(_getHandCard(handCardsIds, cards));
+    for (let handCard of hand) {
+      handCards.push(_getHandCard(handCard, cards));
     }
     return handCards;
   }
 );
 
-function _getHandCard(handCardIds, cards) {
+function _getHandCard(handCard, cards) {
   return {
-    ...handCardIds,
-    card: getCard(cards, handCardIds.id, handCardIds.instance)
+    ...handCard,
+    card: getCard(cards, handCard.id, handCard.instance)
   };
 }
 

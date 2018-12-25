@@ -86,15 +86,15 @@ class ScCardValue extends LitElement {
 
   _cardPartValue() {
     switch (this.valueType) {
-      case PART_TYPE_ATTACK:
+      case VALUE_TYPES.ATTACK:
         return this.card.attack;
-      case PART_TYPE_COST:
+      case VALUE_TYPES.COST:
         return this.card.cost;
-      case PART_TYPE_HEALTH:
+      case VALUE_TYPES.HEALTH:
         return this.card.health;
-      case PART_TYPE_RANGE:
+      case VALUE_TYPES.RANGE:
         return this.card.range;
-      case PART_TYPE_SHIELD:
+      case VALUE_TYPES.SHIELD:
         if (!this.card.conditions) {
           return html``;
         }
@@ -107,19 +107,19 @@ class ScCardValue extends LitElement {
   _cardPartIcon() {
     let iconFunction;
     switch(this.valueType) {
-      case PART_TYPE_ATTACK:
+      case VALUE_TYPES.ATTACK:
         iconFunction = AttackIcon;
         break;
-      case PART_TYPE_COST:
+      case VALUE_TYPES.COST:
         iconFunction = EnergyIcon;
         break;
-      case PART_TYPE_HEALTH:
+      case VALUE_TYPES.HEALTH:
         iconFunction = HealthIcon;
         break;
-      case PART_TYPE_RANGE:
+      case VALUE_TYPES.RANGE:
         iconFunction = RangeIcon;
         break;
-      case PART_TYPE_SHIELD:
+      case VALUE_TYPES.SHIELD:
         iconFunction = ShieldIcon;
         break;
       default:
