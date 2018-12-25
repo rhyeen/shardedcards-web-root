@@ -117,14 +117,17 @@ function _prepareCardForDiscard(cards, card, cardId) {
 
 /** @MUTATES: cards */
 export function resetCards(cards, cardInstances) {
-  for (let cardInstance in cardInstances) {
-    let card = cards[cardInstance.id].instances[cardInstance.instance];
+  for (let cardInstance of cardInstances) {
+    let card = Cards.getCard(cards, cardInstance.id, cardInstance.instance);
     _resetCard(cards, card, cardInstance.id);
   }
 }
 
 function _resetCard(cards, card, cardId) {
   let parentCard = Cards.getParentCard(cards, cardId);
+  if (!card.conditions) {
+    card.conditions = {};
+  }
   card.conditions.exhausted = false;
   card.conditions.shield = 0;
   card.version += 1;
@@ -143,11 +146,14 @@ function _deepCopy(obj) {
   return JSON.parse(JSON.stringify(obj))
 }
 
-export function refreshCards(cards) {
-  updatedCards = [];
-  for (let card of cards) {
-    if (_refreshCard(card.card)) {
-      updatedCards.push(card);
+export function refreshCards(cardContexts) {
+  let updatedCards = [];
+  for (let cardContext of cardContexts) {
+    if (!cardContext.id) {
+      continue;
+    }
+    if (_refreshCard(cardContext.card)) {
+      updatedCards.push(cardContext);
     }
   }
   return updatedCards;
@@ -155,6 +161,9 @@ export function refreshCards(cards) {
 
 function _refreshCard(card) {
   let cardNeedsRefreshing = false;
+  if (!card.conditions) {
+    card.conditions = {};
+  }
   if (card.conditions.exhausted || card.conditions.shield > 0) {
     cardNeedsRefreshing = true;
   }

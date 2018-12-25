@@ -41,7 +41,7 @@ export function getInitialDeck() {
     },
     {
       id: 'rangedweapon',
-      instance: '5'
+      instance: '4'
     }
   ];
 }

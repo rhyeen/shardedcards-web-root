@@ -1,4 +1,4 @@
-import { put, takeEvery, all } from 'redux-saga/effects';
+import { put, takeEvery, all, call } from 'redux-saga/effects';
 import * as GameInterface from '../services/interface/game.js';
 import * as GameSelector from './selectors.js';
 import { localStore } from './store.js';
@@ -15,14 +15,10 @@ function* _beginTurn() {
 }
 
 function* _resetGame() {
-  yield _callBeginGame();
+  yield call(GameInterface.beginGame);
   yield put(CardsDispatchActions.setCards.request());
   yield put(Actions.beginTurn.request());
   yield put(Actions.resetGame.success());
-}
-
-function _callBeginGame() {
-  GameInterface.beginGame();
 }
 
 function* _beginCrafting() {
@@ -51,7 +47,7 @@ function* _loseGame() {
 }
 
 function* _endTurn() {
-  yield _callEndTurn();
+  yield call(_callEndTurn);
   yield put(Actions.endTurn.success());
   yield put(Actions.beginCrafting.request());
 }
@@ -59,7 +55,7 @@ function* _endTurn() {
 function _callEndTurn() {
   const state = localStore.getState();
   let turn = GameSelector.getPendingTurn(state);
-  GameInterface.endTurn(turn);
+  return GameInterface.endTurn(turn);
 }
 
 export default function* root() {

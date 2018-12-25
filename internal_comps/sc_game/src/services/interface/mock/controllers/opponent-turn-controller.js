@@ -22,7 +22,7 @@ export const fulfillOpponentTurn = () => {
 }
 
 function _prepareUpdatedCards(updatedCards) {
-  updatedCardsSet = [];
+  let updatedCardsSet = [];
   for (let updatedCard of updatedCards) {
     if (!_cardInSet(updatedCardsSet, updatedCard)) {
       updatedCardsSet.push({
@@ -51,20 +51,24 @@ function _getOpponentMinionPlayOrder() {
 
 function _getMinionIndicesOnField() {
   let minionCard = [];
-  if (_minionOnFieldIndex(0)) {
+  if (_opponentMinionOnFieldIndex(0)) {
     minionCard.push(_getOpponentMinionCardContext(0));
   }
-  if (_minionOnFieldIndex(1)) {
+  if (_opponentMinionOnFieldIndex(1)) {
     minionCard.push(_getOpponentMinionCardContext(1));
   }
-  if (_minionOnFieldIndex(2)) {
+  if (_opponentMinionOnFieldIndex(2)) {
     minionCard.push(_getOpponentMinionCardContext(2));
   }
   return minionCard;
 }
 
-function _minionOnFieldIndex(playAreaIndex) {
+function _opponentMinionOnFieldIndex(playAreaIndex) {
   return !!CardsModel.Model.opponent.field.slots[playAreaIndex].id;
+}
+
+function _playerMinionOnFieldIndex(playAreaIndex) {
+  return !!CardsModel.Model.player.field.slots[playAreaIndex].id;
 }
 
 function _getOpponentMinionCardContext(playAreaIndex) {
@@ -109,7 +113,7 @@ function _getFieldMinionActions(minionCard) {
       actions.push(action);
       continue;
     }
-    let possibleTargetIndices = CardActions.indicesInAttackRange(minionCard);
+    let possibleTargetIndices = _targetsInRange(minionCard);
     if (!possibleTargetIndices.length) {
       break;
     }
@@ -141,7 +145,18 @@ function _getFieldMinionActions(minionCard) {
     actions.push(action);
     actionsUpdatedCards.push(updatedCards);
   }
-  return { actions, actionsUpdatedCards };
+  return { actions, updatedCards: actionsUpdatedCards };
+}
+
+function _targetsInRange(minionCard) {
+  let indicesInRange = CardActions.indicesInAttackRange(minionCard);
+  let possibleTargets = [];
+  for (let playAreaIndex of indicesInRange) {
+    if (_playerMinionOnFieldIndex(playAreaIndex)) {
+      possibleTargets.push(playAreaIndex);
+    }
+  }
+  return possibleTargets;
 }
 
 function _attackPlayer(minionCard) {

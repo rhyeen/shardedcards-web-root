@@ -1,7 +1,7 @@
 export function getCards(cards, cardInstances) {
   return cardInstances.map((cardInstance) => {
     return {
-      ...cardInstances,
+      ...cardInstance,
       card: getCard(cards, cardInstance.id, cardInstance.instance)
     };
   });
