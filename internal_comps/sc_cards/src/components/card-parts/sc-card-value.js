@@ -47,6 +47,12 @@ class ScCardValue extends LitElement {
           display: none;
         }
 
+        [card-part] .icon,
+        [card-part] .current {
+          display: flex;
+          align-items: center;
+        }
+
         [card-part] .icon .background-svg-icon {
           fill: var(${APP_COLORS.SVG_DEFAULT});
         }

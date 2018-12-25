@@ -9,6 +9,7 @@ export const beginGame = () => {
     Mock.debugRequest(beginGame);
     GameController.initializeGame();
     setTimeout(() => {
+      Mock.debugSuccessfulResponse(beginGame);
       resolve();
     }, CALLBACK_TIME.POST);
   });
@@ -35,6 +36,7 @@ export const endTurn = (turn) => {
     Mock.debugRequest(endTurn);
     GameController.executePlayTurn(turn);
     setTimeout(() => {
+      Mock.debugSuccessfulResponse(endTurn);
       resolve();
     }, CALLBACK_TIME.POST);
   })
