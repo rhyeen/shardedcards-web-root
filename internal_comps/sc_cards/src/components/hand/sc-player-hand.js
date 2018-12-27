@@ -4,7 +4,7 @@ import { ScCardStyles, CARDS, AREAS } from '../../entities/sc_card-styles.js';
 import { connect } from 'pwa-helpers/connect-mixin.js';
 import { localStore } from '../../state/store.js';
 
-import * as CardSelector from '../../state/selectors.js';
+import * as CardsSelector from '../../state/selectors.js';
 import { selectCardFromHand } from '../../state/actions.js';
 import './sc-player-hand-card.js';
 
@@ -110,8 +110,8 @@ class ScPlayerHand extends connect(localStore)(LitElement) {
   }
 
   stateChanged(state) {
-    this._selectedCard = CardSelector.getSelectedCard(state);
-    this._handCards = CardSelector.getHandCards(state);
+    this._selectedCard = CardsSelector.getSelectedCard(state);
+    this._handCards = CardsSelector.getHandCards(state);
   }
 }
 

@@ -15,19 +15,36 @@ export function canAttackPlayer(selectedCard, playerFieldSlots, cards) {
 
 export function indicesInAttackRange(selectedCard) {
   let inRangeFieldIndices = [];
-  if (selectedCard.card.conditions.exhausted) {
-    return inRangeFieldIndices;
-  }
-  if (_indexWithinRange(selectedCard.card.range, selectedCard.playAreaIndex, 0)) {
+  if (indexInAttackRange(selectedCard, 0)) {
     inRangeFieldIndices.push(0);
   }
-  if (_indexWithinRange(selectedCard.card.range, selectedCard.playAreaIndex, 1)) {
+  if (indexInAttackRange(selectedCard, 1)) {
     inRangeFieldIndices.push(1);
   }
-  if (_indexWithinRange(selectedCard.card.range, selectedCard.playAreaIndex, 2)) {
+  if (indexInAttackRange(selectedCard, 2)) {
     inRangeFieldIndices.push(2);
   }
   return inRangeFieldIndices;
+}
+
+export function indexInAttackRange(selectedCard, playAreaIndex) {
+  if (!selectedCard.card || (selectedCard.card.conditions && selectedCard.card.conditions.exhausted)) {
+    return false;
+  }
+  if (!_validPlayAreaIndex(selectedCard.playAreaIndex)) {
+    return false;
+  }
+  if (!_validPlayAreaIndex(playAreaIndex)) {
+    return false;
+  }
+  if (!(selectedCard.card.range > 0)) {
+    return false;
+  }
+  return _indexWithinRange(selectedCard.card.range, selectedCard.playAreaIndex, playAreaIndex);
+}
+
+function _validPlayAreaIndex(playAreaIndex) {
+  return playAreaIndex <= 2 && playAreaIndex >= 0;
 }
 
 function _indexWithinRange(range, playAreaIndex, targetFieldIndex) {

@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { getCard } from '../services/card-selection.js';
+import { getCard, getCardAbility } from '../services/card-selection.js';
 
 const _playerDeckSelector = state => state.sc_cards.entities.player.deck;
 const _playerDiscardPileCardsSelector = state => state.sc_cards.entities.player.discardPile.cards;
@@ -113,15 +113,16 @@ export const getOpponentFieldBacklogSizes = createSelector(
 
 function _getFieldSlots(fieldSlots, cards) {
   return [
-    _getFieldSlot(fieldSlots[0], cards),
-    _getFieldSlot(fieldSlots[1], cards),
-    _getFieldSlot(fieldSlots[2], cards)
+    _getFieldSlot(fieldSlots, 0, cards),
+    _getFieldSlot(fieldSlots, 1, cards),
+    _getFieldSlot(fieldSlots, 2, cards)
   ];
 }
 
-function _getFieldSlot(fieldSlot, cards) {
+function _getFieldSlot(fieldSlots, playAreaIndex, cards) {
   return {
-    ...fieldSlot,
-    card: getCard(cards, fieldSlot.id, fieldSlot.instance)
+    ...fieldSlots[playAreaIndex],
+    playAreaIndex,
+    card: getCard(cards, fieldSlots[playAreaIndex].id, fieldSlots[playAreaIndex].instance)
   };
 }

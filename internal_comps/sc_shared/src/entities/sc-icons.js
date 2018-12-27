@@ -28,10 +28,10 @@ export const ScIconsStyles = html`
 <style>
   [svg-icon] {
     /** @DEBUG: defined as a const in sc-shared-styles, maybe we should keep them together? **/
-    --default-svg-color: #212121;
+    --sc_shared-default-svg-color: #212121;
     width: 24px;
     height: 24px;
-    fill: var(--default-svg-color);
+    fill: var(--sc_shared-default-svg-color);
   }
 
   [svg-icon].energy-svg-icon {

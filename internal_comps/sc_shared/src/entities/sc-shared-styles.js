@@ -4,34 +4,34 @@ import { Log } from '../services/logger.js';
 import { CARD_RARITIES } from './card-keywords.js';
 
 export const CARD_RARITIES_COLOR = {
-  UNDEFINED: '--card-rarity-undefined-color',
-  COMMON: '--card-rarity-common-color',
-  RARE: '--card-rarity-rare-color',
-  EPIC: '--card-rarity-epic-color',
-  LEGENDARY: '--card-rarity-legendary-color',
-  STANDARD: '--card-rarity-standard-color'
+  UNDEFINED: '--sc_shared-card-rarity-undefined-color',
+  COMMON: '--sc_shared-card-rarity-common-color',
+  RARE: '--sc_shared-card-rarity-rare-color',
+  EPIC: '--sc_shared-card-rarity-epic-color',
+  LEGENDARY: '--sc_shared-card-rarity-legendary-color',
+  STANDARD: '--sc_shared-card-rarity-standard-color'
 };
 
 export const APP_COLORS = {
-  NEAR_BLACK: '--near-black',
-  NEAR_WHITE: '--near-white',
-  BASE_WHITE: '--base-white',
-  NEAR_WHITE_BORDER: '--near-white-border',
-  OFF_BLACK: '--off-black',
-  OVERLAY_BLACK: '--overlay-black',
-  OVERLAY_WHITE: '--overlay-white',
-  OVERLAY_CARD_WHITE: '--overlay-card-white',
-  SVG_DEFAULT: '--default-svg-color'
+  NEAR_BLACK: '--sc_shared-near-black',
+  NEAR_WHITE: '--sc_shared-near-white',
+  BASE_WHITE: '--sc_shared-base-white',
+  NEAR_WHITE_BORDER: '--sc_shared-near-white-border',
+  OFF_BLACK: '--sc_shared-off-black',
+  OVERLAY_BLACK: '--sc_shared-overlay-black',
+  OVERLAY_WHITE: '--sc_shared-overlay-white',
+  OVERLAY_CARD_WHITE: '--sc_shared-overlay-card-white',
+  SVG_DEFAULT: '--sc_shared-default-svg-color'
 };
 
 export const SHADOW_ELEVATIONS = {
   LEVEL_1: {
-    BASE: '--sc-elevation-1',
-    INSET: '--sc-elevation-n1',
-    HOVER: '--sc-elevation-h1'
+    BASE: '--sc_shared-elevation-1',
+    INSET: '--sc_shared-elevation-n1',
+    HOVER: '--sc_shared-elevation-h1'
   },
   SIDE_BAR: {
-    BASE: '--sc-elevation-side-bar'
+    BASE: '--sc_shared-elevation-side-bar'
   }
 };
 
@@ -58,29 +58,29 @@ export const CardRarityColor = function(rarity) {
 export const ScSharedStyles = html`
 <style>
   :host {
-    --card-rarity-undefined-color: #EFEBE9;
-    --card-rarity-common-color: #B0BEC5;
-    --card-rarity-rare-color: #64B5F6;
-    --card-rarity-epic-color: #BA68C8;
-    --card-rarity-legendary-color: #FFD54F;
-    --card-rarity-standard-color: #B2DFDB;
+    --sc_shared-card-rarity-undefined-color: #EFEBE9;
+    --sc_shared-card-rarity-common-color: #B0BEC5;
+    --sc_shared-card-rarity-rare-color: #64B5F6;
+    --sc_shared-card-rarity-epic-color: #BA68C8;
+    --sc_shared-card-rarity-legendary-color: #FFD54F;
+    --sc_shared-card-rarity-standard-color: #B2DFDB;
 
-    --near-black: #222426;
-    --near-white: #F7FBFF;
-    --base-white: #FFF;
-    --near-white-border: #E7EBEF;
-    --off-black: #525456;
+    --sc_shared-near-black: #222426;
+    --sc_shared-near-white: #F7FBFF;
+    --sc_shared-base-white: #FFF;
+    --sc_shared-near-white-border: #E7EBEF;
+    --sc_shared-off-black: #525456;
     
-    --overlay-black: rgba(0, 0, 0, 0.5);
-    --overlay-white: rgba(255, 255, 255, 0.8);
-    --overlay-card-white: rgba(255, 255, 255, 0.5);
+    --sc_shared-overlay-black: rgba(0, 0, 0, 0.5);
+    --sc_shared-overlay-white: rgba(255, 255, 255, 0.8);
+    --sc_shared-overlay-card-white: rgba(255, 255, 255, 0.5);
 
-    --sc-elevation-1: 1px 1px 5px rgba(0, 0, 0, 0.4);
-    --sc-elevation-n1: inset 1px 1px 5px rgba(0, 0, 0, 0.4);
-    --sc-elevation-h1:
+    --sc_shared-sc-elevation-1: 1px 1px 5px rgba(0, 0, 0, 0.4);
+    --sc_shared-sc-elevation-n1: inset 1px 1px 5px rgba(0, 0, 0, 0.4);
+    --sc_shared-sc-elevation-h1:
       1px 1px 5px rgba(0, 0, 0, 0.4),
       inset 0px 0px 80px rgba(0, 0, 0, 0.1);
-    --sc-elevation-side-bar: -2px 0px 10px rgba(0, 0, 0, 0.1);
+    --sc_shared-sc-elevation-side-bar: -2px 0px 10px rgba(0, 0, 0, 0.1);
   }
 
   button:focus {

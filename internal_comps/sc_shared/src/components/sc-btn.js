@@ -10,8 +10,8 @@ class ScBtn extends LitElement {
       ${ScSharedStyles}
       <style>
         :host {
-          --dark-btn-text-color: #FFF;
-          --light-btn-text-color: #212121;
+          --sc_shared-dark-btn-text-color: #FFF;
+          --sc_shared-light-btn-text-color: #212121;
         }
 
         button {
@@ -35,22 +35,22 @@ class ScBtn extends LitElement {
 
         button.btn-warning {
           background-color: #f44336;
-          color: var(--dark-btn-text-color);
+          color: var(--sc_shared-dark-btn-text-color);
         }
 
         button.btn-back {
           background-color: #424242;
-          color: var(--dark-btn-text-color);
+          color: var(--sc_shared-dark-btn-text-color);
         }
 
         button.btn-primary {
           background-color: #2196F3;
-          color: var(--dark-btn-text-color);
+          color: var(--sc_shared-dark-btn-text-color);
         }
 
         button.btn-secondary {
           background-color: #B0BEC5;
-          color: var(--dark-btn-text-color);
+          color: var(--sc_shared-dark-btn-text-color);
           padding: 8px 12px;
           line-height: 20px;
           font-size: 16px;

@@ -34,7 +34,7 @@ export function getCardAbility(cards, cardId, cardInstance, abilityId) {
 }
 
 export function getAbility(card, abilityId) {
-  if (!card || !card.abilities || !card.abilities.length) {
+  if (!card || !card.abilities || !card.abilities.length || !abilityId) {
     return null;
   }
   for (let ability of card.abilities) {
