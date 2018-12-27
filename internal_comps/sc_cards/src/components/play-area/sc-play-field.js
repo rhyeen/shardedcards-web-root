@@ -21,15 +21,15 @@ class ScPlayField extends connect(localStore)(LitElement) {
           display: flex;
         }
       </style>
-      <div class="field-pane-left">
+      <div class="field-slot-left" field-slot>
         ${this._getFieldCardHtml(0)}
       </div>
       <div ?overlay="${this.overlay}" field-slot-separator></div>
-      <div class="field-pane-middle">
+      <div class="field-slot-middle" field-slot>
         ${this._getFieldCardHtml(1)}
       </div>
       <div ?overlay="${this.overlay}" field-slot-separator></div>
-      <div class="field-pane-right">
+      <div class="field-slot-right" field-slot>
         ${this._getFieldCardHtml(2)}
       </div>
     `;

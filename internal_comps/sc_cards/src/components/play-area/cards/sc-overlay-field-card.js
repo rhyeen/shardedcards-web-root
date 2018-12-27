@@ -1,7 +1,6 @@
 import { LitElement, html } from '@polymer/lit-element';
 
 import { CARD_SOURCES, CARD_TARGETS } from '../../../entities/selected-card.js';
-import { Log } from '../../../../../sc_shared/src/services/logger.js';
 import { PLAY_FIELD_OWNER } from '../../../entities/play-field-owner.js';
 import * as CardActions from '../../../services/card-actions.js';
 import * as Cards from '../../../services/card-selection.js';
@@ -11,6 +10,8 @@ import {
   playPlayerMinion,
   summonMinion,
   useCardAbility } from '../../../state/actions.js';
+
+import './sc-minion-card.js';
 
 class ScOverlayFieldCard extends LitElement {
   render() {

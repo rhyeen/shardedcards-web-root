@@ -5,6 +5,8 @@ import { PLAY_FIELD_OWNER } from '../../../entities/play-field-owner.js';
 import { store } from 'intrastore/src/store';
 import { selectOpponentMinion, selectPlayerMinion } from '../../../state/actions.js';
 
+import './sc-minion-card.js';
+
 class ScMinionFieldCard extends LitElement {
   render() {
     return html`

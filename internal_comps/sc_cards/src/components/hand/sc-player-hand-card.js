@@ -12,11 +12,11 @@ class ScPlayerHandCard extends LitElement {
       ${ScCardStyles}
       <style>
         :host {
-          line-height: var(${CARDS.HAND.HEIGHT});
           display: flex;
           justify-content: space-between;
           align-items: top;
           max-width: calc(var(${CARDS.HAND.WIDTH}) - 2*var(${CARDS.HAND.PADDING}));
+          line-height: var(${CARDS.HAND.HEIGHT});
           background-color: var(${CardRarityColor(this.card.rarity)});
           box-shadow: var(${CARDS.HAND.ELEVATION});
           border-top-left-radius: var(${CARDS.HAND.BORDER_RADIUS});

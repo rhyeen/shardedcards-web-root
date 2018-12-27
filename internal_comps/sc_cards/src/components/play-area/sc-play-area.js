@@ -16,6 +16,7 @@ class ScPlayArea extends LitElement {
           display: flex;
           flex-direction: column;
           align-items: center;
+          flex: 1;
           width: 100%;
           max-width: var(${PLAY_AREA.MAX_WIDTH});
         }
@@ -34,7 +35,7 @@ class ScPlayArea extends LitElement {
 
         /** @NOTE: width/height are set here because we have the context regarding flex **/
         sc-play-field {
-          height: 100%;
+          flex: 1;
           width: 100%;
         }
       </style>
