@@ -1,6 +1,7 @@
 export const BTN_TYPES = {
   PRESET: {
-    BACK: 'btn-back'
+    BACK: 'btn-back',
+    CANCEL: 'btn-cancel'
   },
   GENERIC: {
     WARNING: 'btn-warning',

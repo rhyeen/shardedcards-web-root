@@ -16,6 +16,15 @@ export const CARDS = {
     BORDER_RADIUS: '--sc_card-minion-card-border-radius',
     ELEVATION: '--sc_card-minion-card-elevation',
     EXHAUSTED_OPACITY_VALUE: '0.5'
+  },
+  FULL: {
+    HEIGHT: '--sc_card-full-card-height',
+    WIDTH: '--sc_card-full-card-width',
+    BACKGROUND_COLOR: '--sc_card-full-card-background-color',
+    PADDING: '--sc_card-full-card-padding',
+    BORDER_RADIUS: '--sc_card-full-card-border-radius',
+    BORDER: '--sc_card-full-card-border',
+    ELEVATION: '--sc_card-full-card-elevation'
   }
 };
 
@@ -43,16 +52,21 @@ export const ScCardStyles = html`
     --sc_card-hand-card-hover-raise-height: 10px;
     --sc_card-hand-card-padding: 16px;
     --sc_card-hand-card-border-radius: 16px;
-    /** @DEBUG: should this be part of the generic elevations? **/
     --sc_card-hand-card-elevation: 0px -4px 20px rgba(0, 0, 0, 0.15);
 
     --sc_card-minion-card-height: 130px;
     --sc_card-minion-card-width: 90px;
     --sc_card-minion-card-padding: 4px;
     --sc_card-minion-card-border-radius: 8px;
-    /** @DEBUG: should this be part of the generic elevations?
-        it is just --sc_shared-sc-elevation-1 anyway **/
     --sc_card-minion-card-elevation: 1px 1px 5px rgba(0, 0, 0, 0.4);
+
+    --sc_card-full-card-height: 300px;
+    --sc_card-full-card-width: 200px;
+    --sc_card-full-card-background-color: #FFF;
+    --sc_card-full-card-padding: 16px;
+    --sc_card-full-card-border-radius: 8px;
+    --sc_card-full-card-border: var(--sc_card-full-card-border-radius) solid #000;
+    --sc_card-full-card-elevation: 2px 2px 10px rgba(0, 0, 0, 0.1);
 
     --sc_card-last-hand-card-extra-height: 4px;
     --sc_card-player-hand-height: calc(5*var(--sc_card-hand-card-height) + var(--sc_card-last-hand-card-extra-height));

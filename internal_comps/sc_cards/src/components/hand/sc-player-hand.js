@@ -6,7 +6,7 @@ import { localStore } from '../../state/store.js';
 
 import * as CardsSelector from '../../state/selectors.js';
 import { selectCardFromHand } from '../../state/actions.js';
-import './sc-player-hand-card.js';
+import './cards/sc-player-hand-card.js';
 
 class ScPlayerHand extends connect(localStore)(LitElement) {
   render() {

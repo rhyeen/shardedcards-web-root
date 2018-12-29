@@ -408,8 +408,10 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
   let newState, handIndex, cardId, cardInstance, card;
   switch (action.type) {
     case ActionType.SELECT_CARD_FROM_HAND:
+      cardId = state.entities.player.hand.cards[action.handIndex].id;
+      cardInstance = state.entities.player.hand.cards[action.handIndex].instance;
       newState = _removeHandCard(state, action.handIndex);
-      return _setSelectedCard(state, CARD_SOURCES.SELECT_PLAYER_HAND, action.cardId, action.cardInstance, action.handIndex, null);
+      return _setSelectedCard(state, CARD_SOURCES.SELECT_PLAYER_HAND, cardId, cardInstance, action.handIndex, null);
     case ActionType.CANCEL_SELECT_CARD_FROM_HAND:
     case ActionType.CANCEL_PLAY_SELECTED_SPELL:
     case ActionType.CANCEL_CAST_SPELL:

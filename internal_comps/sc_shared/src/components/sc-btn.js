@@ -33,7 +33,8 @@ class ScBtn extends LitElement {
           box-shadow: var(${SHADOW_ELEVATIONS.LEVEL_1.INSET});
         }
 
-        button.btn-warning {
+        button.btn-warning,
+        button.btn-cancel {
           background-color: #f44336;
           color: var(--sc_shared-dark-btn-text-color);
         }
@@ -93,6 +94,8 @@ class ScBtn extends LitElement {
         return 'btn-warning';
       case BTN_TYPES.PRESET.BACK:
         return 'btn-back';
+      case BTN_TYPES.PRESET.CANCEL:
+        return 'btn-cancel';
       default:
         Log.error(`Invalid btntype: ${this.btntype}`);
         return 'btn-secondary';

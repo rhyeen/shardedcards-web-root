@@ -1,9 +1,9 @@
 import { LitElement, html } from '@polymer/lit-element';
-import { ScSharedStyles, CardRarityColor } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
-import { ScCardStyles, CARDS } from '../../entities/sc_card-styles.js';
+import { ScSharedStyles, CardRarityColor } from '../../../../../sc_shared/src/entities/sc-shared-styles.js';
+import { ScCardStyles, CARDS } from '../../../entities/sc_card-styles.js';
 
-import '../card-parts/sc-card-value.js';
-import { VALUE_TYPES } from '../card-parts/sc-card-value.js';
+import '../../card-parts/sc-card-value.js';
+import { VALUE_TYPES } from '../../card-parts/sc-card-value.js';
 
 class ScPlayerHandCard extends LitElement {
   render() {
