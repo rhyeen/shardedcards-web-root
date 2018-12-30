@@ -1,8 +1,11 @@
-export function getCards(cards, cardInstances) {
-  return cardInstances.map((cardInstance) => {
+import { Log } from "../../../sc_shared/src/services/logger";
+
+
+export function getCards(cards, cardContexts) {
+  return cardContexts.map((cardContext) => {
     return {
-      ...cardInstance,
-      card: getCard(cards, cardInstance.id, cardInstance.instance)
+      ...cardContext,
+      card: getCard(cards, cardContext.id, cardContext.instance)
     };
   });
 }
@@ -15,16 +18,16 @@ export function getCard(cards, cardId, cardInstance) {
 }
 
 /* @MUTATES: cards */
-export function setCards(cards, cardInstances) {
-  for (let cardInstance of cardInstances) {
-    setCard(cards, cardInstance);
+export function setCards(cards, cardContexts) {
+  for (let cardContext of cardContexts) {
+    setCard(cards, cardContext);
   }
 }
 
 /* @MUTATES: cards */
-export function setCard(cards, card) {
-  cards[card.id].instances[card.instance] = {
-    ...card.card
+export function setCard(cards, cardContext) {
+  cards[cardContext.id].instances[cardContext.instance] = {
+    ...cardContext.card
   };
 }
 
@@ -52,20 +55,20 @@ export function getParentCard(cards, cardId) {
   return cards[cardId];
 }
 
-/** @MUTATES: cards */
-export function setNewCardInstance(card, cardInstance) {
-  if (!card.instances) {
-    card.instances = {};
+/** @MUTATES: card */
+export function setNewCardInstance(parentCard, cardInstance) {
+  if (!parentCard.instances) {
+    parentCard.instances = {};
   }
-  card.instances[cardInstance] = {
-    ...card,
+  parentCard.instances[cardInstance] = {
+    ...parentCard,
     version: 0,
     conditions: {}
   };
-  if (card.abilities) {
-    card.instances[cardInstance].abilities = _deepCopy(card.abilities);
+  if (parentCard.abilities) {
+    parentCard.instances[cardInstance].abilities = _deepCopy(parentCard.abilities);
   }
-  delete card.instances[cardInstance].instances;
+  delete parentCard.instances[cardInstance].instances;
 }
 
 function _deepCopy(obj) {
@@ -87,25 +90,12 @@ export function isDead(card) {
   return card.health <= 0;
 }
 
-// export function getCardFromHand(player, cards, handCardIndex) {
-//   let { cardId, cardInstance } = _getCardIdentifiersFromHand(player.hand, handCardIndex);
-//   let card = getCard(cards, cardId, cardInstance);
-//   if (!card) {
-//     Log.error(`card at handCardIndex: ${handCardIndex} does not exist`);
-//   }
-//   return card;
-// }
-
-// function _getCardIdentifiersFromHand(hand, handCardIndex) {
-//   if (!_validHandCardIndex(hand, handCardIndex)) {
-//     Log.error(`invalid handCardIndex: ${handCardIndex}`);
-//     return null;
-//   }
-//   const cardId = hand.cards[handCardIndex].id;
-//   const cardInstance = hand.cards[handCardIndex].instance;
-//   return { cardId, cardInstance };
-// }
-
-// function _validHandCardIndex(hand, handCardIndex) {
-//   return (!!handCardIndex || handCardIndex === 0) && handCardIndex >= 0 && handCardIndex <= hand.refillSize;
-// }
+export function getUpdatedCard(cardContext, updatedCards) {
+  for (let updatedCard of updatedCards) {
+    if (updatedCard.id === cardContext.id && updatedCard.instance === cardContext.instance) {
+      return updatedCard;
+    }
+  }
+  Log.error(`Unable to find the updated card: ${cardContext.id}::${cardContext.instance}, returning original`);
+  return cardContext;
+}

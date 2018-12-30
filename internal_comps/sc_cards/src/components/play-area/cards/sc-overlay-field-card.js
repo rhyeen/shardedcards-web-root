@@ -12,6 +12,7 @@ import {
   useCardAbility } from '../../../state/actions.js';
 
 import './sc-minion-card.js';
+import './sc-place-card-overlay.js';
 
 class ScOverlayFieldCard extends LitElement {
   render() {
@@ -95,7 +96,7 @@ class ScOverlayFieldCard extends LitElement {
 
   _showPlaceCardOverlay() {
     return (
-      this.selectedCardWithAbility.source == CARD_SOURCES.SELECT_PLAYER_HAND
+      this.selectedCardWithAbility.source == CARD_SOURCES.SUMMON_PLAYER_MINION
       && this.owner == PLAY_FIELD_OWNER.PLAYER
     );
   }
@@ -118,7 +119,7 @@ class ScOverlayFieldCard extends LitElement {
     return html`
       <sc-attack-card-overlay
           .attacker="${this.selectedCardWithAbility.card}"
-          .attacking="${this.fieldSlot.card}"
+          .attacked="${this.fieldSlot.card}"
           @click="${this._attackCardOverlayClicked}"></sc-attack-card-overlay>
     `;
   }
@@ -143,7 +144,7 @@ class ScOverlayFieldCard extends LitElement {
     return html`
       <sc-place-card-overlay
           .replacer="${this.selectedCardWithAbility.card}"
-          .replacing="${this.fieldSlot.card}"
+          .replaced="${this.fieldSlot.card}"
           @click="${this._placeCardOverlayClicked}"></sc-place-card-overlay>
     `;
   }

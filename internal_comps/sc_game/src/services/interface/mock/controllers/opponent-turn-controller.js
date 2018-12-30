@@ -205,18 +205,8 @@ function _targetsThatCanBeDealtMaxDamage(minionCard, possibleTargetIndices) {
 function _healthLostFromAttack(minionCard, targetAreaIndex) {
   let playerCard = _getPlayerMinionCardContext(targetAreaIndex);
   let { updatedCards } = CardActions.attackMinion(CardsModel.Model.cards, minionCard, playerCard);
-  let updatedPlayerCard = _getUpdatedCard(playerCard, updatedCards);
+  let updatedPlayerCard = Cards.getUpdatedCard(playerCard, updatedCards);
   return playerCard.card.health - updatedPlayerCard.card.health;
-}
-
-function _getUpdatedCard(cardContext, updatedCards) {
-  for (let updatedCard of updatedCards) {
-    if (updatedCard.id === cardContext.id && updatedCard.instance === cardContext.instance) {
-      return updatedCard;
-    }
-  }
-  Log.error(`Unable to find the updated card: ${cardContext.id}::${cardContext.instance}, returning original`);
-  return cardContext;
 }
 
 function _attackTarget(minionCard, targetAreaIndex) {

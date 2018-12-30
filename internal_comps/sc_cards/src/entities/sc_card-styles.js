@@ -28,6 +28,16 @@ export const CARDS = {
   }
 };
 
+CARDS.MINION_OVERLAY = {
+  HEIGHT: CARDS.MINION.HEIGHT,
+  WIDTH: CARDS.MINION.WIDTH,
+  PADDING: CARDS.MINION.PADDING,
+  BORDER_RADIUS: CARDS.MINION.BORDER_RADIUS,
+  BORDER: '--sc_card-minion-overlay-border',
+  BACKGROUND_COLOR: '--sc_card-minion-overlay-background-color',
+  BORDER_SIZE: '--sc_card-minion-overlay-border-size'
+};
+
 export const AREAS = {
   PLAYER_HAND: {
     HEIGHT: '--sc_card-player-hand-height',
@@ -59,6 +69,9 @@ export const ScCardStyles = html`
     --sc_card-minion-card-padding: 4px;
     --sc_card-minion-card-border-radius: 8px;
     --sc_card-minion-card-elevation: 1px 1px 5px rgba(0, 0, 0, 0.4);
+    --sc_card-minion-overlay-border-size: 2px;
+    --sc_card-minion-overlay-border: var(--sc_card-minion-overlay-border-size) dashed #8D6E63;
+    --sc_card-minion-overlay-background-color: rgba(255, 255, 255, 0.5);
 
     --sc_card-full-card-height: 300px;
     --sc_card-full-card-width: 200px;

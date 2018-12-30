@@ -423,7 +423,7 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
     case ActionType.CANCEL_SELECT_OPPONENT_MINION:    
     case ActionType.CANCEL_SELECT_PLAYER_MINION:
     case ActionType.CANCEL_PLAY_SELECTED_MINION:
-      return _removeSelectedCard(newState);
+      return _removeSelectedCard(state);
     case ActionType.PLAY_SELECTED_CARD:
       card = Cards.getCard(state.entities.cards, state.ui.selectedCard.id, state.ui.selectedCard.instance);
       switch (card.type) {

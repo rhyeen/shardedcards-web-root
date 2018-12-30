@@ -1,4 +1,4 @@
-import { BaseEndpoint } from './interface-state.js';
+import { baseEndpoint } from './interface-state.js';
 
 export const HTTP_REQUEST = {
   GET: 'get',
@@ -13,11 +13,11 @@ export const Http = {
 };
 
 function baseHttpPost(endpoint, bodyData) {
-  return httpJsonRequest(`${BaseEndpoint}/${endpoint}`, HTTP_REQUEST.POST, bodyData);
+  return httpJsonRequest(`${baseEndpoint}/${endpoint}`, HTTP_REQUEST.POST, bodyData);
 }
 
 function baseHttpGet(endpoint) {
-  return httpJsonRequest(`${BaseEndpoint}/${endpoint}`, HTTP_REQUEST.GET);
+  return httpJsonRequest(`${baseEndpoint}/${endpoint}`, HTTP_REQUEST.GET);
 }
 
 export const defaultJsonHeaders = () => {

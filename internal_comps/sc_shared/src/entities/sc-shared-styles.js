@@ -75,12 +75,12 @@ export const ScSharedStyles = html`
     --sc_shared-overlay-white: rgba(255, 255, 255, 0.8);
     --sc_shared-overlay-card-white: rgba(255, 255, 255, 0.5);
 
-    --sc_shared-sc-elevation-1: 1px 1px 5px rgba(0, 0, 0, 0.4);
-    --sc_shared-sc-elevation-n1: inset 1px 1px 5px rgba(0, 0, 0, 0.4);
-    --sc_shared-sc-elevation-h1:
+    --sc_shared-elevation-1: 1px 1px 5px rgba(0, 0, 0, 0.4);
+    --sc_shared-elevation-n1: inset 1px 1px 5px rgba(0, 0, 0, 0.4);
+    --sc_shared-elevation-h1:
       1px 1px 5px rgba(0, 0, 0, 0.4),
       inset 0px 0px 80px rgba(0, 0, 0, 0.1);
-    --sc_shared-sc-elevation-side-bar: -2px 0px 10px rgba(0, 0, 0, 0.1);
+    --sc_shared-elevation-side-bar: -2px 0px 10px rgba(0, 0, 0, 0.1);
   }
 
   button:focus {

@@ -55,6 +55,7 @@ function _minionOnPlayAreaIndex(fieldSlots, playAreaIndex) {
   return !!fieldSlots[playAreaIndex].id;
 }
 
+/** @MUTATES: selectedCard */
 export function summonMinion(selectedCard, playerFieldCard) {
   let updatedCards = [selectedCard];
   if (playerFieldCard.card) {
@@ -76,6 +77,7 @@ export function summonMinion(selectedCard, playerFieldCard) {
   return updatedCards;
 }
 
+/** @MUTATES: attackingCard, attackedCard */
 export function attackMinion(cards, attackingCard, attackedCard) {
   let results = {
     updatedCards: [],

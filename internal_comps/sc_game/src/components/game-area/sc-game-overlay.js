@@ -72,9 +72,6 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
         <sc-game-over-overlay
             .endGameState="${this.hasWon ? END_GAME_STATE.WON : END_GAME_STATE.LOST }"></sc-game-over-overlay>`;
     }
-    if (this._showFullCraftingBaseCardOverlay()) {
-      return html`<sc-full-crafting-base-card-overlay></sc-full-crafting-base-card-overlay>`;
-    }
     if (this._showOpponentTurnOverlay()) {
       return html`<sc-opponent-turn-overlay></sc-opponent-turn-overlay>`;
     }
@@ -96,10 +93,15 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
       return html`<sc-target-minion-ability-overlay></sc-target-minion-ability-overlay>`;
     }
     if (this._showSummonMinionOverlay()) {
-      return html`<sc-summon-minion-overlay></sc-summon-minion-overlay>`;
+      return html`
+        <sc-summon-minion-overlay
+            .selectedCard="${this._selectedCardWithAbility}"></sc-summon-minion-overlay>`;
     }
     if (this._showPlayMinionOverlay()) {
       return html`<sc-play-minion-overlay></sc-play-minion-overlay>`;
+    }
+    if (this._showFullCraftingBaseCardOverlay()) {
+      return html`<sc-full-crafting-base-card-overlay></sc-full-crafting-base-card-overlay>`;
     }
     return null;
   }
