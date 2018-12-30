@@ -1,5 +1,6 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
+import { ScOverlaySharedStyle } from './sc-overlay-shared-style.js';
 
 import { localStore } from '../../state/store.js';
 
@@ -17,23 +18,7 @@ export class ScGameMenuOverlay extends LitElement {
   render() {
     return html`
       ${ScSharedStyles}
-      <style>
-        :host {
-          display: flex;
-          width: 100%;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-        }
-
-        sc-btn:first-child {
-          margin-top: 0;
-        }
-
-        sc-btn {
-          margin-top: 20px;
-        }
-      </style>
+      ${ScOverlaySharedStyle}
       <sc-btn
           .btntype="${BTN_TYPES.GENERIC.WARNING}"
           @click="${() => this._resetGame()}">

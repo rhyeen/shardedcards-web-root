@@ -12,6 +12,8 @@ class ScCardAbilityValue extends LitElement {
       ${ScCardStyles}
       ${ScIconsStyles}
       <style>
+        /** @TODO: determine if these should be moved to ScCardStyles as well as sc-card-condition-value styles
+            since they are identical **/
         [card-ability] {
           display: flex;
           align-items: center;

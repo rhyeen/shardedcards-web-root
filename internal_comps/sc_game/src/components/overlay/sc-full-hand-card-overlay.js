@@ -1,5 +1,6 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
+import { ScOverlaySharedStyle } from './sc-overlay-shared-style.js';
 
 import { connect } from 'pwa-helpers/connect-mixin.js';
 import { localStore } from '../../state/store.js';
@@ -21,27 +22,7 @@ export class ScFullHandCardOverlay extends connect(localStore)(LitElement) {
   render() {
     return html`
       ${ScSharedStyles}
-      <style>
-        :host {
-          display: flex;
-          width: 100%;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-        }
-
-        [btn-group] {
-          margin: 20px 0 40px 0;
-        }
-
-        [btn-group] sc-btn:first-child {
-          margin-left: 0;
-        }
-
-        [btn-group] sc-btn {
-          margin-left: 20px;
-        }
-      </style>
+      ${ScOverlaySharedStyle}
       <sc-full-card
           .card="${this.selectedCard.card}"></sc-full-card>
       <div btn-group>
