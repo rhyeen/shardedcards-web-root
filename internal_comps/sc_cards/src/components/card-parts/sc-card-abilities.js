@@ -1,5 +1,7 @@
 import { LitElement, html } from '@polymer/lit-element';
 
+import './sc-card-ability-value.js';
+
 class ScCardAbilities extends LitElement {
   render() {
     return html`${this._getAbilitiesHtml()}`;

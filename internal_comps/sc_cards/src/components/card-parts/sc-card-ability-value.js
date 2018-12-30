@@ -3,6 +3,7 @@ import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-sty
 import { ScCardStyles } from '../../entities/sc_card-styles.js';
 
 import { ScIconsStyles } from '../../../../sc_shared/src/entities/sc-icons.js';
+import { Ability } from '../../entities/selected-card.js';
 
 class ScCardAbilityValue extends LitElement {
   render() {
@@ -32,11 +33,6 @@ class ScCardAbilityValue extends LitElement {
           color: #757575;
         }
       </style>
-      <div card-part class="${this._cardPartClasses()}">
-        <div class="current">${this._cardPartValue()}</div>
-        <div class="icon">${this._cardPartIcon()}</div>
-      </div>
-
       <div card-ability>
         <div class="icon">${this._cardAbilityIcon()}</div>
         <div class="tooltip">
@@ -55,15 +51,15 @@ class ScCardAbilityValue extends LitElement {
   }
 
   _cardAbilityTooltip() {
-    return getAbilityName(this.ability)
+    return html`${Ability.getName(this.ability.id)}`;
   }
 
   _cardAbilityTooltipDescription() {
-    return getAbilityDescription(this.ability)
+    return html`${Ability.getDescription(this.ability.id, this.ability.amount)}`;
   }
 
   _cardAbilityIcon() {
-    return getAbilityIcon(this.ability)
+    return html`${Ability.getIcon(this.ability.id)}`;
   }
 }
 

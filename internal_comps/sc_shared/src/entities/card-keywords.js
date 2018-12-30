@@ -20,6 +20,10 @@ export const CARD_ABILITIES = {
   ENERGIZE: 'energize'
 };
 
+export const CARD_CONDITIONS = {
+  EXHAUSTED: 'exhausted'
+};
+
 export const ENERGY_SHARD = {
   ID: 'ENERGY_SHARD',
   INSTANCE: '0'
