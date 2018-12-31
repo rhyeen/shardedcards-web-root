@@ -2,7 +2,8 @@ export const LOCALE_EN = {
   SC_BTN: {
     PRESET: {
       BACK: 'back',
-      CANCEL: 'cancel'
+      CANCEL: 'cancel',
+      DONE: 'done'
     },
     OTHER: {
       RESET_GAME: 'reset game',
@@ -20,7 +21,7 @@ export const LOCALE_EN = {
     },
     HASTE: {
       NAME: 'haste',
-      DESCRIPTION: 'May attack once summoned.'
+      DESCRIPTION: () => 'May attack once summoned.'
     },
     SPELLSHOT: {
       NAME: 'spellshot',
@@ -34,7 +35,7 @@ export const LOCALE_EN = {
   CONDITION: {
     EXHAUSTED: {
       NAME: 'exhausted',
-      DESCRIPTION: 'Cannot attack this turn.'
+      DESCRIPTION: () => 'Cannot attack this turn.'
     }
   }
 };

@@ -82,7 +82,9 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
       return html`<sc-full-opponent-minion-overlay></sc-full-opponent-minion-overlay>`;      
     }
     if (this._showUseCardAbilityOverlay()) {
-      return html`<sc-use-card-ability-overlay></sc-use-card-ability-overlay>`;
+      return html`
+      <sc-use-card-ability-overlay
+          .selectedCard="${this._selectedCardWithAbility}"></sc-use-card-ability-overlay>`;
     }
     if (this._showFullHandCardOverlay()) {
       return html`
@@ -134,8 +136,10 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
   }
 
   _showUseCardAbilityOverlay() {
-    // @TODO: not sure what this would be
-    return false;
+    return (
+      this._isCardSelected 
+      && this._selectedCardWithAbility.source === CARD_SOURCES.CAST_PLAYER_SPELL
+    );
   }
 
   _showFullHandCardOverlay() {

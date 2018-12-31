@@ -23,77 +23,75 @@ export const CARD_TARGETS = {
 };
 
 export const Ability = {};
+const abilityMap = {};
+
+abilityMap[CARD_ABILITIES.ENERGIZE] = {
+  name: LOCALE_EN.ABILITY.ENERGIZE.NAME,
+  descriptionFn: LOCALE_EN.ABILITY.ENERGIZE.DESCRIPTION,
+  iconFn: EnergizeIcon,
+  isPlayerTargetedAbility: true
+};
+
+abilityMap[CARD_ABILITIES.HASTE] = {
+  name: LOCALE_EN.ABILITY.HASTE.NAME,
+  descriptionFn: LOCALE_EN.ABILITY.HASTE.DESCRIPTION,
+  iconFn: HasteIcon
+};
+
+abilityMap[CARD_ABILITIES.SPELLSHOT] = {
+  name: LOCALE_EN.ABILITY.SPELLSHOT.NAME,
+  descriptionFn: LOCALE_EN.ABILITY.SPELLSHOT.DESCRIPTION,
+  iconFn: SpellshotIcon,
+  isOpponentMinionTargetedAbility: true
+};
+
+abilityMap[CARD_ABILITIES.REACH] = {
+  name: LOCALE_EN.ABILITY.REACH.NAME,
+  descriptionFn: LOCALE_EN.ABILITY.REACH.DESCRIPTION,
+  iconFn: ReachIcon,
+  isPlayerMinionTargetedAbility: true
+};
 
 Ability.getName = (abilityId) => {
-  switch (abilityId) {
-    case CARD_ABILITIES.ENERGIZE:
-      return LOCALE_EN.ABILITY.ENERGIZE.NAME;
-    case CARD_ABILITIES.HASTE:
-      return LOCALE_EN.ABILITY.HASTE.NAME;
-    case CARD_ABILITIES.SPELLSHOT:
-      return LOCALE_EN.ABILITY.SPELLSHOT.NAME;
-    case CARD_ABILITIES.REACH:
-      return LOCALE_EN.ABILITY.REACH.NAME;
-    default:
-      return '';
-  }
+  return abilityMap[abilityId].name;
 };
 
 Ability.getDescription = (abilityId, amount) => {
-  switch (abilityId) {
-    case CARD_ABILITIES.ENERGIZE:
-      return LOCALE_EN.ABILITY.ENERGIZE.DESCRIPTION(amount);
-    case CARD_ABILITIES.HASTE:
-      return LOCALE_EN.ABILITY.HASTE.DESCRIPTION;
-    case CARD_ABILITIES.SPELLSHOT:
-      return LOCALE_EN.ABILITY.SPELLSHOT.DESCRIPTION(amount);
-    case CARD_ABILITIES.REACH:
-      return LOCALE_EN.ABILITY.REACH.DESCRIPTION(amount);
-    default:
-      return '';
-  }
+  return abilityMap[abilityId].descriptionFn(amount);
 };
 
 Ability.getIcon = (abilityId, args) => {
-  switch (abilityId) {
-    case CARD_ABILITIES.ENERGIZE:
-      return EnergizeIcon(args);
-    case CARD_ABILITIES.HASTE:
-      return HasteIcon(args);
-    case CARD_ABILITIES.SPELLSHOT:
-      return SpellshotIcon(args);
-    case CARD_ABILITIES.REACH:
-      return ReachIcon(args);
-    default:
-      return '';
-  }
+  return abilityMap[abilityId].iconFn(args);
+};
+
+Ability.isOpponentMinionTargetedAbility = (abilityId) => {
+  return !!abilityMap[abilityId].isOpponentMinionTargetedAbility;
+};
+
+Ability.isPlayerMinionTargetedAbility = (abilityId) => {
+  return !!abilityMap[abilityId].isPlayerMinionTargetedAbility;
+};
+
+Ability.isPlayerTargetedAbility = (abilityId) => {
+  return !!abilityMap[abilityId].isPlayerTargetedAbility;
 };
 
 export const Condition = {};
+const conditionMap = {};
+conditionMap[CARD_CONDITIONS.EXHAUSTED] = {
+  name: LOCALE_EN.CONDITION.EXHAUSTED.NAME,
+  descriptionFn: LOCALE_EN.CONDITION.EXHAUSTED.DESCRIPTION,
+  iconFn: ExhaustedIcon
+};
 
 Condition.getName = (condition) => {
-  switch (condition) {
-    case CARD_CONDITIONS.EXHAUSTED:
-      return LOCALE_EN.CONDITION.EXHAUSTED.NAME;
-    default:
-      return '';
-  }
+  return conditionMap[condition].name;
 };
 
 Condition.getDescription = (condition) => {
-  switch (condition) {
-    case CARD_CONDITIONS.EXHAUSTED:
-      return LOCALE_EN.CONDITION.EXHAUSTED.DESCRIPTION;
-    default:
-      return '';
-  }
+  return conditionMap[condition].descriptionFn();
 };
 
 Condition.getIcon = (condition, args) => {
-  switch (condition) {
-    case CARD_CONDITIONS.EXHAUSTED:
-      return ExhaustedIcon(args);
-    default:
-      return '';
-  }
+  return conditionMap[condition].iconFn(args);
 };

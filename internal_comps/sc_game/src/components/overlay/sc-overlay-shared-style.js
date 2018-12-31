@@ -24,6 +24,12 @@ ${ScCardStyles}
     margin-left: 20px;
   }
 
+  [btn-group].btn-group-fill-bottom-up {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+  }
+
   /** if the btn-group needs to properly fill the  player hand height **/
   [btn-group].btn-group-hand-area {
     display: flex;

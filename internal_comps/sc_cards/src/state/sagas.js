@@ -8,7 +8,7 @@ import * as StatusDispatchActions from '../../../sc_status/src/state/actions.js'
 import * as Actions from './actions.js';
 import * as GameDispatchActions from '../../../sc_game/src/state/actions.js';
 import { Log } from '../../../sc_shared/src/services/logger.js';
-import { CARD_TARGETS } from '../entities/selected-card.js';
+import { CARD_TARGETS, Ability } from '../entities/selected-card.js';
 import * as CardsInterface from '../services/interface/cards.js';
 
 function* _setCards() {
@@ -236,6 +236,17 @@ function _getTargetTypeOfAbility(selectedAbility) {
   }
 }
 
+function _selectAbility(abilityId) {
+  if (Ability.isOpponentMinionTargetedAbility(abilityId)) {
+    yield put(Actions.selectOpponentMinionTargetedAbility(abilityId));
+  } else if (Ability.isPlayerMinionTargetedAbility(abilityId)) {
+    yield put(Actions.selectPlayerMinionTargetedAbility(abilityId));
+  } else if (Ability.isPlayerTargetedAbility(abilityId)) {
+    yield console.error('@TODO');
+    // yield put(Actions.selectPlayerTargetedAbility(abilityId));
+  }
+}
+
 export default function* root() {
   yield all([
     takeEvery(Actions.SUMMON_MINION.REQUEST, _summonMinion),
@@ -246,5 +257,6 @@ export default function* root() {
     takeEvery(Actions.USE_CARD_ABILITY.REQUEST, _useCardAbility),
     takeEvery(Actions.SET_PLAYER_DECKS.REQUEST, _setPlayerDecks),
     takeEvery(Actions.SET_CARDS.REQUEST, _setCards),
+    takeEvery(Actions.SELECT_ABILITY, _selectAbility),
   ]);
 }

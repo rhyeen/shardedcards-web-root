@@ -113,9 +113,14 @@ export const useCardAbility = {
 export const FINISH_SPELL_CARD = _createRequestRaw('FINISH_SPELL_CARD');
 export const finishSpellCard = () => _action(FINISH_SPELL_CARD, {});
 
+export const SELECT_ABILITY = _createRequestRaw('SELECT_ABILITY');
+export const selectAbility = (abilityId) => _action(SELECT_ABILITY, {abilityId});
+
+// Use selectAbility instead, which will handle this case in the saga.
 export const SELECT_OPPONENT_MINION_TARGETED_ABILITY = _createRequestRaw('SELECT_OPPONENT_MINION_TARGETED_ABILITY');
 export const selectOpponentMinionTargetedAbility = (abilityId) => _action(SELECT_OPPONENT_MINION_TARGETED_ABILITY, {abilityId});
 
+// Use selectAbility instead, which will handle this case in the saga.
 export const SELECT_PLAYER_MINION_TARGETED_ABILITY = _createRequestRaw('SELECT_PLAYER_MINION_TARGETED_ABILITY');
 export const selectPlayerMinionTargetedAbility = (abilityId) => _action(SELECT_PLAYER_MINION_TARGETED_ABILITY, {abilityId});
 
