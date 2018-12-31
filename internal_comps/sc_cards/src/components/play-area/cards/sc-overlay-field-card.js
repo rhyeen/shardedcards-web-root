@@ -118,8 +118,8 @@ class ScOverlayFieldCard extends LitElement {
   _attackCardOverlay() {
     return html`
       <sc-attack-card-overlay
-          .attacker="${this.selectedCardWithAbility.card}"
-          .attacked="${this.fieldSlot.card}"
+          .attacker="${this.selectedCardWithAbility}"
+          .attacked="${this.fieldSlot}"
           @click="${this._attackCardOverlayClicked}"></sc-attack-card-overlay>
     `;
   }
@@ -143,8 +143,8 @@ class ScOverlayFieldCard extends LitElement {
   _placeCardOverlay() {
     return html`
       <sc-place-card-overlay
-          .replacer="${this.selectedCardWithAbility.card}"
-          .replaced="${this.fieldSlot.card}"
+          .replacer="${this.selectedCardWithAbility}"
+          .replaced="${this.fieldSlot}"
           @click="${this._placeCardOverlayClicked}"></sc-place-card-overlay>
     `;
   }
@@ -156,9 +156,8 @@ class ScOverlayFieldCard extends LitElement {
   _targetOpponentMinionAbilityOverlay() {
     return html`
       <sc-target-minion-ability-overlay
-          .caster="${this.selectedCardWithAbility.card}"
-          .ability="${this.selectedCardWithAbility.ability}"
-          .target="${this.fieldSlot.card}"
+          .caster="${this.selectedCardWithAbility}"
+          .target="${this.fieldSlot}"
           @click="${this._targetOpponentMinionAbilityOverlayClicked}"></sc-target-minion-ability-overlay>
     `;
   }
@@ -170,9 +169,8 @@ class ScOverlayFieldCard extends LitElement {
   _targetPlayerMinionAbilityOverlay() {
     return html`
       <sc-target-minion-ability-overlay
-          .caster="${this.selectedCardWithAbility.card}"
-          .ability="${this.selectedCardWithAbility.ability}"
-          .target="${this.fieldSlot.card}"
+          .caster="${this.selectedCardWithAbility}"
+          .target="${this.fieldSlot}"
           @click="${this._targetPlayerMinionAbilityOverlayClicked}"></sc-target-minion-ability-overlay>
     `;
   }

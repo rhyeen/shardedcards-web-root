@@ -4,7 +4,8 @@ import { ScCardStyles } from '../../../entities/sc_card-styles.js';
 import { ScMinionCardOverlayStyle } from './sc-minion-card-overlay-styles.js';
 import {
   DeadIcon,
-  ShieldIcon } from '../../../../../sc_shared/src/entities/sc-icons.js';
+  ShieldIcon,
+  ScIconsStyles } from '../../../../../sc_shared/src/entities/sc-icons.js';
 import { summonMinion } from '../../../services/card-actions.js';
 import * as Cards from '../../../services/card-selection.js';
 
@@ -14,6 +15,7 @@ class ScPlaceCardOverlay extends LitElement {
       ${ScSharedStyles}
       ${ScCardStyles}
       ${ScMinionCardOverlayStyle}
+      ${ScIconsStyles}
       <style>
         [minion-overlay-separator] {
           opacity: ${this._getCardSeparatorOpacity()};
@@ -33,15 +35,19 @@ class ScPlaceCardOverlay extends LitElement {
   }
 
   _getCardSeparatorOpacity() {
-    return !this.replaced ? '0' : '1';
+    return this._noCardToReplace() ? '0' : '1';
+  }
+
+  _noCardToReplace() {
+    return !this.replaced || !this.replaced.card;
   }
 
   _getReplacedResultHtml() {
-    return !this.replaced ? html`` : DeadIcon(); 
+    return this._noCardToReplace() ? html`` : DeadIcon(); 
   }
 
   _getReplacerResultHtml() {
-    if (!this.replaced) {
+    if (this._noCardToReplace()) {
       return this._getShieldResultHtml(0);
     }
     let _replacer = this._deepCopy(this.replacer);
@@ -50,12 +56,12 @@ class ScPlaceCardOverlay extends LitElement {
     _replacer = Cards.getUpdatedCard(_replacer, updatedCards);
     _replaced = Cards.getUpdatedCard(_replaced, updatedCards);
     let currentShield = 0;
-    if (this.replacer.conditions.shield) {
-      currentShield = this.replacer.conditions.shield;
+    if (this.replacer.card.conditions.shield) {
+      currentShield = this.replacer.card.conditions.shield;
     }
     let newShield = 0;
-    if (_replacer.conditions.shield) {
-      newShield = _replacer.conditions.shield;
+    if (_replacer.card.conditions.shield) {
+      newShield = _replacer.card.conditions.shield;
     }
     return this._getShieldResultHtml(newShield - currentShield);
   }

@@ -136,7 +136,7 @@ function _removeHandCard(state, handIndex) {
 
 function _addHandCard(state, handIndex, cardId, cardInstance) {
   let newState = _shallowCopyHandCards(state);
-  newState.entities.player.hand.cards.splice(handIndex, 1, {
+  newState.entities.player.hand.cards.splice(handIndex, 0, {
     id: cardId,
     instance: cardInstance
   });
@@ -276,7 +276,7 @@ function _setLostPileCards(state, lostPileCards) {
 
 function _discardCard(state, cardId, cardInstance) {
   let newState = _shallowCopyDiscardCards(state);
-  newState.entities.player.hand.cards.push({
+  newState.entities.player.discardPile.cards.push({
     id: cardId,
     instance: cardInstance
   });
@@ -411,7 +411,7 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       cardId = state.entities.player.hand.cards[action.handIndex].id;
       cardInstance = state.entities.player.hand.cards[action.handIndex].instance;
       newState = _removeHandCard(state, action.handIndex);
-      return _setSelectedCard(state, CARD_SOURCES.SELECT_PLAYER_HAND, cardId, cardInstance, action.handIndex, null);
+      return _setSelectedCard(newState, CARD_SOURCES.SELECT_PLAYER_HAND, cardId, cardInstance, action.handIndex, null);
     case ActionType.CANCEL_SELECT_CARD_FROM_HAND:
     case ActionType.CANCEL_PLAY_SELECTED_SPELL:
     case ActionType.CANCEL_CAST_SPELL:

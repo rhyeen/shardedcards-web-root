@@ -1,4 +1,5 @@
 import { Log } from "../../../sc_shared/src/services/logger";
+import { CARD_ABILITIES } from "../../../sc_shared/src/entities/card-keywords";
 
 
 export function getCards(cards, cardContexts) {
