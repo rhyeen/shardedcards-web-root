@@ -3,7 +3,8 @@ import {
   EnergizeIcon,
   HasteIcon,
   SpellshotIcon,
-  ReachIcon } from "../../../sc_shared/src/entities/sc-icons";
+  ReachIcon,
+  ExhaustedIcon } from "../../../sc_shared/src/entities/sc-icons";
 import { LOCALE_EN } from "../../../sc_locale/src/entities/en";
 
 

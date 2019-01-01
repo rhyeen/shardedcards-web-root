@@ -28,6 +28,9 @@ ${ScCardStyles}
     display: flex;
     justify-content: flex-end;
     flex-direction: column;
+    align-items: center;
+    height: 100%;
+    margin: 0;
   }
 
   /** if the btn-group needs to properly fill the  player hand height **/

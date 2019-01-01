@@ -236,16 +236,17 @@ function _getTargetTypeOfAbility(selectedAbility) {
   }
 }
 
-function _selectAbility(abilityId) {
+function* _selectAbility(abilityId) {
   if (Ability.isOpponentMinionTargetedAbility(abilityId)) {
     yield put(Actions.selectOpponentMinionTargetedAbility(abilityId));
   } else if (Ability.isPlayerMinionTargetedAbility(abilityId)) {
     yield put(Actions.selectPlayerMinionTargetedAbility(abilityId));
   } else if (Ability.isPlayerTargetedAbility(abilityId)) {
     yield console.error('@TODO');
-    // yield put(Actions.selectPlayerTargetedAbility(abilityId));
   }
 }
+
+
 
 export default function* root() {
   yield all([

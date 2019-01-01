@@ -115,7 +115,8 @@ export const ScSharedStyles = html`
   
   /* HACK: it should be setting to 24px regardless, but it is being set to 28px instead,
      and I'm unsure why... */
-  [bar-item] .icon {
+  [bar-item] .icon,
+  [card-ability] .icon {
     height: 24px;
   }
 </style>

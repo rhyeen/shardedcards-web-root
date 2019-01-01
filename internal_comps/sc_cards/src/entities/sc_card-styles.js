@@ -106,5 +106,30 @@ export const ScCardStyles = html`
   [field-slot-separator][overlay] {
     background: none;
   }
+
+  [card-ability],
+  [card-condition] {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+  }
+
+  [card-ability] .tooltip,
+  [card-condition] .tooltip {
+    margin-left: 15px;
+  }
+
+  [card-ability] .tooltip-title,
+  [card-condition] .tooltip-title {
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  [card-ability] .tooltip-description,
+  [card-condition] .tooltip-description {
+    font-size: 12px;
+    color: #757575;
+  }
 </style>
 `;

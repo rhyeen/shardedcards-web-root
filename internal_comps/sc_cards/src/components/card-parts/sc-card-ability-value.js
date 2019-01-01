@@ -11,30 +11,6 @@ class ScCardAbilityValue extends LitElement {
       ${ScSharedStyles}
       ${ScCardStyles}
       ${ScIconsStyles}
-      <style>
-        /** @TODO: determine if these should be moved to ScCardStyles as well as sc-card-condition-value styles
-            since they are identical **/
-        [card-ability] {
-          display: flex;
-          align-items: center;
-          font-size: 18px;
-        }
-
-        [card-ability] .tooltip {
-          margin-left: 15px;
-        }
-
-        [card-ability] .tooltip-title {
-          text-transform: uppercase;
-          font-size: 16px;
-          font-weight: 300;
-        }
-
-        [card-ability] .tooltip-description {
-          font-size: 12px;
-          color: #757575;
-        }
-      </style>
       <div card-ability>
         <div class="icon">${this._cardAbilityIcon()}</div>
         <div class="tooltip">
@@ -48,7 +24,7 @@ class ScCardAbilityValue extends LitElement {
   static get properties() { 
     return {
       card: { type: Object },
-      ability: { type: String }
+      ability: { type: Object }
     }
   }
 

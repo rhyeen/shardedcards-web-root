@@ -45,7 +45,7 @@ export class ScUseCardAbilityOverlay extends connect(localStore)(LitElement) {
   }
 
   _getAbilityBtnsHtml() {
-    return html `${this.selectedCard.abilities.map(ability => this._getAbilityBtnHtml(ability))}`;
+    return html `${this.selectedCard.card.abilities.map(ability => this._getAbilityBtnHtml(ability))}`;
   }
 
   _getAbilityBtnHtml(ability) {
@@ -72,6 +72,15 @@ export class ScUseCardAbilityOverlay extends connect(localStore)(LitElement) {
           @click="${() => this._finish()}">
         ${LOCALE_EN.SC_BTN.PRESET.DONE}</sc-btn>
     `;
+  }
+
+  _noAbilitiesUsed() {
+    for (let ability of this.selectedCard.card.abilities) {
+      if (ability.used) {
+        return false;
+      }
+    }
+    return true;
   }
 
   _cancel() {

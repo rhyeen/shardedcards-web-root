@@ -64,7 +64,7 @@ export class ScGameFooter extends connect(localStore)(LitElement) {
       </div>
       <div class="item-group right-items">
         <sc-btn
-            .btntype="${BTN_TYPES.GENERIC.SECONDARY}"
+            .btntype="${BTN_TYPES.PRESET.END_TURN}"
             @click="${() => this._endTurn()}">
           ${LOCALE_EN.SC_BTN.OTHER.END_TURN}</sc-btn>
       </div>
@@ -76,7 +76,7 @@ export class ScGameFooter extends connect(localStore)(LitElement) {
       <div class="item-group left-items"></div>
       <div class="item-group right-items">
         <sc-btn
-            .btntype="${BTN_TYPES.GENERIC.SECONDARY}"
+            .btntype="${BTN_TYPES.PRESET.END_TURN}"
             @click="${() => this._endCrafting()}">
           ${LOCALE_EN.SC_BTN.OTHER.FINISH_CRAFTING}</sc-btn>
       </div>

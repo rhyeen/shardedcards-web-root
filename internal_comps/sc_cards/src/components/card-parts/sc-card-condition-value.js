@@ -11,28 +11,6 @@ class ScCardConditionValue extends LitElement {
       ${ScSharedStyles}
       ${ScCardStyles}
       ${ScIconsStyles}
-      <style>
-        [card-condition] {
-          display: flex;
-          align-items: center;
-          font-size: 18px;
-        }
-
-        [card-condition] .tooltip {
-          margin-left: 15px;
-        }
-
-        [card-condition] .tooltip-title {
-          text-transform: uppercase;
-          font-size: 16px;
-          font-weight: 300;
-        }
-
-        [card-condition] .tooltip-description {
-          font-size: 12px;
-          color: #757575;
-        }
-      </style>
       <div card-condition>
         <div class="icon">${this._cardConditionIcon()}</div>
         <div class="tooltip">
