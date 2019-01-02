@@ -232,8 +232,7 @@ export function useCardAbility(cards, playAreaIndex, selectedAbility, playerFiel
     let { updatedCards, statusUpdates } = _useAbilityOnPlayer(selectedAbility);
     results.updatedCards = updatedCards;
     results.statusUpdates = statusUpdates;
-    // @TODO: need to figure out how to appropriately return stuff like player status updates...
-    console.trace('@TODO');
+    debugger;
   } else {
     Log.error(`unexpected ability target: ${selectedAbility.targets}`);
     return results;

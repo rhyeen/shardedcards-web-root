@@ -189,7 +189,13 @@ function _handleStatusUpdates(statusUpdates) {
 function _getUseCardAbilityAction(playAreaIndex) {
   const state = localStore.getState();
   let selectedAbility = CardsSelector.getSelectedAbility(state);
-  let opponentFieldCard = CardsSelector.getOpponentFieldSlots(state)[playAreaIndex];
+  let opponentFieldCard = {
+    id: null,
+    instance: null
+  };
+  if (_validPlayAreaIndex(playAreaIndex)) {
+    opponentFieldCard = CardsSelector.getOpponentFieldSlots(state)[playAreaIndex];
+  }
   return {
     type: _getActionTypeOfCard(selectedAbility.card),
     source: {
@@ -208,6 +214,10 @@ function _getUseCardAbilityAction(playAreaIndex) {
       }
     ]
   };
+}
+
+function _validPlayAreaIndex(playAreaIndex) {
+  return playAreaIndex <= 2 && playAreaIndex >= 0;
 }
 
 function _getActionTypeOfCard(card) {
@@ -236,13 +246,14 @@ function _getTargetTypeOfAbility(selectedAbility) {
   }
 }
 
-function* _selectAbility(abilityId) {
+function* _selectAbility({abilityId}) {
   if (Ability.isOpponentMinionTargetedAbility(abilityId)) {
     yield put(Actions.selectOpponentMinionTargetedAbility(abilityId));
   } else if (Ability.isPlayerMinionTargetedAbility(abilityId)) {
     yield put(Actions.selectPlayerMinionTargetedAbility(abilityId));
   } else if (Ability.isPlayerTargetedAbility(abilityId)) {
-    yield console.error('@TODO');
+    yield put(Actions.selectPlayerTargetedAbility(abilityId));
+    yield put(Actions.useCardAbility.request());
   }
 }
 

@@ -26,7 +26,7 @@ export class ScUseCardAbilityOverlay extends connect(localStore)(LitElement) {
       ${ScOverlaySharedStyle}
       <style>
         .btn-group-fill-bottom-up {
-          width: 240px; /* @TODO: put into constant */
+          max-width: 240px; /* @TODO: put into constant */
         }
       </style>
       <div class="btn-group-fill-bottom-up" btn-group>

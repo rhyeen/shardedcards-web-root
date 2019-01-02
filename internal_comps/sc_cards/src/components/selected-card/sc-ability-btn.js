@@ -35,6 +35,9 @@ class ScAbilityBtn extends LitElement {
           font-weight: 400;
           color: var(${BTN_COLORS.DARK_BTN_TEXT_COLOR});
         }
+        [card-ability][disabled] .tooltip-description {
+          color: var(${BTN_COLORS.DISABLED.TEXT_COLOR});
+        }
       </style>
       <button card-ability ?disabled="${!!this.ability.used}">
         <div class="icon">${this._cardAbilityIcon()}</div>

@@ -70,7 +70,7 @@ function _executeActionPlayMinion(action) {
     Log.error(`No targets specified for playing minion`);
     return false;
   }
-  if (_invalidPlayAreaIndex(action.playAreaIndex)) {
+  if (!_validPlayAreaIndex(action.playAreaIndex)) {
     Log.error(`Invalid playAreaIndex: ${action.playAreaIndex}`);
     return false;
   }
@@ -83,8 +83,8 @@ function _executeActionPlayMinion(action) {
   return true;
 }
 
-function _invalidPlayAreaIndex(playAreaIndex) {
-  return _invalidIndex(playAreaIndex) || playAreaIndex < 0 || playAreaIndex > 2;
+function _validPlayAreaIndex(playAreaIndex) {
+  return playAreaIndex <= 2 && playAreaIndex >= 0;
 }
 
 function _invalidIndex(index) {
@@ -114,7 +114,7 @@ function _executePlayMinionTargetedAction(action, target) {
 }
 
 function _executeAbilityTargetOpponentMinion(action, target) {
-  if (_invalidPlayAreaIndex(target.playAreaIndex)) {
+  if (!_validPlayAreaIndex(target.playAreaIndex)) {
     Log.error(`Invalid playAreaIndex: ${target.playAreaIndex}`);
     return false;
   }
@@ -132,7 +132,7 @@ function _executeAbilityTargetOpponentMinion(action, target) {
 }
 
 function _executeAbilityTargetPlayerMinion(action, target) {
-  if (_invalidPlayAreaIndex(target.playAreaIndex)) {
+  if (!_validPlayAreaIndex(target.playAreaIndex)) {
     Log.error(`Invalid playAreaIndex: ${target.playAreaIndex}`);
     return false;
   }
@@ -204,7 +204,7 @@ function _executeCastSpellTargetedAction(action, target) {
 }
 
 function _executeActionAttack(action, target) {
-  if (_invalidPlayAreaIndex(target.playAreaIndex)) {
+  if (!_validPlayAreaIndex(target.playAreaIndex)) {
     Log.error(`Invalid playAreaIndex: ${target.playAreaIndex}`);
     return false;
   }
@@ -265,7 +265,7 @@ function _executeActionSummonMinion(action) {
     return false;
   }
   let target = action.targets[0];
-  if (_invalidPlayAreaIndex(target.playAreaIndex)) {
+  if (!_validPlayAreaIndex(target.playAreaIndex)) {
     Log.error(`Invalid playAreaIndex: ${target.playAreaIndex}`);
     return false;
   }

@@ -129,3 +129,7 @@ export const cancelSelectOpponentMinionTargetedAbility = () => _action(CANCEL_SE
 
 export const CANCEL_SELECT_PLAYER_MINION_TARGETED_ABILITY = _createRequestRaw('CANCEL_SELECT_PLAYER_MINION_TARGETED_ABILITY');
 export const cancelSelectPlayerMinionTargetedAbility = () => _action(CANCEL_SELECT_PLAYER_MINION_TARGETED_ABILITY, {});
+
+// Use selectAbility instead, which will handle this case in the saga.
+export const SELECT_PLAYER_TARGETED_ABILITY = _createRequestRaw('SELECT_PLAYER_TARGETED_ABILITY');
+export const selectPlayerTargetedAbility = (abilityId) => _action(SELECT_PLAYER_TARGETED_ABILITY, {abilityId});

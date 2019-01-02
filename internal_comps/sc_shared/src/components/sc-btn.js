@@ -43,8 +43,10 @@ class ScBtn extends LitElement {
         return 'btn-warning btn-cancel';
       case BTN_TYPES.PRESET.END_TURN:
         return 'btn-secondary btn-endturn';
+      case BTN_TYPES.PRESET.DONE:
+        return 'btn-primary btn-done';
       default:
-        Log.error(`Invalid btntype: ${this.btntype}`);
+        Log.error(`invalid btntype: ${this.btntype}`);
         return 'btn-secondary';
     }
   }

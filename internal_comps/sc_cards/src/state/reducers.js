@@ -505,10 +505,12 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       cardInstance = state.ui.selectedCard.instance;  
       newState = _discardCard(state, cardId, cardInstance);
       return _removeSelectedCard(newState);
-    case ActionType.SELECT_OPPONENT_MINION_TARGETED_ABILITY: // CAST_OPPONENT_TARGET_ABILITY
+    case ActionType.SELECT_OPPONENT_MINION_TARGETED_ABILITY:
       return _setSelectedAbility(state, CARD_TARGETS.OPPONENT_MINION, action.abilityId);
-    case ActionType.SELECT_PLAYER_MINION_TARGETED_ABILITY: // CAST_UNIT_TARGET_ABILITY
+    case ActionType.SELECT_PLAYER_MINION_TARGETED_ABILITY:
       return _setSelectedAbility(state, CARD_TARGETS.PLAYER_MINION, action.abilityId);
+    case ActionType.SELECT_PLAYER_TARGETED_ABILITY:
+      return _setSelectedAbility(state, CARD_TARGETS.PLAYER, action.abilityId);      
     case ActionType.CANCEL_SELECT_OPPONENT_MINION_TARGETED_ABILITY:
     case ActionType.CANCEL_SELECT_PLAYER_MINION_TARGETED_ABILITY:
       return _removeSelectedAbility(newState);
