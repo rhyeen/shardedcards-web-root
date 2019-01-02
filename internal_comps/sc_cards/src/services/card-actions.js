@@ -74,7 +74,18 @@ export function summonMinion(selectedCard, playerFieldCard) {
     selectedCard.card.conditions.exhausted = true;
   }
   selectedCard.card.version += 1;
-  return updatedCards;
+  let statusUpdates = _getStatusUpdatesOnSummonCost(selectedCard);
+  return { updatedCards, statusUpdates };
+}
+
+function _getStatusUpdatesOnSummonCost(selectedCard) {
+  return {
+    player: {
+      energy: {
+        currentModifier: -1 * selectedCard.card.cost
+      }
+    }
+  };
 }
 
 /** @MUTATES: attackingCard, attackedCard */
@@ -232,7 +243,6 @@ export function useCardAbility(cards, playAreaIndex, selectedAbility, playerFiel
     let { updatedCards, statusUpdates } = _useAbilityOnPlayer(selectedAbility);
     results.updatedCards = updatedCards;
     results.statusUpdates = statusUpdates;
-    debugger;
   } else {
     Log.error(`unexpected ability target: ${selectedAbility.targets}`);
     return results;

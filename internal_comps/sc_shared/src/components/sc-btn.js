@@ -10,13 +10,20 @@ class ScBtn extends LitElement {
       ${ScSharedStyles}
       ${ScBtnBaseStyle}
       <style>
+
         button.btn-endturn {
           padding: 8px 12px;
           line-height: 20px;
           font-size: 16px;
         }
+
+        .click-propagation-prevention {
+          display: inline;
+        }
       </style>
-      <button class="${this._getBtnClass()}" ?disabled="${this.disabled}"><slot></slot></button>
+      <div class="click-propagation-prevention" @click="${this._handleDisabledPropogation}">
+        <button class="${this._getBtnClass()}" ?disabled="${this.disabled}"><slot></slot></button>
+      </div>
     `;
   };
   
@@ -26,6 +33,13 @@ class ScBtn extends LitElement {
       disabled: { type: Boolean }
     };
   };
+
+  _handleDisabledPropogation(e) {
+    if (!this.disabled) {
+      return;
+    }
+    e.stopPropagation();
+  }
 
   _getBtnClass() {
     switch(this.btntype) {

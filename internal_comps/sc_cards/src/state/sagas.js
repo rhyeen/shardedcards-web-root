@@ -30,10 +30,11 @@ function* _setPlayerDecks() {
 }
 
 function* _summonMinion({playAreaIndex}) {
-  let { discardedCard, updatedCards} = yield _prepareSummonMinion(playAreaIndex);
+  let { discardedCard, updatedCards, statusUpdates } = yield _prepareSummonMinion(playAreaIndex);
   let action = yield _getSummonMinionAction(playAreaIndex);
   yield put(GameDispatchActions.recordAction(action));
   yield put(Actions.summonMinion.success(playAreaIndex, updatedCards, discardedCard));
+  yield _handleStatusUpdates(statusUpdates);
 }
 
 function _prepareSummonMinion(playAreaIndex) {
@@ -44,8 +45,8 @@ function _prepareSummonMinion(playAreaIndex) {
     id: playerFieldCard.id,
     instance: playerFieldCard.instance,
   };
-  let updatedCards = CardActions.summonMinion(selectedCard, playerFieldCard);
-  return { discardedCard, updatedCards};
+  let { updatedCards, statusUpdates } = CardActions.summonMinion(selectedCard, playerFieldCard);
+  return { discardedCard, updatedCards, statusUpdates };
 }
 
 function _getSummonMinionAction(playAreaIndex) {
@@ -183,7 +184,7 @@ function _handleStatusUpdates(statusUpdates) {
   if (!statusUpdates) {
     return;
   }
-  put(StatusDispatchActions.updateStatus(statusUpdates));
+  return put(StatusDispatchActions.updateStatus(statusUpdates));
 }
 
 function _getUseCardAbilityAction(playAreaIndex) {

@@ -131,11 +131,11 @@ export const sc_status = (state = INITIAL_STATE, action) => {
         if (action.statusUpdates.player.energy) {
           if (action.statusUpdates.player.energy.maxModifier) {
             newEnergies = getModifiedEnergy(newState.entities.player.energy, action.statusUpdates.player.energy.maxModifier, null);
-            newState = _setPlayerMaxEnergy(state, newEnergies.max);
+            newState = _setPlayerMaxEnergy(newState, newEnergies.max);
           }
           if (action.statusUpdates.player.energy.currentModifier) {
             newEnergies = getModifiedEnergy(newState.entities.player.energy, null, action.statusUpdates.player.energy.currentModifier);
-            newState = _setPlayerCurrentEnergy(state, newEnergies.current);
+            newState = _setPlayerCurrentEnergy(newState, newEnergies.current);
           }
         }
       }

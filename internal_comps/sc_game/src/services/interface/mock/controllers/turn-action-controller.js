@@ -280,7 +280,9 @@ function _executeActionSummonMinion(action) {
     instance: target.instance,
     playAreaIndex: target.playAreaIndex
   }
-  let updatedCards = CardActions.summonMinion(selectedCard, playerFieldCard);
+  let { updatedCards, statusUpdates } = CardActions.summonMinion(selectedCard, playerFieldCard);
+  console.trace('@TODO: handle statusUpdates to reduce energy and make sure to check status to ensure a card can be played given current energy.');
+  console.trace('@TODO: also, make sure that energy is refreshed on new turn');
   _updateCards(updatedCards);
   return true;
 }

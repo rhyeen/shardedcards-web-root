@@ -6,7 +6,7 @@ import {
   DeadIcon,
   ShieldIcon,
   ScIconsStyles } from '../../../../../sc_shared/src/entities/sc-icons.js';
-import { summonMinion } from '../../../services/card-actions.js';
+import * as CardActions from '../../../services/card-actions.js';
 import * as Cards from '../../../services/card-selection.js';
 
 class ScPlaceCardOverlay extends LitElement {
@@ -52,7 +52,7 @@ class ScPlaceCardOverlay extends LitElement {
     }
     let _replacer = this._deepCopy(this.replacer);
     let _replaced = this._deepCopy(this.replaced);
-    let updatedCards = summonMinion(_replacer, _replaced);
+    let { updatedCards } = CardActions.summonMinion(_replacer, _replaced);
     _replacer = Cards.getUpdatedCard(_replacer, updatedCards);
     _replaced = Cards.getUpdatedCard(_replaced, updatedCards);
     let currentShield = 0;
