@@ -137,7 +137,8 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
 
   _showUseCardAbilityOverlay() {
     return (
-      this._isCardSelected 
+      this._isCardSelected
+      && !this._isAbilitySelected 
       && this._selectedCardWithAbility.source === CARD_SOURCES.CAST_PLAYER_SPELL
     );
   }
@@ -151,7 +152,9 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
 
   _showTargetMinionAbilityOverlay() {
     return (
-      this._isAbilitySelected 
+      this._isCardSelected
+      && this._isAbilitySelected 
+      && this._selectedCardWithAbility.source === CARD_SOURCES.CAST_PLAYER_SPELL
     );
   }
 

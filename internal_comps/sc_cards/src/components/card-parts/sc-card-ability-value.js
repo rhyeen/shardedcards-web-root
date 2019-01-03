@@ -29,15 +29,15 @@ class ScCardAbilityValue extends LitElement {
   }
 
   _cardAbilityTooltip() {
-    return html`${Ability.getName(this.ability.id)}`;
+    return Ability.getName(this.ability.id);
   }
 
   _cardAbilityTooltipDescription() {
-    return html`${Ability.getDescription(this.ability.id, this.ability.amount)}`;
+    return Ability.getDescription(this.ability.id, this.ability.amount);
   }
 
   _cardAbilityIcon() {
-    return html`${Ability.getIcon(this.ability.id)}`;
+    return Ability.getIcon(this.ability.id);
   }
 }
 

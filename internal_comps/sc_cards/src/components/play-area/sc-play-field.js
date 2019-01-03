@@ -7,7 +7,7 @@ import { localStore } from '../../state/store.js';
 import * as CardsSelector from '../../state/selectors.js';
 
 import './cards/sc-minion-field-card.js';
-import './cards/sc-overlay-field-card.js';
+import './covers/sc-cover-field-card.js';
 import { PLAY_FIELD_OWNER } from '../../entities/play-field-owner.js';
 import { Log } from '../../../../sc_shared/src/services/logger.js';
 
@@ -66,10 +66,10 @@ class ScPlayField extends connect(localStore)(LitElement) {
   _getFieldCardHtml(playAreaIndex) {
     if (this.overlay) {
       return html`
-        <sc-overlay-field-card
+        <sc-cover-field-card
           .fieldSlot="${this._fieldSlots[playAreaIndex]}"
           .selectedCardWithAbility="${this._selectedCardWithAbility}"
-          .owner="${this.owner}"></sc-overlay-field-card>`;
+          .owner="${this.owner}"></sc-cover-field-card>`;
     }
     return html`
       <sc-minion-field-card

@@ -124,9 +124,14 @@ export const selectOpponentMinionTargetedAbility = (abilityId) => _action(SELECT
 export const SELECT_PLAYER_MINION_TARGETED_ABILITY = _createRequestRaw('SELECT_PLAYER_MINION_TARGETED_ABILITY');
 export const selectPlayerMinionTargetedAbility = (abilityId) => _action(SELECT_PLAYER_MINION_TARGETED_ABILITY, {abilityId});
 
+export const CANCEL_SELECT_MINION_TARGETED_ABILITY = _createRequestRaw('CANCEL_SELECT_MINION_TARGETED_ABILITY');
+export const cancelSelectMinionTargetedAbility = () => _action(CANCEL_SELECT_MINION_TARGETED_ABILITY, {});
+
+// May use cancelSelectMinionTargetedAbility instead
 export const CANCEL_SELECT_OPPONENT_MINION_TARGETED_ABILITY = _createRequestRaw('CANCEL_SELECT_OPPONENT_MINION_TARGETED_ABILITY');
 export const cancelSelectOpponentMinionTargetedAbility = () => _action(CANCEL_SELECT_OPPONENT_MINION_TARGETED_ABILITY, {});
 
+// May use cancelSelectMinionTargetedAbility instead
 export const CANCEL_SELECT_PLAYER_MINION_TARGETED_ABILITY = _createRequestRaw('CANCEL_SELECT_PLAYER_MINION_TARGETED_ABILITY');
 export const cancelSelectPlayerMinionTargetedAbility = () => _action(CANCEL_SELECT_PLAYER_MINION_TARGETED_ABILITY, {});
 

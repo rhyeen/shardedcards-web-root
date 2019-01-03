@@ -255,10 +255,24 @@ function* _selectAbility({abilityId}) {
   } else if (Ability.isPlayerTargetedAbility(abilityId)) {
     yield put(Actions.selectPlayerTargetedAbility(abilityId));
     yield put(Actions.useCardAbility.request());
+  } else {
+    Log.error('@TODO');
   }
 }
 
+function* _cancelSelectMinionTargetedAbility() {
+  if (isOpponentTargetedAbilitySelected()) {
+    yield put(Actions.cancelSelectOpponentMinionTargetedAbility());
+  } else {
+    yield put(Actions.cancelSelectPlayerMinionTargetedAbility());
+  }
+}
 
+function isOpponentTargetedAbilitySelected() {
+  const state = localStore.getState();
+  let selectedAbility = CardsSelector.getSelectedAbility(state);
+  return selectedAbility.targets === CARD_TARGETS.OPPONENT_MINION;
+}
 
 export default function* root() {
   yield all([
@@ -271,5 +285,6 @@ export default function* root() {
     takeEvery(Actions.SET_PLAYER_DECKS.REQUEST, _setPlayerDecks),
     takeEvery(Actions.SET_CARDS.REQUEST, _setCards),
     takeEvery(Actions.SELECT_ABILITY, _selectAbility),
+    takeEvery(Actions.CANCEL_SELECT_MINION_TARGETED_ABILITY, _cancelSelectMinionTargetedAbility)
   ]);
 }

@@ -1,6 +1,6 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
-import { ScCardStyles } from '../../entities/sc_card-styles.js';
+import { ScCardStyles, ABILITY } from '../../entities/sc_card-styles.js';
 
 import { ScIconsStyles } from '../../../../sc_shared/src/entities/sc-icons.js';
 import { Ability } from '../../entities/selected-card.js';
@@ -19,7 +19,7 @@ class ScAbilityBtn extends LitElement {
           height: 45px;
           text-align: left;
           text-transform: none;
-          background-color: #7E57C2;
+          background-color: var(${ABILITY.CAST.COLOR});
           color: var(${BTN_COLORS.DARK_BTN_TEXT_COLOR});
         }
 

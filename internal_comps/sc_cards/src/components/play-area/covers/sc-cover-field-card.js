@@ -11,10 +11,11 @@ import {
   summonMinion,
   useCardAbility } from '../../../state/actions.js';
 
-import './sc-minion-card.js';
-import './sc-place-card-overlay.js';
+import '../cards/sc-minion-card.js';
+import './sc-summon-minion-cover.js';
+import './sc-target-minion-ability-cover.js';
 
-class ScOverlayFieldCard extends LitElement {
+class ScCoverFieldCard extends LitElement {
   render() {
     return html`
       ${this._getCardHtml()}
@@ -30,20 +31,20 @@ class ScOverlayFieldCard extends LitElement {
   }
 
   _getCardHtml() {
-    if (this._showAttackCardOverlay()) {
-      return this._attackCardOverlay();
+    if (this._showAttackCardCover()) {
+      return this._attackCardCover();
     }
     if (this._showSelectedPlayerMinion()) {
       return this._selectedPlayerMinion();
     }
-    if (this._showPlaceCardOverlay()) {
-      return this._placeCardOverlay();
+    if (this._showPlaceCardCover()) {
+      return this._summonMinionCover();
     }
-    if (this._showTargetOpponentMinionAbilityOverlay()) {
-      return this._targetOpponentMinionAbilityOverlay();
+    if (this._showTargetOpponentMinionAbilityCover()) {
+      return this._targetOpponentMinionAbilityCover();
     }
-    if (this._showTargetPlayerMinionAbilityOverlay()) {
-      return this._targetPlayerMinionAbilityOverlay();
+    if (this._showTargetPlayerMinionAbilityCover()) {
+      return this._targetPlayerMinionAbilityCover();
     }
     return html``;
   }
@@ -77,7 +78,7 @@ class ScOverlayFieldCard extends LitElement {
     );
   }
 
-  _showAttackCardOverlay() {
+  _showAttackCardCover() {
     return (
       this.selectedCardWithAbility.source == CARD_SOURCES.SELECT_PLAYER_MINION
       && this.owner == PLAY_FIELD_OWNER.OPPONENT
@@ -94,37 +95,37 @@ class ScOverlayFieldCard extends LitElement {
     );
   }
 
-  _showPlaceCardOverlay() {
+  _showPlaceCardCover() {
     return (
       this.selectedCardWithAbility.source == CARD_SOURCES.SUMMON_PLAYER_MINION
       && this.owner == PLAY_FIELD_OWNER.PLAYER
     );
   }
 
-  _showTargetOpponentMinionAbilityOverlay() {
+  _showTargetOpponentMinionAbilityCover() {
     return (
       this._usingAbilityOnOpponentMinion()
       && this.owner == PLAY_FIELD_OWNER.OPPONENT
     );
   }
 
-  _showTargetPlayerMinionAbilityOverlay() {
+  _showTargetPlayerMinionAbilityCover() {
     return (
       this._usingAbilityOnOpponentMinion()
       && this.owner == PLAY_FIELD_OWNER.OPPONENT
     );
   }
 
-  _attackCardOverlay() {
+  _attackCardCover() {
     return html`
-      <sc-attack-card-overlay
+      <sc-attack-card-cover
           .attacker="${this.selectedCardWithAbility}"
           .attacked="${this.fieldSlot}"
-          @click="${this._attackCardOverlayClicked}"></sc-attack-card-overlay>
+          @click="${this._attackCardCoverClicked}"></sc-attack-card-cover>
     `;
   }
 
-  _attackCardOverlayClicked() {
+  _attackCardCoverClicked() {
     store.dispatch(attackMinion.request(this.fieldSlot.playAreaIndex));
   }
 
@@ -140,44 +141,44 @@ class ScOverlayFieldCard extends LitElement {
     store.dispatch(playPlayerMinion());
   }
 
-  _placeCardOverlay() {
+  _summonMinionCover() {
     return html`
-      <sc-place-card-overlay
+      <sc-summon-minion-cover
           .replacer="${this.selectedCardWithAbility}"
           .replaced="${this.fieldSlot}"
-          @click="${this._placeCardOverlayClicked}"></sc-place-card-overlay>
+          @click="${this._summonMinionCoverClicked}"></sc-summon-minion-cover>
     `;
   }
 
-  _placeCardOverlayClicked() {
+  _summonMinionCoverClicked() {
     store.dispatch(summonMinion.request(this.fieldSlot.playAreaIndex));
   }
 
-  _targetOpponentMinionAbilityOverlay() {
+  _targetOpponentMinionAbilityCover() {
     return html`
-      <sc-target-minion-ability-overlay
+      <sc-target-minion-ability-cover
           .caster="${this.selectedCardWithAbility}"
           .target="${this.fieldSlot}"
-          @click="${this._targetOpponentMinionAbilityOverlayClicked}"></sc-target-minion-ability-overlay>
+          @click="${this._targetOpponentMinionAbilityCoverClicked}"></sc-target-minion-ability-cover>
     `;
   }
 
-  _targetOpponentMinionAbilityOverlayClicked() {
-    store.dispatch(useCardAbility(this.fieldSlot.playAreaIndex));
+  _targetOpponentMinionAbilityCoverClicked() {
+    store.dispatch(useCardAbility.request(this.fieldSlot.playAreaIndex));
   }
 
-  _targetPlayerMinionAbilityOverlay() {
+  _targetPlayerMinionAbilityCover() {
     return html`
-      <sc-target-minion-ability-overlay
+      <sc-target-minion-ability-cover
           .caster="${this.selectedCardWithAbility}"
           .target="${this.fieldSlot}"
-          @click="${this._targetPlayerMinionAbilityOverlayClicked}"></sc-target-minion-ability-overlay>
+          @click="${this._targetPlayerMinionAbilityCoverClicked}"></sc-target-minion-ability-cover>
     `;
   }
 
-  _targetPlayerMinionAbilityOverlayClicked() {
-    store.dispatch(useCardAbility(this.fieldSlot.playAreaIndex));
+  _targetPlayerMinionAbilityCoverClicked() {
+    store.dispatch(useCardAbility.request(this.fieldSlot.playAreaIndex));
   }
 }
 
-window.customElements.define('sc-overlay-field-card', ScOverlayFieldCard);
+window.customElements.define('sc-cover-field-card', ScCoverFieldCard);

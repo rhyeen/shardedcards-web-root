@@ -98,8 +98,8 @@ export function attackMinion(cards, attackingCard, attackedCard) {
   if (!_attackerCanReach(attackingCard.card, attackedCard.card)) {
     return results;
   }
-  _damageCard(attackingCard.card.attack, attackedCard.card);
-  _damageCard(attackedCard.card.attack, attackingCard.card);
+  attackedCard.card = _damageCard(attackingCard.card.attack, attackedCard.card);
+  attackingCard.card = _damageCard(attackedCard.card.attack, attackingCard.card);
   attackingCard.card.conditions.exhausted = true;
   results.updatedCards.push(attackingCard);
   results.updatedCards.push(attackedCard);
@@ -122,23 +122,31 @@ function _attackerCanReach(attackingCard, attackedCard) {
 }
 
 function _damageCard(damage, card) {
-  if (!card.conditions.shield) {
-    card.conditions.shield = 0;
+  let _card = {
+    ...card,
+    conditions: {
+      ...card.conditions
+    }
+  };
+  if (!_card.conditions.shield) {
+    _card.conditions.shield = 0;
   }
-  if (card.conditions.shield >= damage) {
-    card.conditions.shield -= damage;
+  if (_card.conditions.shield >= damage) {
+    _card.conditions.shield -= damage;
   } else {
-    card.health -= damage - card.conditions.shield;
-    card.conditions.shield = 0;
+    _card.health -= damage - _card.conditions.shield;
+    _card.conditions.shield = 0;
   }
-  if (card.health < 0) {
-    card.health = 0;
+  if (_card.health < 0) {
+    _card.health = 0;
   }
-  card.version += 1;
+  _card.version += 1;
+  return _card;
 }
 
+/** returns true if card is discarded */
 function _prepareCardForDiscard(cards, card, cardId) {
-  if (Cards.isDead(card)) {
+  if (!Cards.isDead(card)) {
     return false;
   }
   _resetCard(cards, card, cardId);
@@ -213,6 +221,7 @@ function _refreshCard(card) {
   return cardNeedsRefreshing;
 }
 
+/** @MUTATES: selectedAbility.card.ability[abilityId].used */
 export function useCardAbility(cards, playAreaIndex, selectedAbility, playerFieldSlots, opponentFieldSlots) {
   let results = {
     updatedCards: [],
@@ -222,7 +231,7 @@ export function useCardAbility(cards, playAreaIndex, selectedAbility, playerFiel
     statusUpdates: {}
   };
   if (_abilityUsedOnOpponentMinion(selectedAbility)) {
-    let { updatedCards, isFieldCardDiscarded } = _useAbilityOnOpponentMinion(selectedAbility, opponentFieldSlots[playAreaIndex]);
+    let { updatedCards, isFieldCardDiscarded } = _useAbilityOnOpponentMinion(cards, selectedAbility, opponentFieldSlots[playAreaIndex]);
     results.updatedCards = updatedCards;
     if (isFieldCardDiscarded) {
       results.opponentFieldSlots[playAreaIndex] = {
@@ -248,6 +257,7 @@ export function useCardAbility(cards, playAreaIndex, selectedAbility, playerFiel
     return results;
   }
   _consumeAbilityUse(selectedAbility);
+  results.updatedCards.push(selectedAbility);
   return results;
 }
 
@@ -263,11 +273,11 @@ function _abilityUsedOnPlayer(selectedAbility) {
   return selectedAbility.targets === CARD_TARGETS.PLAYER;  
 }
 
-function _useAbilityOnOpponentMinion(selectedAbility, opponentFieldSlot) {
+function _useAbilityOnOpponentMinion(cards, selectedAbility, opponentFieldSlot) {
   if (!_abilityCanCastOnOpponentMinion(selectedAbility, opponentFieldSlot)) {
     return { updatedCards:[], isFieldCardDiscarded:false };
   }
-  return _useAbilityOnVerifiedTargetMinion(selectedAbility, playerFieldSlot);
+  return _useAbilityOnVerifiedTargetMinion(cards, selectedAbility, opponentFieldSlot);
 }
 
 function _abilityCanCastOnOpponentMinion(selectedAbility, opponentFieldSlot) {
@@ -350,18 +360,25 @@ function _useAbilityOnVerifiedPlayer(selectedAbility) {
 }
 
 function _useAbilitySpellshot(selectedAbility, fieldSlot) {
-  _damageCard(selectedAbility.ability.amount, fieldSlot.card);
-  return fieldSlot;
+  return {
+    ...fieldSlot,
+    card: _damageCard(selectedAbility.ability.amount, fieldSlot.card)
+  };
 }
 
 function _useAbilityReach(selectedAbility, fieldSlot) {
-  _setRangeResults(selectedAbility.ability.amount, fieldSlot.card);
-  return fieldSlot;
+  return {
+    ...fieldSlot,
+    card: _setRangeResults(selectedAbility.ability.amount, fieldSlot.card)
+  };
 }
 
-function _setRangeResults(rangeModifier, target) {
-  target.range += rangeModifier;
-  target.version += 1;
+function _setRangeResults(rangeModifier, card) {
+  return {
+    ...card,
+    range: card.range + rangeModifier,
+    version: card.version + 1
+  };
 }
 
 function _useAbilityEnergize(selectedAbility) {

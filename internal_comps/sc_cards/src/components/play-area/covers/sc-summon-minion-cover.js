@@ -1,7 +1,7 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { ScSharedStyles } from '../../../../../sc_shared/src/entities/sc-shared-styles.js';
-import { ScCardStyles } from '../../../entities/sc_card-styles.js';
-import { ScMinionCardOverlayStyle } from './sc-minion-card-overlay-styles.js';
+import { ScCardStyles, CARDS } from '../../../entities/sc_card-styles.js';
+import { ScMinionCardCoverStyle } from './sc-minion-card-cover-style.js';
 import {
   DeadIcon,
   ShieldIcon,
@@ -9,21 +9,25 @@ import {
 import * as CardActions from '../../../services/card-actions.js';
 import * as Cards from '../../../services/card-selection.js';
 
-class ScPlaceCardOverlay extends LitElement {
+class ScSummonMinionCover extends LitElement {
   render() {
     return html`
       ${ScSharedStyles}
       ${ScCardStyles}
-      ${ScMinionCardOverlayStyle}
+      ${ScMinionCardCoverStyle}
       ${ScIconsStyles}
       <style>
-        [minion-overlay-separator] {
+        :host {
+          border: var(${CARDS.MINION_COVER.SUMMON_MINION_BORDER});
+        }
+        [minion-cover-separator] {
           opacity: ${this._getCardSeparatorOpacity()};
+          border-bottom: var(${CARDS.MINION_COVER.SUMMON_MINION_BORDER});
         }
       </style>
-      <div minion-overlay-top>${this._getReplacedResultHtml()}</div>
-      <div minion-overlay-separator></div>
-      <div minion-overlay-bottom>${this._getReplacerResultHtml()}</div>
+      <div minion-cover-top>${this._getReplacedResultHtml()}</div>
+      <div minion-cover-separator></div>
+      <div minion-cover-bottom>${this._getReplacerResultHtml()}</div>
     `;
   }
 
@@ -75,4 +79,4 @@ class ScPlaceCardOverlay extends LitElement {
   }
 }
 
-window.customElements.define('sc-place-card-overlay', ScPlaceCardOverlay);
+window.customElements.define('sc-summon-minion-cover', ScSummonMinionCover);

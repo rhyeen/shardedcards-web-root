@@ -28,14 +28,15 @@ export const CARDS = {
   }
 };
 
-CARDS.MINION_OVERLAY = {
+CARDS.MINION_COVER = {
   HEIGHT: CARDS.MINION.HEIGHT,
   WIDTH: CARDS.MINION.WIDTH,
-  PADDING: CARDS.MINION.PADDING,
+  PADDING: '--sc_card-minion-cover-padding',
   BORDER_RADIUS: CARDS.MINION.BORDER_RADIUS,
-  BORDER: '--sc_card-minion-overlay-border',
-  BACKGROUND_COLOR: '--sc_card-minion-overlay-background-color',
-  BORDER_SIZE: '--sc_card-minion-overlay-border-size'
+  SUMMON_MINION_BORDER: '--sc_card-minion-cover-summon-border',
+  CAST_TARGET_MINION_BORDER: '--sc_card-minion-cover-cast-border',
+  BACKGROUND_COLOR: '--sc_card-minion-cover-background-color',
+  BORDER_SIZE: '--sc_card-minion-cover-border-size'
 };
 
 export const AREAS = {
@@ -52,11 +53,19 @@ export const PLAY_AREA = {
     BORDER_SIZE: '--sc_card-play-area-border-size',
     HEIGHT: '--sc_card-play-area-height',
   }
+};
+
+export const ABILITY = {
+  CAST: {
+    COLOR: '--sc_card-ability-cast-color'
+  }
 }
 
 export const ScCardStyles = html`
 <style>
   :host {
+    --sc_card-ability-cast-color: #7E57C2;
+
     --sc_card-hand-card-height: 32px;
     --sc_card-hand-card-width: 350px;
     --sc_card-hand-card-hover-raise-height: 10px;
@@ -69,9 +78,11 @@ export const ScCardStyles = html`
     --sc_card-minion-card-padding: 4px;
     --sc_card-minion-card-border-radius: 8px;
     --sc_card-minion-card-elevation: 1px 1px 5px rgba(0, 0, 0, 0.4);
-    --sc_card-minion-overlay-border-size: 2px;
-    --sc_card-minion-overlay-border: var(--sc_card-minion-overlay-border-size) dashed #8D6E63;
-    --sc_card-minion-overlay-background-color: rgba(255, 255, 255, 0.5);
+    --sc_card-minion-cover-border-size: 2px;
+    --sc_card-minion-cover-summon-border: var(--sc_card-minion-cover-border-size) dashed #8D6E63;
+    --sc_card-minion-cover-cast-border: var(--sc_card-minion-cover-border-size) dashed var(--sc_card-ability-cast-color);
+    --sc_card-minion-cover-background-color: rgba(255, 255, 255, 0.5);
+    --sc_card-minion-cover-padding: 8px;
 
     --sc_card-full-card-height: 300px;
     --sc_card-full-card-width: 200px;

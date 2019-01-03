@@ -513,7 +513,7 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       return _setSelectedAbility(state, CARD_TARGETS.PLAYER, action.abilityId);      
     case ActionType.CANCEL_SELECT_OPPONENT_MINION_TARGETED_ABILITY:
     case ActionType.CANCEL_SELECT_PLAYER_MINION_TARGETED_ABILITY:
-      return _removeSelectedAbility(newState);
+      return _removeSelectedAbility(state);
     default:
       return state;
   }
