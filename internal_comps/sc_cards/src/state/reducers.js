@@ -459,6 +459,16 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
     case ActionType.PLAY_PLAYER_MINION:
       return _setSelectedCardSource(state, CARD_SOURCES.PLAY_PLAYER_MINION);
     case ActionType.ATTACK_MINION.SUCCESS:
+      newState = state;
+      for (let updatedCard of action.updatedCards) {
+        newState = _setCard(newState, updatedCard.card, updatedCard.id, updatedCard.instance);
+      }
+      for (let discardedCard of action.addedToDiscardPile) {
+        newState = _discardCard(newState, discardedCard.id, discardedCard.instance);
+      }
+      newState = _setPlayerFieldSlots(newState, action.playerFieldSlots);
+      newState = _setOpponentFieldSlots(newState, action.opponentFieldSlots);
+      return _removeSelectedCard(newState);
     case ActionType.SET_PLAYING_FIELD.SUCCESS:
       newState = state;
       newState = _setPlayerFieldSlots(newState, action.playerFieldSlots);
