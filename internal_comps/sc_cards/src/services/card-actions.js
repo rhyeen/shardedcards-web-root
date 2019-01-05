@@ -95,7 +95,7 @@ export function attackMinion(cards, attackingCard, attackedCard) {
     attackerDiscarded: false,
     attackedDiscarded: false
   };
-  if (!_attackerCanReach(attackingCard.card, attackedCard.card)) {
+  if (!_attackerCanReach(attackingCard, attackedCard)) {
     return results;
   }
   attackedCard.card = _damageCard(attackingCard.card.attack, attackedCard.card);
@@ -114,7 +114,7 @@ function _attackerCanReach(attackingCard, attackedCard) {
     Log.error(`target is out of reach for attack`);
     return false;
   }
-  if (attackingCard.conditions.exhausted) {
+  if (attackingCard.card.conditions.exhausted) {
     Log.error(`attacker is exhausted`);
     return false;
   }

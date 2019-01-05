@@ -35,6 +35,7 @@ CARDS.MINION_COVER = {
   BORDER_RADIUS: CARDS.MINION.BORDER_RADIUS,
   SUMMON_MINION_BORDER: '--sc_card-minion-cover-summon-border',
   CAST_TARGET_MINION_BORDER: '--sc_card-minion-cover-cast-border',
+  ATTACK_MINION_BORDER: '--sc_card-minion-cover-attack-border',
   BACKGROUND_COLOR: '--sc_card-minion-cover-background-color',
   BORDER_SIZE: '--sc_card-minion-cover-border-size'
 };
@@ -81,6 +82,7 @@ export const ScCardStyles = html`
     --sc_card-minion-cover-border-size: 2px;
     --sc_card-minion-cover-summon-border: var(--sc_card-minion-cover-border-size) dashed #8D6E63;
     --sc_card-minion-cover-cast-border: var(--sc_card-minion-cover-border-size) dashed var(--sc_card-ability-cast-color);
+    --sc_card-minion-cover-attack-border: var(--sc_card-minion-cover-border-size) dashed #E53935;
     --sc_card-minion-cover-background-color: rgba(255, 255, 255, 0.5);
     --sc_card-minion-cover-padding: 8px;
 

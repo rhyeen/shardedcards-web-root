@@ -76,7 +76,9 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
       return html`<sc-opponent-turn-overlay></sc-opponent-turn-overlay>`;
     }
     if (this._showFullPlayerMinionOverlay()) {
-      return html`<sc-full-player-minion-overlay></sc-full-player-minion-overlay>`;
+      return html`
+      <sc-full-player-minion-overlay
+          .selectedCard="${this._selectedCardWithAbility}"></sc-full-player-minion-overlay>`;
     }
     if (this._showFullOpponentMinionOverlay()) {
       return html`<sc-full-opponent-minion-overlay></sc-full-opponent-minion-overlay>`;      

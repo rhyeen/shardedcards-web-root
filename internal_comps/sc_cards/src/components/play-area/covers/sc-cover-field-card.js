@@ -13,6 +13,7 @@ import {
 
 import '../cards/sc-minion-card.js';
 import './sc-summon-minion-cover.js';
+import './sc-attack-card-cover.js';
 import './sc-target-minion-ability-cover.js';
 
 class ScCoverFieldCard extends LitElement {
