@@ -50,10 +50,11 @@ class ScCoverFieldCard extends LitElement {
     return html``;
   }
 
+  _fieldSlotHasCard() {
+    return !!this.fieldSlot.card;
+  }
+
   _targetedCardInRange() {
-    if (!this.fieldSlot.card) {
-      return false;
-    }
     return CardActions.indexInAttackRange(this.selectedCardWithAbility, this.fieldSlot.playAreaIndex);
   }
 
@@ -72,6 +73,13 @@ class ScCoverFieldCard extends LitElement {
     );
   }
 
+  _usingAbilityOnPlayerMinion() {
+    return (
+      this._usingAbility()
+      && this.selectedCardWithAbility.targets === CARD_TARGETS.PLAYER_MINION
+    );
+  }
+
   _usingAbility() {
     return (
       this.selectedCardWithAbility.source === CARD_SOURCES.CAST_PLAYER_SPELL
@@ -83,6 +91,7 @@ class ScCoverFieldCard extends LitElement {
     return (
       this.selectedCardWithAbility.source == CARD_SOURCES.SELECT_PLAYER_MINION
       && this.owner == PLAY_FIELD_OWNER.OPPONENT
+      && this._fieldSlotHasCard()
       && this._targetedCardInRange()
       && !this._selectedCardExhausted()
     );
@@ -105,15 +114,17 @@ class ScCoverFieldCard extends LitElement {
 
   _showTargetOpponentMinionAbilityCover() {
     return (
-      this._usingAbilityOnOpponentMinion()
+      this._fieldSlotHasCard()
+      && this._usingAbilityOnOpponentMinion()
       && this.owner == PLAY_FIELD_OWNER.OPPONENT
     );
   }
 
   _showTargetPlayerMinionAbilityCover() {
     return (
-      this._usingAbilityOnOpponentMinion()
-      && this.owner == PLAY_FIELD_OWNER.OPPONENT
+      this._fieldSlotHasCard()
+      && this._usingAbilityOnPlayerMinion()
+      && this.owner == PLAY_FIELD_OWNER.PLAYER
     );
   }
 
