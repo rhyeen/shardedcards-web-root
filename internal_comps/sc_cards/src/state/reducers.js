@@ -405,7 +405,7 @@ function _shallowCopyOpponentFieldBacklog(state) {
 }
 
 export const sc_cards = (state = INITIAL_STATE, action) => {
-  let newState, handIndex, cardId, cardInstance, card;
+  let newState, handIndex, cardId, cardInstance, card, playAreaIndex;
   switch (action.type) {
     case ActionType.SELECT_CARD_FROM_HAND:
       cardId = state.entities.player.hand.cards[action.handIndex].id;
@@ -422,8 +422,12 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       return _removeSelectedCard(newState);
     case ActionType.CANCEL_SELECT_OPPONENT_MINION:    
     case ActionType.CANCEL_SELECT_PLAYER_MINION:
-    case ActionType.CANCEL_PLAY_SELECTED_MINION:
       return _removeSelectedCard(state);
+    case ActionType.CANCEL_PLAY_SELECTED_MINION:
+      cardId = state.ui.selectedCard.id;
+      cardInstance = state.ui.selectedCard.instance;
+      playAreaIndex = state.ui.selectedCard.playAreaIndex;
+      return _setSelectedCard(state, CARD_SOURCES.SELECT_PLAYER_MINION, cardId, cardInstance, null, playAreaIndex);
     case ActionType.PLAY_SELECTED_CARD:
       card = Cards.getCard(state.entities.cards, state.ui.selectedCard.id, state.ui.selectedCard.instance);
       switch (card.type) {
@@ -453,7 +457,7 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
     case ActionType.SELECT_OPPONENT_MINION:
       return _setSelectedCard(state, CARD_SOURCES.SELECT_OPPONENT_MINION, action.cardId, action.cardInstance, null, action.playAreaIndex);
     case ActionType.PLAY_PLAYER_MINION:
-      return _setSelectedCardSource(CARD_SOURCES.PLAY_PLAYER_MINION);
+      return _setSelectedCardSource(state, CARD_SOURCES.PLAY_PLAYER_MINION);
     case ActionType.ATTACK_MINION.SUCCESS:
     case ActionType.SET_PLAYING_FIELD.SUCCESS:
       newState = state;

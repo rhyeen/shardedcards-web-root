@@ -9,10 +9,10 @@ import * as CardsSelector from '../../../../sc_cards/src/state/selectors.js';
 import { CARD_SOURCES } from '../../../../sc_cards/src/entities/selected-card.js';
 import { END_GAME_STATE } from '../overlay/sc-game-over-overlay.js';
 
-import '../overlay/sc-full-crafting-base-card-overlay.js';
-import '../overlay/sc-full-hand-card-overlay.js';
-import '../overlay/sc-full-opponent-minion-overlay.js';
-import '../overlay/sc-full-player-minion-overlay.js';
+import '../overlay/sc-select-crafting-base-card-overlay.js';
+import '../overlay/sc-select-hand-card-overlay.js';
+import '../overlay/sc-select-opponent-minion-overlay.js';
+import '../overlay/sc-select-player-minion-overlay.js';
 import '../overlay/sc-game-menu-overlay.js';
 import '../overlay/sc-game-over-overlay.js';
 import '../overlay/sc-opponent-turn-overlay';
@@ -77,21 +77,23 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
     }
     if (this._showFullPlayerMinionOverlay()) {
       return html`
-      <sc-full-player-minion-overlay
-          .selectedCard="${this._selectedCardWithAbility}"></sc-full-player-minion-overlay>`;
+      <sc-select-player-minion-overlay
+          .selectedCard="${this._selectedCardWithAbility}"></sc-select-player-minion-overlay>`;
     }
     if (this._showFullOpponentMinionOverlay()) {
-      return html`<sc-full-opponent-minion-overlay></sc-full-opponent-minion-overlay>`;      
+      return html`
+        <sc-select-opponent-minion-overlay
+            .selectedCard="${this._selectedCardWithAbility}"></sc-select-opponent-minion-overlay>`;      
     }
     if (this._showUseCardAbilityOverlay()) {
       return html`
-      <sc-use-card-ability-overlay
-          .selectedCard="${this._selectedCardWithAbility}"></sc-use-card-ability-overlay>`;
+        <sc-use-card-ability-overlay
+            .selectedCard="${this._selectedCardWithAbility}"></sc-use-card-ability-overlay>`;
     }
     if (this._showFullHandCardOverlay()) {
       return html`
-        <sc-full-hand-card-overlay
-            .selectedCard="${this._selectedCardWithAbility}"></sc-full-hand-card-overlay>`;
+        <sc-select-hand-card-overlay
+            .selectedCard="${this._selectedCardWithAbility}"></sc-select-hand-card-overlay>`;
     }
     if (this._showTargetMinionAbilityOverlay()) {
       return html`<sc-target-minion-ability-overlay></sc-target-minion-ability-overlay>`;
@@ -102,10 +104,12 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
             .selectedCard="${this._selectedCardWithAbility}"></sc-summon-minion-overlay>`;
     }
     if (this._showPlayMinionOverlay()) {
-      return html`<sc-play-minion-overlay></sc-play-minion-overlay>`;
+      return html`
+        <sc-play-minion-overlay
+            .selectedCard="${this._selectedCardWithAbility}"></sc-play-minion-overlay>`;
     }
     if (this._showFullCraftingBaseCardOverlay()) {
-      return html`<sc-full-crafting-base-card-overlay></sc-full-crafting-base-card-overlay>`;
+      return html`<sc-select-crafting-base-card-overlay></sc-select-crafting-base-card-overlay>`;
     }
     return null;
   }

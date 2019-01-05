@@ -22,7 +22,7 @@ class ScCardConditions extends LitElement {
     if (this.card.conditions.exhausted) {
       conditionsHtml.push(this._getExhaustedConditionHtml());
     }
-    return html`${conditionsHtml.join('\n')}`;
+    return html`${conditionsHtml}`;
   }
 
   _getExhaustedConditionHtml() {

@@ -18,13 +18,12 @@ import { LOCALE_EN } from '../../../../sc_locale/src/entities/en.js';
 
 import * as StatusSelector from '../../../../sc_status/src/state/selectors.js';
 
-export class ScFullHandCardOverlay extends connect(localStore)(LitElement) {
+export class ScSelectHandCardOverlay extends connect(localStore)(LitElement) {
   render() {
     return html`
       ${ScSharedStyles}
       ${ScOverlaySharedStyle}
-      <sc-full-card
-          .card="${this.selectedCard.card}"></sc-full-card>
+      <sc-full-card .card="${this.selectedCard.card}"></sc-full-card>
       <div btn-group>
         <sc-btn
             .btntype="${BTN_TYPES.PRESET.CANCEL}"
@@ -63,4 +62,4 @@ export class ScFullHandCardOverlay extends connect(localStore)(LitElement) {
   }
 }
 
-window.customElements.define('sc-full-hand-card-overlay', ScFullHandCardOverlay);
+window.customElements.define('sc-select-hand-card-overlay', ScSelectHandCardOverlay);

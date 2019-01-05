@@ -12,7 +12,7 @@ import '../../../../sc_cards/src/components/play-area/sc-play-area.js';
 import { BTN_TYPES } from '../../../../sc_shared/src/entities/sc-btn-types.js';
 import { LOCALE_EN } from '../../../../sc_locale/src/entities/en.js';
 
-export class ScFullPlayerMinionOverlay extends LitElement {
+export class ScSelectPlayerMinionOverlay extends LitElement {
   render() {
     return html`
       ${ScSharedStyles}
@@ -38,4 +38,4 @@ export class ScFullPlayerMinionOverlay extends LitElement {
   }
 }
 
-window.customElements.define('sc-full-player-minion-overlay', ScFullPlayerMinionOverlay);
+window.customElements.define('sc-select-player-minion-overlay', ScSelectPlayerMinionOverlay);

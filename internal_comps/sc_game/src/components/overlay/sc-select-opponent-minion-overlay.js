@@ -5,7 +5,7 @@ import { ScOverlaySharedStyle } from './sc-overlay-shared-style.js';
 import { connect } from 'pwa-helpers/connect-mixin.js';
 import { localStore } from '../../state/store.js';
 
-import { cancelPlaySelectedMinion } from '../../../../sc_cards/src/state/actions.js';
+import { cancelSelectOpponentMinion } from '../../../../sc_cards/src/state/actions.js';
 
 import '../../../../sc_shared/src/components/sc-btn.js';
 import '../../../../sc_cards/src/components/selected-card/sc-full-card.js';
@@ -13,7 +13,7 @@ import '../../../../sc_cards/src/components/selected-card/sc-full-card.js';
 import { BTN_TYPES } from '../../../../sc_shared/src/entities/sc-btn-types.js';
 import { LOCALE_EN } from '../../../../sc_locale/src/entities/en.js';
 
-export class ScPlayMinionOverlay extends connect(localStore)(LitElement) {
+export class ScSelectOpponentMinionOverlay extends connect(localStore)(LitElement) {
   render() {
     return html`
       ${ScSharedStyles}
@@ -21,9 +21,9 @@ export class ScPlayMinionOverlay extends connect(localStore)(LitElement) {
       <sc-full-card .card="${this.selectedCard.card}"></sc-full-card>
       <div btn-group>
         <sc-btn
-            .btntype="${BTN_TYPES.PRESET.BACK}"
+            .btntype="${BTN_TYPES.PRESET.CANCEL}"
             @click="${() => this._cancel()}">
-          ${LOCALE_EN.SC_BTN.PRESET.BACK}</sc-btn>
+          ${LOCALE_EN.SC_BTN.PRESET.CANCEL}</sc-btn>
       </div>
     `
   }
@@ -35,8 +35,8 @@ export class ScPlayMinionOverlay extends connect(localStore)(LitElement) {
   }
 
   _cancel() {
-    localStore.dispatch(cancelPlaySelectedMinion());
+    localStore.dispatch(cancelSelectOpponentMinion());
   }
 }
 
-window.customElements.define('sc-play-minion-overlay', ScPlayMinionOverlay);
+window.customElements.define('sc-select-opponent-minion-overlay', ScSelectOpponentMinionOverlay);
