@@ -19,11 +19,19 @@ class ScCraftingParts extends connect(localStore)(LitElement) {
         :host {
           /* @TODO: put in variables */
           padding: 10px 0;
-          height: 100%;
+          height: 240px; /* just some number */
           display: flex;
+          align-items: center;
           flex-direction: column;
-          justify-content: space-between;
-          max-height: 180px;
+          justify-content: flex-end;
+        }
+
+        sc-crafting-part:first-child {
+          margin-top: 0;
+        }
+
+        sc-crafting-part {
+          margin-top: 10px;
         }
       </style>
       ${this._craftingParts.map((craftingPart, index) => html`

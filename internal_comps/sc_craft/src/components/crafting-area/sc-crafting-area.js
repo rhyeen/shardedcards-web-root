@@ -21,8 +21,10 @@ class ScCraftingArea extends connect(localStore)(LitElement) {
         :host {
           display: flex;
           justify-content: space-between;
+          align-items: center;
+          padding: 0 10px;
           flex: 1;
-          width: 100%;
+          width: calc(100% - 2*(10px));
           max-width: var(${CRAFTING_AREA.MAX_WIDTH});
         }
       </style>
