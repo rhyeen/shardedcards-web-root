@@ -43,7 +43,7 @@ export const executeTurn = (turn) => {
  * 
  * Returns true if the action is valid.
  */
-export const executeAction = (action) => {
+export const _executeAction = (action) => {
   if (!action.type) {
     Log.error(`No action.type given`);
     return false;

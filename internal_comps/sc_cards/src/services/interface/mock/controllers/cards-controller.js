@@ -201,7 +201,7 @@ function _placeEnergyShardOnTop(deck) {
 }
 
 export const shuffleDiscardIntoDrawDeck = () => {
-  Model.player.deck.push(...Model.player.discardPile.cards);
+  Model.player.deck.cards.push(...Model.player.discardPile.cards);
   Model.player.discardPile.cards = [];
   shuffleDrawDeck();
 };

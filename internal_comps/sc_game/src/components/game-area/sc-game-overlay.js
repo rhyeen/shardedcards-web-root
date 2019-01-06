@@ -119,7 +119,7 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
   }
 
   _showFullCraftingBaseCardOverlay() {
-    return this._isCrafting; // @TODO: && state.crafting.craftingBaseCardSelected
+    return this._isCrafting && false; // @TODO: && state.crafting.craftingBaseCardSelected
   }
 
   _showOpponentTurnOverlay() {

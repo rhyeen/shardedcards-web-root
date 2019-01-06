@@ -3,8 +3,13 @@ import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-sty
 import { ScGameStyles, NAV } from '../../entities/sc_game-styles.js';
 import '../../../../sc_cards/src/components/hand/sc-player-hand.js';
 import '../../../../sc_cards/src/components/play-area/sc-play-area.js';
+import '../../../../sc_craft/src/components/crafting-area/sc-crafting-area.js';
+import '../../../../sc_craft/src/components/crafting-parts/sc-crafting-parts.js';
+import { connect } from 'pwa-helpers/connect-mixin.js';
+import { localStore } from '../../state/store.js';
+import * as GameSelector from '../../state/selectors.js';
 
-export class ScGameView extends LitElement {
+export class ScGameView extends connect(localStore)(LitElement) {
   render() {
     return html`
       ${ScSharedStyles}
@@ -20,13 +25,32 @@ export class ScGameView extends LitElement {
           justify-content: space-between;
         }
       </style>
-      <sc-play-area></sc-play-area>
-      <sc-player-hand></sc-player-hand>
+      ${this._getGameViewHtml()}
     `
   }
 
-  _openMenu() {
-    store.dispatch(showInGameMenu());
+  static get properties() { 
+    return {
+      _isCrafting: { type: Boolean }
+    }
+  }
+
+  _getGameViewHtml() {
+    if (this._isCrafting) {
+      return html`
+        <sc-crafting-area></sc-crafting-area>
+        <sc-crafting-parts></sc-crafting-parts>
+      `;
+    } else {
+      return html`
+        <sc-play-area></sc-play-area>
+        <sc-player-hand></sc-player-hand>
+      `;
+    }
+  }
+
+  stateChanged(state) {
+    this._isCrafting = GameSelector.isCrafting(state);
   }
 }
 
