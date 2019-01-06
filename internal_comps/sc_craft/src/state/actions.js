@@ -40,3 +40,15 @@ export const selectCraftingPart = (craftingPartIndex) => _action(SELECT_CRAFTING
 
 export const CANCEL_SELECT_CRAFTING_PART = _createRequestRaw('CANCEL_SELECT_CRAFTING_PART');
 export const cancelSelectCraftingPart = () => _action(CANCEL_SELECT_CRAFTING_PART, {});
+
+export const SET_CRAFTING_BASE_CARD = _createRequestTypes('SET_CRAFTING_BASE_CARD');
+export const setCraftingBaseCard = {
+  request: () => _action(SET_CRAFTING_BASE_CARD.REQUEST, {}),
+  success: (craftingBaseCard) => _action(SET_CRAFTING_BASE_CARD.SUCCESS, {craftingBaseCard})
+};
+
+export const SET_CRAFTING_PARTS = _createRequestTypes('SET_CRAFTING_PARTS');
+export const setCraftingParts = {
+  request: () => _action(SET_CRAFTING_PARTS.REQUEST, {}),
+  success: (craftingParts) => _action(SET_CRAFTING_PARTS.SUCCESS, {craftingParts})
+};

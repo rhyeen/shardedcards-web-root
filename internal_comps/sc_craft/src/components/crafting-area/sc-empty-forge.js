@@ -3,7 +3,7 @@ import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-sty
 import { ScCraftingStyles } from '../../entities/sc_crafting-styles.js';
 import { ScIconsStyles, ForgeIcon } from '../../../../sc_shared/src/entities/sc-icons.js';
 
-class ScEmptyForge extends connect(localStore)(LitElement) {
+class ScEmptyForge extends LitElement {
   render() {
     return html`
       ${ScSharedStyles}
@@ -34,4 +34,4 @@ class ScEmptyForge extends connect(localStore)(LitElement) {
   }
 }
 
-window.customElements.define('sc-crafting-forge', ScEmptyForge);
+window.customElements.define('sc-empty-forge', ScEmptyForge);

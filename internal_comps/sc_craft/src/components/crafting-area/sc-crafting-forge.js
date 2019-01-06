@@ -3,7 +3,7 @@ import { LitElement, html } from '@polymer/lit-element';
 import './sc-empty-forge.js';
 import '../forging-card/sc-forging-card.js';
 
-class ScCraftingForge extends connect(localStore)(LitElement) {
+class ScCraftingForge extends LitElement {
   render() {
     return this._getForgeContentHtml();
   }
@@ -17,7 +17,7 @@ class ScCraftingForge extends connect(localStore)(LitElement) {
 
   _getForgeContentHtml() {
     // @TODO: if overlay === true, then we'll likely want to show *-cover elements instead.
-    if (forgeSlot.card) {
+    if (this.forgeSlot.card) {
       return html`<sc-forging-card .forgeSlot="${this.forgeSlot}"></sc-forging-card>`;
     }
     return html`<sc-empty-forge></sc-empty-forge>`;

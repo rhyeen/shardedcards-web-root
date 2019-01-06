@@ -4,6 +4,7 @@ import * as StatusController from '../../../../../../sc_status/src/services/inte
 import * as CardController from '../../../../../../sc_cards/src/services/interface/mock/controllers/cards-controller.js';
 import * as TurnActionController from './turn-action-controller.js';
 import * as OpponentTurnController from './opponent-turn-controller.js';
+import * as CraftingController from '../../../../../../sc_craft/src/services/interface/mock/controllers/craft-controller.js';
 import { Log } from '../../../../../../sc_shared/src/services/logger.js';
 
 export const initializeGame = () => {
@@ -14,6 +15,10 @@ export const initializeGame = () => {
 
 export const executeCraftingTurn = (turn) => {
   console.trace('@TODO');
+};
+
+export const prepareCraftingTurn = () => {
+  return CraftingController.prepareCraftingTurn();
 };
 
 export const getOpponentTurn = () => {

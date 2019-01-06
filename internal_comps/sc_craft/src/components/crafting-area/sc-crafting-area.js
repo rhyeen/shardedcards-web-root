@@ -26,6 +26,23 @@ class ScCraftingArea extends connect(localStore)(LitElement) {
           max-width: var(${CRAFTING_AREA.MAX_WIDTH});
         }
       </style>
+      ${this._getCraftingAreaHtml()}
+    `;
+  }
+
+  static get properties() { 
+    return {
+      overlay: { type: Boolean },
+      _forgeSlots: { type: Object },
+      _craftingBaseCard: { type: Object }
+    }
+  }
+
+  _getCraftingAreaHtml() {
+    if (this._isLoading()) {
+      return html``;
+    }
+    return html`
       <sc-crafting-forge
           .forgeSlot="${this._forgeSlots[0]}"
           ?overlay="${this.overlay}"
@@ -41,12 +58,8 @@ class ScCraftingArea extends connect(localStore)(LitElement) {
     `;
   }
 
-  static get properties() { 
-    return {
-      overlay: { type: Boolean },
-      _forgeSlots: { type: Object },
-      _craftingBaseCard: { type: Object }
-    }
+  _isLoading() {
+    return !this._craftingBaseCard;
   }
 
   stateChanged(state) {

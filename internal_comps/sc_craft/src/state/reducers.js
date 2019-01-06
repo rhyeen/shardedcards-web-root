@@ -1,3 +1,4 @@
+import * as ActionType from './actions.js';
 import { Log } from '../../../sc_shared/src/services/logger.js';
 
 const INITIAL_STATE = _resetState();
@@ -25,7 +26,7 @@ function _resetState() {
           }
         ]
       },
-      craftingBaseCard: {},
+      craftingBaseCard: null,
       craftingParts: []
     }
   };
@@ -155,6 +156,10 @@ export const sc_craft = (state = INITIAL_STATE, action) => {
       return _setSelectedCraftingPart(state, action.craftingPartIndex, null);
     case ActionType.CANCEL_SELECT_CRAFTING_PART:
       return _removeSelectedCraftingPart(state);
+    case ActionType.SET_CRAFTING_BASE_CARD.SUCCESS:
+      return _setCraftingBaseCard(state, action.craftingBaseCard);
+    case ActionType.SET_CRAFTING_PARTS.SUCCESS:
+      return _setCraftingParts(state, action.craftingParts);
     default:
       return state;
   }

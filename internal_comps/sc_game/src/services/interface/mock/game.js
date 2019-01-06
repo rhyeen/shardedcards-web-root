@@ -35,6 +35,7 @@ export const endTurn = (turn) => {
   return new Promise((resolve) => {
     Mock.debugRequest(endTurn);
     GameController.executePlayTurn(turn);
+    GameController.prepareCraftingTurn();
     setTimeout(() => {
       Mock.debugSuccessfulResponse(endTurn);
       resolve();

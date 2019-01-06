@@ -7,6 +7,7 @@ import { Log } from '../../../sc_shared/src/services/logger.js';
 import * as Actions from './actions.js';
 import * as CardsDispatchActions  from '../../../sc_cards/src/state/actions.js';
 import * as StatusDispatchActions  from '../../../sc_status/src/state/actions.js';
+import * as CraftingDispatchActions  from '../../../sc_craft/src/state/actions.js';
 
 function* _beginTurn() {
   yield put(CardsDispatchActions.setPlayerDecks.request());
@@ -23,6 +24,8 @@ function* _resetGame() {
 }
 
 function* _beginCrafting() {
+  yield put(CraftingDispatchActions.setCraftingBaseCard.request());
+  yield put(CraftingDispatchActions.setCraftingParts.request());
   yield put(Actions.beginCrafting.success());
 }
 
