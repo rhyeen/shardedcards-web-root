@@ -164,30 +164,56 @@ function _executeAbilityTargetPlayer(action, target) {
 }
 
 function _invalidHandIndex(handIndex) {
-  return _invalidIndex(handIndex) || handIndex < 0 || handIndex > CardsModel.Model.player.hand.refillSize;
+  return _invalidIndex(handIndex) || handIndex < 0 || handIndex > CardsModel.Model.player.hand.cards.length;
+}
+
+function _unmatchedHandCard(action) {
+  return (
+    action.source.id === CardsModel.Model.player.hand.cards[action.source.handIndex].id
+    && action.source.instance === CardsModel.Model.player.hand.cards[action.source.handIndex].instance
+  );
 }
 
 function _executeActionCastSpell(action) {
+  if (_invalidHandIndex(action.source.handIndex)) {
+    Log.error(`invalid handIndex: ${action.source.handIndex}`);
+    return false;
+  }
+  if (_unmatchedHandCard(action)) {
+    Log.error(`given hand card does not match actual hand card at index: ${action.source.handIndex}`);
+    return false;
+  }
   if (!action.targets.length) {
     Log.error(`No targets specified for casting spell`);
     return false;
   }
-  if (!Cards.getCard(CardsModel.Model.cards, target.id, target.instance)) {
-    Log.error(`Unable to retrieve the card ${target.id}::${target.instance}`);
+  let selectedCard = {
+    card: Cards.getCard(CardsModel.Model.cards, action.source.id, action.source.instance),
+    id: action.source.id,
+    instance: action.source.instance
+  };
+  if (!StatusController.canPayCardCost(selectedCard.card)) {
+    Log.error(`insufficient energy to play card: ${selectedCard.id}::${selectedCard.instance}`);
     return false;
   }
+  console.trace('After all spell actions are completed THEN do we need to pay its cost and remove it from the hand.');
   for (let target of action.targets) {
     let validTarget = _executeCastSpellTargetedAction(action, target);
     if (!validTarget) {
       return false;
     }
   }
+  CardsModel.removeCardFromHand(action.handIndex);
   return true;
 }
 
 function _executeCastSpellTargetedAction(action, target) {
   if (!target.type) {
     Log.error(`No target.type given`);
+    return false;
+  }
+  if (!Cards.getCard(CardsModel.Model.cards, target.id, target.instance)) {
+    Log.error(`Unable to retrieve the cast card's target ${target.id}::${target.instance}`);
     return false;
   }
   switch(target.type) {
@@ -260,6 +286,10 @@ function _executeActionSummonMinion(action) {
     Log.error(`invalid handIndex: ${action.source.handIndex}`);
     return false;
   }
+  if (_unmatchedHandCard(action)) {
+    Log.error(`given hand card does not match actual hand card at index: ${action.source.handIndex}`);
+    return false;
+  }
   if (action.targets.length !== 1) {
     Log.error(`${action.targets.length} targets specified when placing minion`);
     return false;
@@ -293,6 +323,7 @@ function _executeActionSummonMinion(action) {
     id: action.source.id,
     instance: action.source.instance
   };
+  CardsModel.removeCardFromHand(action.handIndex);
   return true;
 }
 

@@ -5,13 +5,15 @@ export const Model = _getInitialModel();
 
 function _getInitialModel() {
   return {
-    turnHistory: []
+    turnHistory: [],
+    currentTurnUpdatedCards: []
   };
 }
 
 export function initializeModel() {
   let model = _getInitialModel();
   Model.turnHistory = [...model.turnHistory];
+  Model.currentTurnUpdatedCards = [...model.currentTurnUpdatedCards];
 }
 
 export function recordPlayerTurn(turn) {
@@ -24,9 +26,38 @@ export function recordPlayerTurn(turn) {
 export function recordOpponentTurn(turn, updatedCards) {
   Model.turnHistory.push({
     actions: turn,
-    takenBy: TURN_TAKERS.OPPONENT,
-    updatedCards: updatedCards
+    takenBy: TURN_TAKERS.OPPONENT
   });
+  recordUpdatedCards(updatedCards);
+}
+
+export function resetUpdatedCards() {
+  Model.currentTurnUpdatedCards = [];
+}
+
+export function recordUpdatedCards(updatedCards) {
+  for (let updatedCard of updatedCards) {
+    let index = _indexInUpdatedCardsSet(updatedCard);
+    if (index === -1) {
+      Model.currentTurnUpdatedCards.push({
+        id: updatedCard.id,
+        instance: updatedCard.instance,
+        card: updatedCard.card
+      });
+    } else {
+      Model.currentTurnUpdatedCards[index].card = updatedCard.card;
+    }
+  }
+}
+
+function _indexInUpdatedCardsSet(cardContext) {
+  for (let i = 0; i < Model.currentTurnUpdatedCards.length; i++) {
+    let updatedCard = Model.currentTurnUpdatedCards[i];
+    if (updatedCard.id === cardContext.id && updatedCard.instance === cardContext.instance) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 export function getLastOpponentTurn() {

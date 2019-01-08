@@ -22,6 +22,7 @@ export const refreshOpponentField = () => {
   fieldCards = CardActions.refreshCards(fieldCards);
   Cards.setCards(Model.cards, fieldCards);
   _refillOpponentField();
+  return fieldCards;
 };
 
 function _getOpponentFieldCards() {
@@ -55,6 +56,7 @@ export const refreshPlayerField = () => {
   let fieldCards = _getPlayerFieldCards();
   fieldCards = CardActions.refreshCards(fieldCards);
   Cards.setCards(Model.cards, fieldCards);
+  return fieldCards;
 }
 
 function _getPlayerFieldCards() {

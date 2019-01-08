@@ -20,15 +20,16 @@ export const endCrafting = (turn) => {
     Mock.debugRequest(endCrafting);
     GameController.executeCraftingTurn(turn);
     let opponentTurn = GameController.getOpponentTurn();
+    let updatedCard = GameController.getUpdatedCards();
     setTimeout(() => {
       let response = {
         opponentTurn: opponentTurn.actions,
-        updatedCards: opponentTurn.updatedCards
+        updatedCards: updatedCard
       };
       Mock.debugSuccessfulResponse(endCrafting, response);
       resolve(Mock.prepareResponse(response));
     }, CALLBACK_TIME.POST);
-  })
+  });
 };
 
 export const endTurn = (turn) => {
@@ -40,5 +41,5 @@ export const endTurn = (turn) => {
       Mock.debugSuccessfulResponse(endTurn);
       resolve();
     }, CALLBACK_TIME.POST);
-  })
+  });
 };

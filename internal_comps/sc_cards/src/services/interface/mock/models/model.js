@@ -77,3 +77,7 @@ export function initializeModel() {
   Model.player.deck.cards = getInitialDeck();
   Model.opponent = model.opponent;
 }
+
+export function removeCardFromHand(handIndex) {
+  Model.player.hand.cards.splice(handIndex, 1);
+}

@@ -1,4 +1,4 @@
-import { initializeModel, recordPlayerTurn, getLastOpponentTurn } from '../models/model.js';
+import { initializeModel, recordPlayerTurn, getLastOpponentTurn, Model, recordUpdatedCards, resetUpdatedCards } from '../models/model.js';
 import * as CardsModel from '../../../../../../sc_cards/src/services/interface/mock/models/model.js';
 import * as StatusController from '../../../../../../sc_status/src/services/interface/mock/controllers/status-controller.js';
 import * as CardController from '../../../../../../sc_cards/src/services/interface/mock/controllers/cards-controller.js';
@@ -25,17 +25,24 @@ export const getOpponentTurn = () => {
   return getLastOpponentTurn();
 };
 
+export const getUpdatedCards = () => {
+  return Model.currentTurnUpdatedCards;
+};
+
 export const executePlayTurn = (turn) => {
   Log.debug("BEFORE RECORD PLAYER TURN");
   Log.debug(CardsModel.Model);
+  resetUpdatedCards();
   let validTurn = TurnActionController.executeTurnActions(turn);
   if (validTurn) {
     recordPlayerTurn(turn);
   }
   OpponentTurnController.fulfillOpponentTurn();
   CardController.redrawHand();
-  CardController.refreshOpponentField();
-  CardController.refreshPlayerField();
+  let updatedCards = CardController.refreshOpponentField();
+  recordUpdatedCards(updatedCards);
+  updatedCards = CardController.refreshPlayerField();
+  recordUpdatedCards(updatedCards);
   StatusController.refreshEnergy();
   Log.debug("AFTER RECORD PLAYER TURN");
   Log.debug(CardsModel.Model);

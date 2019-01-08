@@ -27,7 +27,8 @@ function _prepareUpdatedCards(updatedCards) {
     if (!_cardInSet(updatedCardsSet, updatedCard)) {
       updatedCardsSet.push({
         id: updatedCard.id,
-        instance: updatedCard.instance
+        instance: updatedCard.instance,
+        card: updatedCard.card
       });
     }
   }
