@@ -14,7 +14,7 @@ export const initializeGame = () => {
 };
 
 export const executeCraftingTurn = (turn) => {
-  console.trace('@TODO');
+  console.info('@TODO');
 };
 
 export const prepareCraftingTurn = () => {
@@ -28,7 +28,7 @@ export const getOpponentTurn = () => {
 export const executePlayTurn = (turn) => {
   Log.debug("BEFORE RECORD PLAYER TURN");
   Log.debug(CardsModel.Model);
-  let validTurn = TurnActionController.executeTurn(turn);
+  let validTurn = TurnActionController.executeTurnActions(turn);
   if (validTurn) {
     recordPlayerTurn(turn);
   }
@@ -36,6 +36,7 @@ export const executePlayTurn = (turn) => {
   CardController.redrawHand();
   CardController.refreshOpponentField();
   CardController.refreshPlayerField();
+  StatusController.refreshEnergy();
   Log.debug("AFTER RECORD PLAYER TURN");
   Log.debug(CardsModel.Model);
 };

@@ -3,7 +3,7 @@ import { CARD_ABILITIES } from '../../../sc_shared/src/entities/card-keywords.js
 import { Log } from '../../../sc_shared/src/services/logger.js';
 import { CARD_TARGETS } from '../entities/selected-card.js';
 
-export function canAttackPlayer(selectedCard, playerFieldSlots, cards) {
+export function canAttackPlayer(selectedCard, playerFieldSlots) {
   let indices = indicesInAttackRange(selectedCard);
   for (let i of indices) {
     if (!_minionOnPlayAreaIndex(playerFieldSlots, i)) {
@@ -88,7 +88,22 @@ function _getStatusUpdatesOnSummonCost(selectedCard) {
   };
 }
 
-/** @MUTATES: attackingCard, attackedCard */
+export function attackPlayer(attackingCard, player) {
+  return {
+    currentPlayerHealth: player.health.current - attackingCard.card.attack,
+    updatedAttackerCard: {
+      ...attackingCard,
+      card: {
+        ...attackingCard.card,
+        conditions: {
+          ...attackingCard.card.conditions,
+          exhausted: true
+        }
+      }
+    }
+  };
+}
+
 export function attackMinion(cards, attackingCard, attackedCard) {
   let results = {
     updatedCards: [],
@@ -98,13 +113,19 @@ export function attackMinion(cards, attackingCard, attackedCard) {
   if (!_attackerCanReach(attackingCard, attackedCard)) {
     return results;
   }
-  attackedCard.card = _damageCard(attackingCard.card.attack, attackedCard.card);
-  attackingCard.card = _damageCard(attackedCard.card.attack, attackingCard.card);
-  attackingCard.card.conditions.exhausted = true;
-  results.updatedCards.push(attackingCard);
-  results.updatedCards.push(attackedCard);
-  results.attackerDiscarded = _prepareCardForDiscard(cards, attackingCard.card, attackingCard.id);
-  results.attackedDiscarded = _prepareCardForDiscard(cards, attackedCard.card, attackedCard.id);
+  let updatedAttackedCard = {
+    ...attackedCard,
+    card: _damageCard(attackingCard.card.attack, attackedCard.card)
+  };
+  let updatedAttackingCard = {
+    ...attackingCard,
+    card: _damageCard(attackedCard.card.attack, attackingCard.card)
+  };
+  updatedAttackingCard.card.conditions.exhausted = true;
+  results.updatedCards.push(updatedAttackingCard);
+  results.updatedCards.push(updatedAttackedCard);
+  results.attackerDiscarded = _prepareCardForDiscard(cards, updatedAttackingCard.card, updatedAttackingCard.id);
+  results.attackedDiscarded = _prepareCardForDiscard(cards, updatedAttackedCard.card, updatedAttackedCard.id);
   return results;
 }
 

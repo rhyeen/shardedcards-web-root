@@ -99,14 +99,14 @@ function _getFieldMinionActions(minionCard) {
   let iterations = 0;
   while (true) {
     if (iterations > MAX_CARD_ACTIONS) {
-      Log.error('Max iterations met');
+      Log.error('max iterations met');
       break;
     }
     iterations++;
     if (Cards.isExhausted(minionCard.card) || Cards.isDead(minionCard.card)) {
       break;
     }
-    if (CardActions.canAttackPlayer(minionCard, CardsModel.Model.opponent.field.slots, CardsModel.Model.cards)) {
+    if (CardActions.canAttackPlayer(minionCard, CardsModel.Model.player.field.slots)) {
       let { action, updatedMinionCard } = _attackPlayer(minionCard);
       minionCard = updatedMinionCard;
       actionsUpdatedCards.push(updatedMinionCard);
@@ -117,35 +117,44 @@ function _getFieldMinionActions(minionCard) {
     if (!possibleTargetIndices.length) {
       break;
     }
+    // we intentionally don't just attack the target if there is only a single possible target since we should ignore the
+    // target if we can deal it no damage.
     possibleTargetIndices = _targetsThatCanBeDealtMaxDamage(minionCard, possibleTargetIndices);
-    if (possibleTargetIndices.length === 0) {
+    if (!possibleTargetIndices.length) {
+      // this would be if all targets have enough shield to avoid the attack, in which case, the enemy does not attack.
       break;
     }
     if (possibleTargetIndices.length === 1) {
-      let { action, updatedCards } = _attackTarget(minionCard, possibleTargetIndices[0]);
-      actions.push(action);
-      actionsUpdatedCards.push(updatedCards);
+      minionCard = _handleAttackTarget(minionCard, possibleTargetIndices[0], actions, actionsUpdatedCards);
       continue;
     }
     let previousPossibleTargets = [...possibleTargetIndices];
     possibleTargetIndices = _targetsThatCanBeKilled(minionCard, possibleTargetIndices);
-    if (possibleTargetIndices.length === 0) {
-      let { action, updatedCards } = _attackRandomTarget(minionCard, previousPossibleTargets);
-      actions.push(action);
-      actionsUpdatedCards.push(updatedCards);
+    if (!possibleTargetIndices.length) {
+      minionCard = _handleAttackRandomTarget(minionCard, possibleTargetIndices, actions, actionsUpdatedCards);
       continue;
     }
     if (possibleTargetIndices.length === 1) {
-      let { action, updatedCards } = _attackTarget(minionCard, possibleTargetIndices[0]);
-      actions.push(action);
-      actionsUpdatedCards.push(updatedCards);
+      minionCard = _handleAttackTarget(minionCard, possibleTargetIndices[0], actions, actionsUpdatedCards);
       continue;
     }
-    let { action, updatedCards } = _attackRandomTarget(minionCard, possibleTargetIndices);
-    actions.push(action);
-    actionsUpdatedCards.push(updatedCards);
+    minionCard = _handleAttackRandomTarget(minionCard, possibleTargetIndices, actions, actionsUpdatedCards);
   }
   return { actions, updatedCards: actionsUpdatedCards };
+}
+
+function _handleAttackRandomTarget(minionCard, possibleTargetIndices, actions, actionsUpdatedCards) {
+  let { action, updatedCards, updatedMinionCard } = _attackRandomTarget(minionCard, possibleTargetIndices);
+  actions.push(action);
+  actionsUpdatedCards.push(updatedCards);
+  return updatedMinionCard;
+}
+
+function _handleAttackTarget(minionCard, targetAreaIndex, actions, actionsUpdatedCards) {
+  let { action, updatedCards, updatedMinionCard } = _attackTarget(minionCard, targetAreaIndex);
+  actions.push(action);
+  actionsUpdatedCards.push(updatedCards);
+  return updatedMinionCard;
 }
 
 function _targetsInRange(minionCard) {
@@ -162,11 +171,7 @@ function _targetsInRange(minionCard) {
 function _attackPlayer(minionCard) {
   let { currentPlayerHealth, updatedAttackerCard } = CardActions.attackPlayer(minionCard, StatusModel.Model.player);
   StatusModel.Model.player.health.current = currentPlayerHealth;
-  let updatedMinionCard = {
-    ...minionCard,
-    card: updatedAttackerCard
-  };
-  Cards.setCard(CardsModel.Model.cards, updatedMinionCard);
+  Cards.setCard(CardsModel.Model.cards, updatedAttackerCard);
   let action = {
     type: ACTION_TYPES.PLAY_MINION,
     source: {
@@ -181,7 +186,7 @@ function _attackPlayer(minionCard) {
     ]
   };
   return {
-    updatedMinionCard,
+    updatedMinionCard: updatedAttackerCard,
     action
   };
 }
@@ -213,6 +218,7 @@ function _attackTarget(minionCard, targetAreaIndex) {
   let playerCard = _getPlayerMinionCardContext(targetAreaIndex);
   let { updatedCards, attackedDiscarded, attackerDiscarded } = CardActions.attackMinion(CardsModel.Model.cards, minionCard, playerCard);
   Cards.setCards(CardsModel.Model.cards, updatedCards);
+  let updatedMinionCard = Cards.getUpdatedCard(minionCard, updatedCards);
   if (attackedDiscarded) {
     CardsModel.Model.player.discardPile.push({
       id: playerCard.id,
@@ -247,7 +253,8 @@ function _attackTarget(minionCard, targetAreaIndex) {
   };
   return {
     action,
-    updatedCards
+    updatedCards,
+    updatedMinionCard
   }
 }
 

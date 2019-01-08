@@ -32,9 +32,10 @@ function* _beginCrafting() {
 function* _endCrafting(turn) {
   try {
     let { opponentTurn, updatedCards } = yield call(GameInterface.endCrafting, turn);
-    console.trace('@TODO: update turn history with opponent turn');
+    console.info('@TODO: update turn history with opponent turn');
     yield put(Actions.endCrafting.success());
-    yield put(CardsDispatchActions.setUpdatedCards(updatedCards))
+    yield put(CardsDispatchActions.setUpdatedCards(updatedCards));
+    yield put(Actions.beginTurn.request());
   } catch (e) {
     yield Log.error(`@TODO: unable to endCrafting(): ${e}`);
   }

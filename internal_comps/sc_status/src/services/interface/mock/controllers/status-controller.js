@@ -12,16 +12,24 @@ export const updateStatus = (statusUpdates) => {
   if (statusUpdates.player) {
     if (statusUpdates.player.energy) {
       if (statusUpdates.player.energy.maxModifier) {
-        newEnergies = getModifiedEnergy(Model.player.energy, statusUpdates.player.energy.maxModifier, null);
-        newState = _setPlayerMaxEnergy(newEnergies.max);
+        let newEnergies = getModifiedEnergy(Model.player.energy, statusUpdates.player.energy.maxModifier, null);
+        _setPlayerMaxEnergy(newEnergies.max);
       }
       if (statusUpdates.player.energy.currentModifier) {
-        newEnergies = getModifiedEnergy(Model.player.energy, null, statusUpdates.player.energy.currentModifier);
-        newState = _setPlayerCurrentEnergy(newEnergies.current);
+        let newEnergies = getModifiedEnergy(Model.player.energy, null, statusUpdates.player.energy.currentModifier);
+        _setPlayerCurrentEnergy(newEnergies.current);
       }
     }
   }
 };
+
+export const canPayCardCost = (card) => {
+  return card.cost <= Model.player.energy.current;
+}
+
+export const refreshEnergy = () => {
+  Model.player.energy.current = Model.player.energy.max;
+}
 
 function _setPlayerMaxEnergy(max) {
   Model.player.energy.max = max;

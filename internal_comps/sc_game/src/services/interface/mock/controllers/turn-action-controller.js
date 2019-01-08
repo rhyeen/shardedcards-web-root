@@ -10,7 +10,7 @@ import * as StatusController from '../../../../../../sc_status/src/services/inte
 /**
  * Returns true if all the actions are valid for the given turn.
  */
-export const executeTurn = (turn) => {
+export const executeTurnActions = (turn) => {
   for (let action of turn) {
     let validAction = _executeAction(action);
     if (!validAction) {
@@ -48,8 +48,8 @@ export const _executeAction = (action) => {
     Log.error(`No action.type given`);
     return false;
   }
-  if (!Cards.getCard(CardsModel.Model.cards, action.id, action.instance)) {
-    Log.error(`Unable to retrieve the card ${action.id}::${action.instance}`);
+  if (!Cards.getCard(CardsModel.Model.cards, action.source.id, action.source.instance)) {
+    Log.error(`Unable to retrieve the card ${action.source.id}::${action.source.instance}`);
     return false;
   }
   switch(action.type) {
@@ -70,8 +70,8 @@ function _executeActionPlayMinion(action) {
     Log.error(`No targets specified for playing minion`);
     return false;
   }
-  if (!_validPlayAreaIndex(action.playAreaIndex)) {
-    Log.error(`Invalid playAreaIndex: ${action.playAreaIndex}`);
+  if (!_validPlayAreaIndex(action.source.playAreaIndex)) {
+    Log.error(`Invalid playAreaIndex: ${action.source.playAreaIndex}`);
     return false;
   }
   for (let target of action.targets) {
@@ -209,19 +209,19 @@ function _executeActionAttack(action, target) {
     return false;
   }
   let attackingCard = {
-    card: Cards.getCard(CardsModel.Model.cards, action.id, action.instance),
-    id: action.id,
-    instance: action.instance
+    card: Cards.getCard(CardsModel.Model.cards, action.source.id, action.source.instance),
+    id: action.source.id,
+    instance: action.source.instance
   };
   let attackedCard = {
     card: Cards.getCard(CardsModel.Model.cards, target.id, target.instance),
     id: target.id,
-    instance: action.instance
+    instance: target.instance
   };
   let { updatedCards, attackerDiscarded, attackedDiscarded } = CardActions.attackMinion(CardsModel.Model.cards, attackingCard, attackedCard);
   _updateCards(updatedCards);
   if (attackerDiscarded) {
-    _discardPlayerFieldCard(action.playAreaIndex);
+    _discardPlayerFieldCard(action.source.playAreaIndex);
   }
   if (attackedDiscarded) {
     _discardOpponentFieldCard(target.playAreaIndex);
@@ -256,8 +256,8 @@ function _discardOpponentFieldCard(playAreaIndex) {
 }
 
 function _executeActionSummonMinion(action) {
-  if (_invalidHandIndex(action.handIndex)) {
-    Log.error(`Invalid handIndex: ${action.handIndex}`);
+  if (_invalidHandIndex(action.source.handIndex)) {
+    Log.error(`invalid handIndex: ${action.source.handIndex}`);
     return false;
   }
   if (action.targets.length !== 1) {
@@ -266,14 +266,18 @@ function _executeActionSummonMinion(action) {
   }
   let target = action.targets[0];
   if (!_validPlayAreaIndex(target.playAreaIndex)) {
-    Log.error(`Invalid playAreaIndex: ${target.playAreaIndex}`);
+    Log.error(`invalid playAreaIndex: ${target.playAreaIndex}`);
     return false;
   }
   let selectedCard = {
-    card: Cards.getCard(CardsModel.Model.cards, action.id, action.instance),
-    id: action.id,
-    instance: action.instance
+    card: Cards.getCard(CardsModel.Model.cards, action.source.id, action.source.instance),
+    id: action.source.id,
+    instance: action.source.instance
   };
+  if (!StatusController.canPayCardCost(selectedCard.card)) {
+    Log.error(`insufficient energy to play card: ${selectedCard.id}::${selectedCard.instance}`);
+    return false;
+  }
   let playerFieldCard = {
     card: Cards.getCard(CardsModel.Model.cards, target.id, target.instance),
     id: target.id,
@@ -281,9 +285,14 @@ function _executeActionSummonMinion(action) {
     playAreaIndex: target.playAreaIndex
   }
   let { updatedCards, statusUpdates } = CardActions.summonMinion(selectedCard, playerFieldCard);
-  console.trace('@TODO: handle statusUpdates to reduce energy and make sure to check status to ensure a card can be played given current energy.');
-  console.trace('@TODO: also, make sure that energy is refreshed on new turn');
+  if (statusUpdates) {
+    StatusController.updateStatus(statusUpdates);
+  }
   _updateCards(updatedCards);
+  CardsModel.Model.player.field.slots[target.playAreaIndex] = {
+    id: action.source.id,
+    instance: action.source.instance
+  };
   return true;
 }
 
