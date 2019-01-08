@@ -131,7 +131,7 @@ function _getFieldMinionActions(minionCard) {
     let previousPossibleTargets = [...possibleTargetIndices];
     possibleTargetIndices = _targetsThatCanBeKilled(minionCard, possibleTargetIndices);
     if (!possibleTargetIndices.length) {
-      minionCard = _handleAttackRandomTarget(minionCard, possibleTargetIndices, actions, actionsUpdatedCards);
+      minionCard = _handleAttackRandomTarget(minionCard, previousPossibleTargets, actions, actionsUpdatedCards);
       continue;
     }
     if (possibleTargetIndices.length === 1) {
@@ -146,14 +146,14 @@ function _getFieldMinionActions(minionCard) {
 function _handleAttackRandomTarget(minionCard, possibleTargetIndices, actions, actionsUpdatedCards) {
   let { action, updatedCards, updatedMinionCard } = _attackRandomTarget(minionCard, possibleTargetIndices);
   actions.push(action);
-  actionsUpdatedCards.push(updatedCards);
+  actionsUpdatedCards.push(...updatedCards);
   return updatedMinionCard;
 }
 
 function _handleAttackTarget(minionCard, targetAreaIndex, actions, actionsUpdatedCards) {
   let { action, updatedCards, updatedMinionCard } = _attackTarget(minionCard, targetAreaIndex);
   actions.push(action);
-  actionsUpdatedCards.push(updatedCards);
+  actionsUpdatedCards.push(...updatedCards);
   return updatedMinionCard;
 }
 
