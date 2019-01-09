@@ -80,7 +80,7 @@ function _consumeCardPlayedFromHand(playedHandCard) {
     Log.error(`invalid handIndex: ${playedHandCard.handIndex}`);
     return false;
   }
-  if (_unmatchedHandCard(playedHandCard)) {
+  if (!_matchingHandCardWithAction(playedHandCard)) {
     Log.error(`given hand card does not match actual hand card at index: ${playedHandCard.handIndex}`);
     return false;
   }
@@ -97,7 +97,7 @@ function _invalidHandIndex(handIndex) {
   return _invalidIndex(handIndex) || handIndex < 0 || handIndex > CardsModel.Model.player.hand.cards.length;
 }
 
-function _unmatchedHandCard(playedHandCard) {
+function _matchingHandCardWithAction(playedHandCard) {
   return (
     playedHandCard.id === CardsModel.Model.player.hand.cards[playedHandCard.handIndex].id
     && playedHandCard.instance === CardsModel.Model.player.hand.cards[playedHandCard.handIndex].instance

@@ -30,8 +30,6 @@ export const getUpdatedCards = () => {
 };
 
 export const executePlayTurn = (turn) => {
-  Log.debug("BEFORE RECORD PLAYER TURN");
-  Log.debug(CardsModel.Model);
   resetUpdatedCards();
   let validTurn = TurnActionController.executeTurnActions(turn);
   if (validTurn) {
@@ -44,6 +42,4 @@ export const executePlayTurn = (turn) => {
   updatedCards = CardController.refreshPlayerField();
   recordUpdatedCards(updatedCards);
   StatusController.refreshEnergy();
-  Log.debug("AFTER RECORD PLAYER TURN");
-  Log.debug(CardsModel.Model);
 };
