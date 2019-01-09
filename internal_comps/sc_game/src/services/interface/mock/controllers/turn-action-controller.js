@@ -11,6 +11,10 @@ import * as StatusController from '../../../../../../sc_status/src/services/inte
  * Returns true if all the actions are valid for the given turn.
  */
 export const executeTurnActions = (turn) => {
+  let validHandPlays = _consumeCardsPlayedFromHand(turn);
+  if (!validHandPlays) {
+    return false;
+  }
   for (let action of turn) {
     let validAction = _executeAction(action);
     if (!validAction) {
@@ -18,6 +22,86 @@ export const executeTurnActions = (turn) => {
     }
   }
   return true;
+}
+
+function _consumeCardsPlayedFromHand(turn) {
+  let { playedHandCards, validHandPlays } = _getPlayedHandCards(turn);
+  if (!validHandPlays) {
+    return false;
+  }
+  for (let playedHandCard of playedHandCards) {
+    let validHandPlay = _consumeCardPlayedFromHand(playedHandCard);
+    if (!validHandPlay) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function _getPlayedHandCards(turn) {
+  let result = {
+    playedHandCards: [],
+    validHandPlays: true
+  };
+  for (let action of turn) {
+    if (_invalidIndex(action.source.handIndex)) {
+      continue;
+    }
+    let index = _indexOfActionCardInPlayedHandCards(result.playedHandCards, action);
+    // if it is any index within playedHandCards that is not the last index, it is being played twice.
+    if (index !== -1 && index < result.playedHandCards.length - 1) {
+      Log.error(`card ${playedHandCard.id}::${playedHandCard.instance} has already been played and cannot be played again`);      
+      result.validHandPlays = false;
+      return result;
+    }
+    if (index === -1) {
+      result.playedHandCards.push({
+        id: action.source.id,
+        instance: action.source.instance,
+        handIndex: action.source.handIndex
+      });
+    }
+  }
+  return result;
+}
+
+function _indexOfActionCardInPlayedHandCards(playedHandCards, action) {
+  for (let i = 0; i < playedHandCards.length; i++) {
+    let playedHandCard = playedHandCards[i];
+    if (playedHandCard.id === action.source.id && playedHandCard.instance === action.source.instance) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+function _consumeCardPlayedFromHand(playedHandCard) {
+  if (_invalidHandIndex(playedHandCard.handIndex)) {
+    Log.error(`invalid handIndex: ${playedHandCard.handIndex}`);
+    return false;
+  }
+  if (_unmatchedHandCard(playedHandCard)) {
+    Log.error(`given hand card does not match actual hand card at index: ${playedHandCard.handIndex}`);
+    return false;
+  }
+  let card = Cards.getCard(CardsModel.Model.cards, playedHandCard.id, playedHandCard.instance);
+  if (!StatusController.canPayCardCost(card)) {
+    Log.error(`insufficient energy to play card: ${playedHandCard.id}::${playedHandCard.instance}`);
+    return false;
+  }
+  CardsModel.removeCardFromHand(playedHandCard.handIndex);
+  return true;
+}
+
+function _invalidHandIndex(handIndex) {
+  return _invalidIndex(handIndex) || handIndex < 0 || handIndex > CardsModel.Model.player.hand.cards.length;
+}
+
+function _unmatchedHandCard(playedHandCard) {
+  return (
+    playedHandCard.id === CardsModel.Model.player.hand.cards[playedHandCard.handIndex].id
+    && playedHandCard.instance === CardsModel.Model.player.hand.cards[playedHandCard.handIndex].instance
+  );
 }
 
 /**
@@ -43,7 +127,7 @@ export const executeTurnActions = (turn) => {
  * 
  * Returns true if the action is valid.
  */
-export const _executeAction = (action) => {
+function _executeAction(action) {
   if (!action.type) {
     Log.error(`No action.type given`);
     return false;
@@ -163,47 +247,23 @@ function _executeAbilityTargetPlayer(action, target) {
   }
 }
 
-function _invalidHandIndex(handIndex) {
-  return _invalidIndex(handIndex) || handIndex < 0 || handIndex > CardsModel.Model.player.hand.cards.length;
-}
-
-function _unmatchedHandCard(action) {
-  return (
-    action.source.id === CardsModel.Model.player.hand.cards[action.source.handIndex].id
-    && action.source.instance === CardsModel.Model.player.hand.cards[action.source.handIndex].instance
-  );
-}
-
 function _executeActionCastSpell(action) {
-  if (_invalidHandIndex(action.source.handIndex)) {
+  // since we've already removed all these cards from the hand (_consumeCardsPlayedFromHand),
+  // we just need to make sure that a handIndex was given.
+  if (_invalidIndex(action.source.handIndex)) {
     Log.error(`invalid handIndex: ${action.source.handIndex}`);
-    return false;
-  }
-  if (_unmatchedHandCard(action)) {
-    Log.error(`given hand card does not match actual hand card at index: ${action.source.handIndex}`);
     return false;
   }
   if (!action.targets.length) {
     Log.error(`No targets specified for casting spell`);
     return false;
   }
-  let selectedCard = {
-    card: Cards.getCard(CardsModel.Model.cards, action.source.id, action.source.instance),
-    id: action.source.id,
-    instance: action.source.instance
-  };
-  if (!StatusController.canPayCardCost(selectedCard.card)) {
-    Log.error(`insufficient energy to play card: ${selectedCard.id}::${selectedCard.instance}`);
-    return false;
-  }
-  console.trace('After all spell actions are completed THEN do we need to pay its cost and remove it from the hand.');
   for (let target of action.targets) {
     let validTarget = _executeCastSpellTargetedAction(action, target);
     if (!validTarget) {
       return false;
     }
   }
-  CardsModel.removeCardFromHand(action.handIndex);
   return true;
 }
 
@@ -282,12 +342,10 @@ function _discardOpponentFieldCard(playAreaIndex) {
 }
 
 function _executeActionSummonMinion(action) {
-  if (_invalidHandIndex(action.source.handIndex)) {
+  // since we've already removed all these cards from the hand (_consumeCardsPlayedFromHand),
+  // we just need to make sure that a handIndex was given.
+  if (_invalidIndex(action.source.handIndex)) {
     Log.error(`invalid handIndex: ${action.source.handIndex}`);
-    return false;
-  }
-  if (_unmatchedHandCard(action)) {
-    Log.error(`given hand card does not match actual hand card at index: ${action.source.handIndex}`);
     return false;
   }
   if (action.targets.length !== 1) {
@@ -304,10 +362,6 @@ function _executeActionSummonMinion(action) {
     id: action.source.id,
     instance: action.source.instance
   };
-  if (!StatusController.canPayCardCost(selectedCard.card)) {
-    Log.error(`insufficient energy to play card: ${selectedCard.id}::${selectedCard.instance}`);
-    return false;
-  }
   let playerFieldCard = {
     card: Cards.getCard(CardsModel.Model.cards, target.id, target.instance),
     id: target.id,
@@ -323,7 +377,6 @@ function _executeActionSummonMinion(action) {
     id: action.source.id,
     instance: action.source.instance
   };
-  CardsModel.removeCardFromHand(action.handIndex);
   return true;
 }
 
