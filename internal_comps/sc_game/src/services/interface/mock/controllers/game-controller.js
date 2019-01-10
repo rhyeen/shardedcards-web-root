@@ -5,7 +5,7 @@ import * as CardController from '../../../../../../sc_cards/src/services/interfa
 import * as TurnActionController from './turn-action-controller.js';
 import * as OpponentTurnController from './opponent-turn-controller.js';
 import * as CraftingController from '../../../../../../sc_craft/src/services/interface/mock/controllers/craft-controller.js';
-import { Log } from '../../../../../../sc_shared/src/services/logger.js';
+import * as StatusModel from '../../../../../../sc_status/src/services/interface/mock/models/model.js';
 
 export const initializeGame = () => {
   StatusController.initializeStatus();
@@ -42,4 +42,8 @@ export const executePlayTurn = (turn) => {
   updatedCards = CardController.refreshPlayerField();
   recordUpdatedCards(updatedCards);
   StatusController.refreshEnergy();
+  CardsModel.DEBUG.playerFieldCards();
+  CardsModel.DEBUG.opponentFieldCards();
+  CardsModel.DEBUG.handCards();
+  StatusModel.DEBUG.playerStatus();
 };
