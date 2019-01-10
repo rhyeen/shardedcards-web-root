@@ -1,6 +1,7 @@
 {
   "/": {
     "src/components/sc-root.js": {
+      "crossorigin": "anonymous",
       "type": "script",
       "weight": 1
     },

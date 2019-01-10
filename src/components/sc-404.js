@@ -5,6 +5,12 @@ class Sc404 extends LitElement {
   render() {
     return html`
       ${ScSharedStyles}
+      <style>
+        :host {
+          display: block;
+          padding: 40px;
+        }
+      </style>
       <h1>Nothing behind these curtains.</h1>
       <h2>Lets <a href="/">get back to the fun</a>.</h2>
     `;

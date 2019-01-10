@@ -7,7 +7,8 @@ export const importActivePage = (activePage) => {
       break;
     default:
       activePage = ROUTES.PAGES.NOT_FOUND;
-      import('../components/sc-404.js');
+      break;
+      // don't need to import, sc-root already does that.
   }
   return activePage;
 }
