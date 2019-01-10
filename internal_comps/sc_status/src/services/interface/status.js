@@ -7,7 +7,7 @@ import * as CallHttp from './http/status.js';
 import * as CallMock from './mock/status.js';
 
 export const getPlayerStatus = () => {
-  switch(interfaceState()) {
+  switch (interfaceState()) {
     case INTERFACE.HTTP:
       return CallHttp.getPlayerStatus();
     case INTERFACE.MOCK:

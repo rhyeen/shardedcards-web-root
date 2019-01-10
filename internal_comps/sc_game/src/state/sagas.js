@@ -8,6 +8,7 @@ import * as Actions from './actions.js';
 import * as CardsDispatchActions  from '../../../sc_cards/src/state/actions.js';
 import * as StatusDispatchActions  from '../../../sc_status/src/state/actions.js';
 import * as CraftingDispatchActions  from '../../../sc_craft/src/state/actions.js';
+import { GAME_STATES } from '../entities/game-states.js';
 
 function* _beginTurn() {
   yield put(CardsDispatchActions.setPlayerDecks.request());
@@ -31,23 +32,33 @@ function* _beginCrafting() {
 
 function* _endCrafting(turn) {
   try {
-    let { opponentTurn, updatedCards } = yield call(GameInterface.endCrafting, turn);
+    let { opponentTurn, updatedCards, gameState } = yield call(GameInterface.endCrafting, turn);
     console.info('@TODO: update turn history with opponent turn');
     yield put(Actions.endCrafting.success());
     yield put(CardsDispatchActions.setUpdatedCards(updatedCards));
     yield put(Actions.beginTurn.request());
+    yield _setGameState(gameState);
   } catch (e) {
     yield Log.error(`@TODO: unable to endCrafting(): ${e}`);
   }
 }
 
+function* _setGameState(gameState) {
+  switch (gameState) {
+    case GAME_STATES.LOSE:
+      yield put(Actions.loseGame.request());
+      return;
+    case GAME_STATES.WIN:
+      yield put(Actions.winGame.request());
+      return;
+  }
+}
+
 function* _winGame() {
-  yield put (Actions.resetGame.request());
   yield put(Actions.winGame.success());
 }
 
 function* _loseGame() {
-  yield put (Actions.resetGame.request());
   yield put(Actions.loseGame.success());
 }
 

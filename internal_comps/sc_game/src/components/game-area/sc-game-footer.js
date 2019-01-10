@@ -50,8 +50,8 @@ export class ScGameFooter extends connect(localStore)(LitElement) {
     } else if (this._isCrafting) {
       return this._getCraftingBarItemsHtml();
     } else {
-      Log.error(`Unexpected game state`);
-      return html``;
+      // if the game is in the win/lose state
+      return this._getPlayingBarItemsHtml();
     }
   }
 

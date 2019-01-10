@@ -24,7 +24,8 @@ export const endCrafting = (turn) => {
     setTimeout(() => {
       let response = {
         opponentTurn: opponentTurn.actions,
-        updatedCards: updatedCard
+        updatedCards: updatedCard,
+        gameState: GameController.getGameState()
       };
       Mock.debugSuccessfulResponse(endCrafting, response);
       resolve(Mock.prepareResponse(response));

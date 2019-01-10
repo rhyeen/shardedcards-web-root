@@ -89,8 +89,12 @@ function _getStatusUpdatesOnSummonCost(selectedCard) {
 }
 
 export function attackPlayer(attackingCard, player) {
+  let playerHealth = player.health.current - attackingCard.card.attack;
+  if (playerHealth < 0) {
+    playerHealth = 0;
+  }
   return {
-    currentPlayerHealth: player.health.current - attackingCard.card.attack,
+    currentPlayerHealth: playerHealth,
     updatedAttackerCard: {
       ...attackingCard,
       card: {
@@ -243,7 +247,7 @@ function _refreshCard(card) {
 }
 
 /** @MUTATES: selectedAbility.card.ability[abilityId].used */
-export function useCardAbility(cards, playAreaIndex, selectedAbility, playerFieldSlots, opponentFieldSlots) {
+export function useCardAbility(cards, targetAreaIndex, selectedAbility, playerFieldSlots, opponentFieldSlots) {
   let results = {
     updatedCards: [],
     addedToDiscardPile: [],
@@ -252,19 +256,19 @@ export function useCardAbility(cards, playAreaIndex, selectedAbility, playerFiel
     statusUpdates: {}
   };
   if (_abilityUsedOnOpponentMinion(selectedAbility)) {
-    let { updatedCards, isFieldCardDiscarded } = _useAbilityOnOpponentMinion(cards, selectedAbility, opponentFieldSlots[playAreaIndex]);
+    let { updatedCards, isFieldCardDiscarded } = _useAbilityOnOpponentMinion(cards, selectedAbility, opponentFieldSlots[targetAreaIndex]);
     results.updatedCards = updatedCards;
     if (isFieldCardDiscarded) {
-      results.opponentFieldSlots[playAreaIndex] = {
+      results.opponentFieldSlots[targetAreaIndex] = {
         id: null,
         instance: null
       };
     }
   } else if (_abilityUsedOnPlayerMinion(selectedAbility)) {
-    let { updatedCards, isFieldCardDiscarded } = _useAbilityOnPlayerMinion(cards, selectedAbility, playerFieldSlots[playAreaIndex]);
+    let { updatedCards, isFieldCardDiscarded } = _useAbilityOnPlayerMinion(cards, selectedAbility, playerFieldSlots[targetAreaIndex]);
     results.updatedCards = updatedCards;
     if (isFieldCardDiscarded) {
-      results.playerFieldSlots[playAreaIndex] = {
+      results.playerFieldSlots[targetAreaIndex] = {
         id: null,
         instance: null
       };

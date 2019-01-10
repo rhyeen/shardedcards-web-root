@@ -20,7 +20,7 @@ function _getEndpoint(path) {
 }
 
 function _getPageFromEndpoint(endpoint) {
-  switch(endpoint) {
+  switch (endpoint) {
     case ROUTES.ENDPOINTS.GAME:
       return ROUTES.PAGES.GAME;
     default:

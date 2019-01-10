@@ -136,7 +136,7 @@ function _executeAction(action) {
     Log.error(`Unable to retrieve the card ${action.source.id}::${action.source.instance}`);
     return false;
   }
-  switch(action.type) {
+  switch (action.type) {
     case ACTION_TYPES.PLAY_MINION:
       return _executeActionPlayMinion(action);
     case ACTION_TYPES.SUMMON_MINION:
@@ -180,11 +180,7 @@ function _executePlayMinionTargetedAction(action, target) {
     Log.error(`No target.type given`);
     return false;
   }
-  if (!Cards.getCard(CardsModel.Model.cards, target.id, target.instance)) {
-    Log.error(`Unable to retrieve the card ${target.id}::${target.instance}`);
-    return false;
-  }
-  switch(target.type) {
+  switch (target.type) {
     case ACTION_TARGET_TYPES.ATTACK_MINION:
       return _executeActionAttack(action, target);
     case ACTION_TARGET_TYPES.ABILITY_TARGET_OPPONENT_MINION:
@@ -198,6 +194,10 @@ function _executePlayMinionTargetedAction(action, target) {
 }
 
 function _executeAbilityTargetOpponentMinion(action, target) {
+  if (!Cards.getCard(CardsModel.Model.cards, target.id, target.instance)) {
+    Log.error(`Unable to retrieve the cast card's target ${target.id}::${target.instance}`);
+    return false;
+  }
   if (!_validPlayAreaIndex(target.playAreaIndex)) {
     Log.error(`Invalid playAreaIndex: ${target.playAreaIndex}`);
     return false;
@@ -206,7 +206,7 @@ function _executeAbilityTargetOpponentMinion(action, target) {
     Log.error(`No target.abilityId given`);
     return false;
   }
-  switch(target.abilityId) {
+  switch (target.abilityId) {
     case CARD_ABILITIES.SPELLSHOT:
       return _executeAbility(action, target);
     default:
@@ -216,6 +216,10 @@ function _executeAbilityTargetOpponentMinion(action, target) {
 }
 
 function _executeAbilityTargetPlayerMinion(action, target) {
+  if (!Cards.getCard(CardsModel.Model.cards, target.id, target.instance)) {
+    Log.error(`Unable to retrieve the cast card's target ${target.id}::${target.instance}`);
+    return false;
+  }
   if (!_validPlayAreaIndex(target.playAreaIndex)) {
     Log.error(`Invalid playAreaIndex: ${target.playAreaIndex}`);
     return false;
@@ -224,7 +228,7 @@ function _executeAbilityTargetPlayerMinion(action, target) {
     Log.error(`No target.abilityId given`);
     return false;
   }
-  switch(target.abilityId) {
+  switch (target.abilityId) {
     case CARD_ABILITIES.REACH:
       return _executeAbility(action, target);
     default:
@@ -238,7 +242,7 @@ function _executeAbilityTargetPlayer(action, target) {
     Log.error(`No target.abilityId given`);
     return false;
   }
-  switch(target.abilityId) {
+  switch (target.abilityId) {
     case CARD_ABILITIES.ENERGIZE:
       return _executeAbility(action, target);
     default:
@@ -272,11 +276,7 @@ function _executeCastSpellTargetedAction(action, target) {
     Log.error(`No target.type given`);
     return false;
   }
-  if (!Cards.getCard(CardsModel.Model.cards, target.id, target.instance)) {
-    Log.error(`Unable to retrieve the cast card's target ${target.id}::${target.instance}`);
-    return false;
-  }
-  switch(target.type) {
+  switch (target.type) {
     case ACTION_TARGET_TYPES.ABILITY_TARGET_OPPONENT_MINION:
       return _executeAbilityTargetOpponentMinion(action, target);
     case ACTION_TARGET_TYPES.ABILITY_TARGET_PLAYER_MINION:
@@ -290,6 +290,10 @@ function _executeCastSpellTargetedAction(action, target) {
 }
 
 function _executeActionAttack(action, target) {
+  if (!Cards.getCard(CardsModel.Model.cards, target.id, target.instance)) {
+    Log.error(`Unable to retrieve the cast card's target ${target.id}::${target.instance}`);
+    return false;
+  }
   if (!_validPlayAreaIndex(target.playAreaIndex)) {
     Log.error(`Invalid playAreaIndex: ${target.playAreaIndex}`);
     return false;
@@ -381,23 +385,28 @@ function _executeActionSummonMinion(action) {
 }
 
 function _executeAbility(action, target) {
-  let playAreaIndex = target.playAreaIndex;
   let targets = _getAbilityTargets(target.type);
   if (!targets) {
     return false;
   }
-  let card = Cards.getCard(CardsModel.Model.cards, target.id, target.instance);
+  let card = Cards.getCard(CardsModel.Model.cards, action.source.id, action.source.instance);
   let selectedAbility = {
     targets,
     ability: Cards.getAbility(card, target.abilityId),
     abilityId: target.abilityId,
     card,
-    id: target.id,
-    instance: target.instance
+    id: action.source.id,
+    instance: action.source.instance
   };
   let _playerFieldSlots = _getPlayerFieldSlots();
   let _opponentFieldSlots = _getOpponentFieldSlots();
-  let { updatedCards, addedToDiscardPile, playerFieldSlots, opponentFieldSlots, statusUpdates } = CardActions.useCardAbility(CardsModel.Model.cards, playAreaIndex, selectedAbility, _playerFieldSlots, _opponentFieldSlots);
+  let { 
+    updatedCards, 
+    addedToDiscardPile, 
+    playerFieldSlots, 
+    opponentFieldSlots, 
+    statusUpdates 
+  } = CardActions.useCardAbility(CardsModel.Model.cards, target.playAreaIndex, selectedAbility, _playerFieldSlots, _opponentFieldSlots);
   _updateCards(updatedCards);
   _addCardsToDiscardPile(addedToDiscardPile);
   _setFieldSlots(CardsModel.Model.player.field.slots, playerFieldSlots);
@@ -452,7 +461,7 @@ function _setFieldSlot(oldSlots, newSlots, index) {
 }
 
 function _getAbilityTargets(targetType) {
-  switch(targetType) {
+  switch (targetType) {
     case ACTION_TARGET_TYPES.ABILITY_TARGET_OPPONENT_MINION:
       return CARD_TARGETS.OPPONENT_MINION;
     case ACTION_TARGET_TYPES.ABILITY_TARGET_PLAYER_MINION:

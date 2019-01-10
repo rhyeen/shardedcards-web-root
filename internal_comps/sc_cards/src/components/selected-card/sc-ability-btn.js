@@ -51,7 +51,8 @@ class ScAbilityBtn extends LitElement {
 
   static get properties() { 
     return {
-      ability: { type: Object }
+      ability: { type: Object },
+      cardVersion: { type: Number }
     }
   }
 

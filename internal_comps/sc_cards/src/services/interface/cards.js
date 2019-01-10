@@ -7,7 +7,7 @@ import * as CallHttp from './http/cards.js';
 import * as CallMock from './mock/cards.js';
 
 export const getPlayerDecks = () => {
-  switch(interfaceState()) {
+  switch (interfaceState()) {
     case INTERFACE.HTTP:
       return CallHttp.getPlayerDecks();
     case INTERFACE.MOCK:
@@ -18,7 +18,7 @@ export const getPlayerDecks = () => {
 };
 
 export const getCards = () => {
-  switch(interfaceState()) {
+  switch (interfaceState()) {
     case INTERFACE.HTTP:
       return CallHttp.getCards();
     case INTERFACE.MOCK:
@@ -29,7 +29,7 @@ export const getCards = () => {
 };
 
 export const getPlayingField = () => {
-  switch(interfaceState()) {
+  switch (interfaceState()) {
     case INTERFACE.HTTP:
       return CallHttp.getPlayingField();
     case INTERFACE.MOCK:

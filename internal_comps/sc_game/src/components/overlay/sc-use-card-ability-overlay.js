@@ -52,6 +52,7 @@ export class ScUseCardAbilityOverlay extends connect(localStore)(LitElement) {
     return html`
       <sc-ability-btn
           .ability="${ability}"
+          .cardVersion="${this.selectedCard.card.version}"
           @click="${() => this._selectAbility(ability.id)}"></sc-ability-btn>
     `;
   }

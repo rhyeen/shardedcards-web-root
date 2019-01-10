@@ -112,7 +112,7 @@ class ScCardValue extends LitElement {
 
   _cardPartIcon() {
     let iconFunction;
-    switch(this.valueType) {
+    switch (this.valueType) {
       case VALUE_TYPES.ATTACK:
         iconFunction = AttackIcon;
         break;

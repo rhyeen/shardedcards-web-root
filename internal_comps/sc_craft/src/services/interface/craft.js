@@ -7,7 +7,7 @@ import * as CallHttp from './http/craft.js';
 import * as CallMock from './mock/craft.js';
 
 export const getCraftingBaseCard = () => {
-  switch(interfaceState()) {
+  switch (interfaceState()) {
     case INTERFACE.HTTP:
       return CallHttp.getCraftingBaseCard();
     case INTERFACE.MOCK:
@@ -18,7 +18,7 @@ export const getCraftingBaseCard = () => {
 };
 
 export const getCraftingParts = () => {
-  switch(interfaceState()) {
+  switch (interfaceState()) {
     case INTERFACE.HTTP:
       return CallHttp.getCraftingParts();
     case INTERFACE.MOCK:

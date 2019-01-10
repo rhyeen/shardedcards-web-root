@@ -42,7 +42,7 @@ class ScBtn extends LitElement {
   }
 
   _getBtnClass() {
-    switch(this.btntype) {
+    switch (this.btntype) {
       case BTN_TYPES.GENERIC.PRIMARY:
         return 'btn-primary';
       case BTN_TYPES.GENERIC.SECONDARY:

@@ -35,7 +35,7 @@ class ScRoot extends connect(localStore)(LitElement) {
   }
 
   _activePageHtml() {
-    switch(this._page) {
+    switch (this._page) {
       case ROUTES.PAGES.GAME:
         return html`<sc-game></sc-game>`;
       default:
@@ -57,7 +57,7 @@ class ScRoot extends connect(localStore)(LitElement) {
 
   _getPageTitle(page) {
     const title = 'Sharded Cards';
-    switch(page) {
+    switch (page) {
       case ROUTES.PAGES.GAME:
         return `${title} | PLAY`;
       case ROUTES.PAGES.NOT_FOUND:

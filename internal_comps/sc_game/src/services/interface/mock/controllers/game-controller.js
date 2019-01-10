@@ -6,6 +6,7 @@ import * as TurnActionController from './turn-action-controller.js';
 import * as OpponentTurnController from './opponent-turn-controller.js';
 import * as CraftingController from '../../../../../../sc_craft/src/services/interface/mock/controllers/craft-controller.js';
 import * as StatusModel from '../../../../../../sc_status/src/services/interface/mock/models/model.js';
+import { GAME_STATES } from '../../../../entities/game-states.js';
 
 export const initializeGame = () => {
   StatusController.initializeStatus();
@@ -28,6 +29,28 @@ export const getOpponentTurn = () => {
 export const getUpdatedCards = () => {
   return Model.currentTurnUpdatedCards;
 };
+
+export const getGameState = () => {
+  if (_gameIsLost()) {
+    return GAME_STATES.LOSE;
+  }
+  if (_gameIsWon()) {
+    return GAME_STATES.WIN;
+  }
+  return GAME_STATES.PLAYING;
+}
+
+function _gameIsLost() {
+  return StatusModel.Model.player.health.current <= 0;
+}
+
+function _gameIsWon() {
+  let totalOpponentMinionsOnField = 0;
+  totalOpponentMinionsOnField += !!CardsModel.Model.opponent.field.slots[0].id ? 1 : 0;
+  totalOpponentMinionsOnField += !!CardsModel.Model.opponent.field.slots[1].id ? 1 : 0;
+  totalOpponentMinionsOnField += !!CardsModel.Model.opponent.field.slots[2].id ? 1 : 0;
+  return totalOpponentMinionsOnField === 0;
+}
 
 export const executePlayTurn = (turn) => {
   resetUpdatedCards();

@@ -7,7 +7,7 @@ import * as CallHttp from './http/game.js';
 import * as CallMock from './mock/game.js';
 
 export const beginGame = () => {
-  switch(interfaceState()) {
+  switch (interfaceState()) {
     case INTERFACE.HTTP:
       return CallHttp.beginGame();
     case INTERFACE.MOCK:
@@ -18,7 +18,7 @@ export const beginGame = () => {
 };
 
 export const endCrafting = (turn) => {
-  switch(interfaceState()) {
+  switch (interfaceState()) {
     case INTERFACE.HTTP:
       return CallHttp.endCrafting(turn);
     case INTERFACE.MOCK:
@@ -29,7 +29,7 @@ export const endCrafting = (turn) => {
 };
 
 export const endTurn = (turn) => {
-  switch(interfaceState()) {
+  switch (interfaceState()) {
     case INTERFACE.HTTP:
       return CallHttp.endTurn(turn);
     case INTERFACE.MOCK:
