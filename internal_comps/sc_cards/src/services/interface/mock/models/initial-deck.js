@@ -8,7 +8,7 @@ export function getInitialDeck() {
       instance: ENERGY_SHARD.INSTANCE
     },
     {
-      id: 'rangedweapon',
+      id: 'pawn',
       instance: '1'
     },
     {
@@ -20,7 +20,7 @@ export function getInitialDeck() {
       instance: '2'
     },
     {
-      id: 'rangedweapon',
+      id: 'pawn',
       instance: '3'
     },
     {

@@ -210,7 +210,10 @@ function _targetsThatCanBeDealtMaxDamage(minionCard, possibleTargetIndices) {
 
 function _healthLostFromAttack(minionCard, targetAreaIndex) {
   let playerCard = _getPlayerMinionCardContext(targetAreaIndex);
-  let { updatedCards } = CardActions.attackMinion(CardsModel.Model.cards, minionCard, playerCard);
+  let { updatedCards, attackedDiscarded } = CardActions.attackMinion(CardsModel.Model.cards, minionCard, playerCard);
+  if (attackedDiscarded) {
+    return playerCard.card.health;
+  }
   let updatedPlayerCard = Cards.getUpdatedCard(playerCard, updatedCards);
   return playerCard.card.health - updatedPlayerCard.card.health;
 }
@@ -221,7 +224,7 @@ function _attackTarget(minionCard, targetAreaIndex) {
   Cards.setCards(CardsModel.Model.cards, updatedCards);
   let updatedMinionCard = Cards.getUpdatedCard(minionCard, updatedCards);
   if (attackedDiscarded) {
-    CardsModel.Model.player.discardPile.push({
+    CardsModel.Model.player.discardPile.cards.push({
       id: playerCard.id,
       instance: playerCard.instance
     });
