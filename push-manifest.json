@@ -1,6 +1,6 @@
 {
   "/": {
-    "src/components/root-app.js": {
+    "src/components/sc-root.js": {
       "type": "script",
       "weight": 1
     },
