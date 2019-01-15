@@ -22,26 +22,35 @@ function _getGeneratedCraftingBaseCard() {
 }
 
 function _getGeneratedMinionBaseCard() {
-  return {
+  let rarity = _getRandomCardRarity();
+  let { range, health, attack } = _getRandomMinionStats();
+  let abilities = _getRandomMinionAbilities();
+  let slots = _getRandomMinionAbilitySlots(abilities.length);
+  let card = {
     type: CARD_TYPES.MINION,
-    rarity: CARD_RARITIES.COMMON,
-    cost: 1,
-    range: 1,
-    health: 5,
-    attack: 1,
-    abilities: [],
-    slots: 0
+    rarity,
+    range,
+    health,
+    attack,
+    abilities,
+    slots
   };
+  card.cost = _getCardCost(card);
+  return card;
 }
 
 function _getGeneratedSpellBaseCard() {
-  return {
-    type: CARD_TYPES.SPELL,
-    rarity: CARD_RARITIES.COMMON,
-    cost: 1,
-    abilities: [],
-    slots: 0
+  let rarity = _getRandomCardRarity();
+  let abilities = _getRandomSpellAbilities();
+  let slots = _getRandomSpellAbilitySlots(abilities.length);
+  let card = {
+    type: CARD_TYPES.MINION,
+    rarity,
+    abilities,
+    slots
   };
+  card.cost = _getCardCost(card);
+  return card;
 }
 
 function _getRandomCardType() {
@@ -60,6 +69,35 @@ function _getCardTypeLotteryWeights() {
       weight: 1
     }
   ];
+}
+
+function _getRandomCardRarity() {
+  return CARD_RARITIES.COMMON;
+}
+
+function _getRandomMinionStats() {
+  let results = {
+    range: 1,
+    attack: 1,
+    health: 1
+  };
+  return results;
+}
+
+function _getRandomMinionAbilities() {
+  return [];
+}
+
+function _getRandomMinionAbilitySlots(abilityCount) {
+  return [];
+}
+
+function _getRandomSpellAbilities() {
+  return [];
+}
+
+function _getRandomSpellAbilitySlots(abilityCount) {
+  return [];
 }
 
 function _selectChosenWeight(weights) {
