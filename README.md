@@ -23,7 +23,7 @@ You can read more about our permissions at https://choosealicense.com/no-permiss
 
 If you want to get started on contributing, head over the [Sharded Cards Wiki](https://github.com/rhyeen/shardedcards) and either check out the [Issues](https://github.com/rhyeen/shardedcards/issues) or [Projects](https://github.com/rhyeen/shardedcards/projects).  Not sure where to start?  You can [post your interest here](https://github.com/rhyeen/shardedcards/issues/2) and I'll get you started.
 
-We keep a separate repo for Issues/Projects because the project will span more than one repo (front-end, back-end, etc).  If there is an issue specific to only this project, you can just [post an issue here](https://github.com/rhyeen/shardedcards-web-root/issues).
+We keep a separate repo for Issues/Projects because the project spans more than one repo (front-end, back-end, etc).  If there is an issue specific to only this project, you can just [post an issue here](https://github.com/rhyeen/shardedcards-web-root/issues).
 
 ### Setup
 
