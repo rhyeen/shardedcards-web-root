@@ -1,5 +1,6 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { ScSharedStyles } from '../../internal_comps/sc_shared/src/entities/sc-shared-styles.js';
+import { LOCALE_EN } from '../../internal_comps/sc_locale/src/entities/en.js';
 
 class Sc404 extends LitElement {
   render() {
@@ -11,8 +12,8 @@ class Sc404 extends LitElement {
           padding: 40px;
         }
       </style>
-      <h1>Nothing behind these curtains.</h1>
-      <h2>Lets <a href="/">get back to the fun</a>.</h2>
+      <h1>${LOCALE_EN.SC_ROOT.PAGE_NOT_FOUND.P1}</h1>
+      <h2>${LOCALE_EN.SC_ROOT.PAGE_NOT_FOUND.P2}</h2>
     `;
   }
 }

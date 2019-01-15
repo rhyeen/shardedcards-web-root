@@ -1,4 +1,17 @@
+import { html } from '@polymer/lit-element';
+
 export const LOCALE_EN = {
+  SC_ROOT: {
+    PAGE_NOT_FOUND: {
+      P1: 'Nothing behind these curtains.',
+      P2: html`Lets <a href="/">get back to the fun</a>.`
+    },
+    TITLE: {
+      APP_NAME: 'Sharded Cards',
+      PLAY: 'PLAY',
+      NOT_FOUND: '404 - NOT FOUND'
+    }
+  },
   SC_BTN: {
     PRESET: {
       BACK: 'back',

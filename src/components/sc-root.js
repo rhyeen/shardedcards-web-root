@@ -13,6 +13,7 @@ import * as RootSelector from '../state/selectors.js';
 
 import { ROUTES } from '../entities/root.js';
 import './sc-404.js';
+import { LOCALE_EN } from '../../internal_comps/sc_locale/src/entities/en.js';
 
 class ScRoot extends connect(localStore)(LitElement) {
   render() {
@@ -56,12 +57,12 @@ class ScRoot extends connect(localStore)(LitElement) {
   }
 
   _getPageTitle(page) {
-    const title = 'Sharded Cards';
+    const title = LOCALE_EN.SC_ROOT.TITLE.APP_NAME;
     switch (page) {
       case ROUTES.PAGES.GAME:
-        return `${title} | PLAY`;
+        return `${title} | ${LOCALE_EN.SC_ROOT.TITLE.PLAY}`;
       case ROUTES.PAGES.NOT_FOUND:
-        return `${title} | 404 - NOT FOUND`;
+        return `${title} | ${LOCALE_EN.SC_ROOT.TITLE.NOT_FOUND}`;
       default:
         Log.error(`Unexpected page: ${page}`);
         return title;
