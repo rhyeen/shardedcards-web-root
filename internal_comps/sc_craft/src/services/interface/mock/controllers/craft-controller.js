@@ -142,49 +142,21 @@ function _getCardCost(card) {
 }
 
 function _selectChosenWeight(weights) {
-  let normalizedWeights = _getNormalizedWeights(weights);
-  let chosenWeight = _getWeightWinningLottery(weights);
+  let chosenWeight = _getWinningLotteryNumber(weights);
   let currentLowerboundWeight = 0;
-  for (let i; i < normalizedWeights.length; i++) {
-    if (normalizedWeights[i] + currentLowerboundWeight <= chosenWeight) {
-      return weights[i];
+  for (let weight of weights) {
+    if (weight + currentLowerboundWeight <= chosenWeight) {
+      return weight;
     }
-    currentLowerboundWeight += normalizedWeights[i];
+    currentLowerboundWeight += weight;
   }
   Log.error('failed to find a weight associated with the winning lottery');
   return weights[0];
 }
 
-/**
- * Normalized weights would be such that the smallest weight is always 1 (or very very close).
- */
-function _getNormalizedWeights(weights) {
-  let smallestWeight = _getSmallestWeight(weights);
-  let normalizedWeights = weights.map(weight => 1/smallestWeight * weight.weight);
-  return normalizedWeights; 
-}
-
-function _getSmallestWeight(weights) {
-  if (!weights.length) {
-    Log.error('cannot get smallest of no weights');
-    return 1;
-  }
-  smallestWeight = weights[0].weight;
-  for (let weight of weights) {
-    if (weight.weight < smallestWeight) {
-      smallestWeight = weight.weight;
-    }
-  }
-  if (smallestWeight <= 0) {
-    Log.error('cannot have a weight <= 0');
-    return 1;
-  }
-  return smallestWeight;
-}
-
-function _getWeightWinningLottery(weights) {
+function _getWinningLotteryNumber(weights) {
   let totalWeights = weights.reduce((total, weight) => total + weight.weight);
-  return Math.floor(Math.random()*(totalWeights)) + 1;
+  return Math.random()*(totalWeights);
 }
 
 function _getGeneratedCraftingParts() {
