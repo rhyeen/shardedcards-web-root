@@ -44,13 +44,16 @@ function _getInitialModel() {
       field: { // @DEBUG: should probably be field: [ { backlog, slot }] instead
         backlog: [
           {
-            cards: []
+            cards: [],
+            initialCards: []
           },
           {
-            cards: []
+            cards: [],
+            initialCards: []
           },
           {
-            cards: []
+            cards: [],
+            initialCards: []
           }
         ],
         slots: [

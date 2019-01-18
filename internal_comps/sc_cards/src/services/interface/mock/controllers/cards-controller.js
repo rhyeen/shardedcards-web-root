@@ -17,6 +17,30 @@ const OPPONENT_BACKLOG_PARTITIONS = {
   CHANCE_OF_NEXT_LEVEL_CARD: 0.3
 };
 
+export const getBacklogStats = () => {
+  let remainingBacklogCards = _getRemainingBacklogCards();
+  let initialBacklogCards = _getInitialBacklogCards();
+  return { remainingBacklogCards, initialBacklogCards };
+};
+
+function _getRemainingBacklogCards() {
+  let backlog = Model.opponent.field.backlog;
+  let cards = 0;
+  cards += backlog[0].cards.length;
+  cards += backlog[1].cards.length;
+  cards += backlog[2].cards.length;
+  return cards;
+}
+
+function _getInitialBacklogCards() {
+  let backlog = Model.opponent.field.backlog;
+  let cards = 0;
+  cards += backlog[0].initialCards.length;
+  cards += backlog[1].initialCards.length;
+  cards += backlog[2].initialCards.length;
+  return cards;
+}
+
 export const refreshOpponentField = () => {
   let fieldCards = _getOpponentFieldCards();
   fieldCards = CardActions.refreshCards(fieldCards);
@@ -88,7 +112,8 @@ function _setOpponentFieldBacklog(playAreaIndex) {
   backlog.push(..._getOpponentCardsByRarity(CARD_RARITIES.RARE, OPPONENT_BACKLOG_PARTITIONS.RARE, playAreaIndex));
   backlog.push(..._getOpponentCardsByRarity(CARD_RARITIES.EPIC, OPPONENT_BACKLOG_PARTITIONS.EPIC, playAreaIndex));
   backlog.push(..._getOpponentCardsByRarity(CARD_RARITIES.LEGENDARY, OPPONENT_BACKLOG_PARTITIONS.LEGENDARY, playAreaIndex));
-  Model.opponent.field.backlog[playAreaIndex].cards = backlog;
+  Model.opponent.field.backlog[playAreaIndex].cards = [...backlog];
+  Model.opponent.field.backlog[playAreaIndex].initialCards = [...backlog];
   _addOpponentFieldInstancesToOpponentCards(playAreaIndex);
 }
 

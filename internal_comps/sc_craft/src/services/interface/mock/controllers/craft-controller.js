@@ -4,10 +4,12 @@ import { CRAFTING_PART_TYPES } from '../../../../entities/crafting-part.js';
 import { Log } from '../../../../../../sc_shared/src/services/logger.js';
 import { MinionStatsWeights } from '../models/weights/minion-stats.js';
 import { CardTypeWeights } from '../models/weights/card-type.js';
+import { CardRarityWeightRanges } from '../models/weights/card-rarity.js';
 import { MinionAbilitiesWeights } from '../models/weights/minion-abilities.js';
 import { MinionAbilitySlotsWeights } from '../models/weights/minion-ability-slots.js';
 import { SpellAbilitiesWeights } from '../models/weights/spell-abilities.js';
 import { SpellAbilitySlotsWeights } from '../models/weights/spell-ability-slots.js';
+import * as CardsController from '../../../../../../sc_cards/src/services/interface/mock/controllers/cards-controller.js'; 
 
 export const prepareCraftingTurn = () => {
   Model.craftingBaseCard = _getGeneratedCraftingBaseCard();
@@ -65,7 +67,31 @@ function _getRandomCardType() {
 }
 
 function _getRandomCardRarity() {
-  return CARD_RARITIES.COMMON;
+  let { remainingBacklogCards, initialBacklogCards } = CardsController.getBacklogStats();
+  let percentCompleted = 1 - (remainingBacklogCards / initialBacklogCards);
+  let computedWeights = _getComputedRarityWeights(percentCompleted);
+  return _selectChosenWeight(computedWeights).rarity;
+}
+
+function _getComputedRarityWeights(percentCompleted) {
+  let ranges = CardRarityWeightRanges();
+  let weights = [];
+  for (let range of ranges) {
+    weights.push({
+      ...range,
+      weight: _getComputedRarityWeights(percentCompleted, range.range)
+    });
+  }
+  return weights;
+}
+
+function _getComputedRarityWeights(percentCompleted, range) {
+  for (let weight of range) {
+    if (percentCompleted < weight.percentCompleted) {
+      return weight.weight;
+    }
+  }
+  return range[range.length - 1].weight;
 }
 
 function _getRandomMinionStats(rarity) {
@@ -73,6 +99,16 @@ function _getRandomMinionStats(rarity) {
   switch (rarity) {
     case CARD_RARITIES.COMMON:
       weights = MinionStatsWeights.common();
+      break;
+    case CARD_RARITIES.RARE:
+      weights = MinionStatsWeights.rare();
+      break;
+    case CARD_RARITIES.EPIC:
+      weights = MinionStatsWeights.epic();
+      break;
+    case CARD_RARITIES.LEGENDARY:
+      weights = MinionStatsWeights.legendary();
+      break;
     default:
       Log.error(`unexpected rarity: ${rarity}`);
       weights = MinionStatsWeights.common();
@@ -85,6 +121,16 @@ function _getRandomMinionAbilities(rarity) {
   switch (rarity) {
     case CARD_RARITIES.COMMON:
       weights = MinionAbilitiesWeights.common();
+      break;
+    case CARD_RARITIES.RARE:
+      weights = MinionAbilitiesWeights.rare();
+      break;
+    case CARD_RARITIES.EPIC:
+      weights = MinionAbilitiesWeights.epic();
+      break;
+    case CARD_RARITIES.LEGENDARY:
+      weights = MinionAbilitiesWeights.legendary();
+      break;
     default:
       Log.error(`unexpected rarity: ${rarity}`);
       weights = MinionAbilitiesWeights.common();
@@ -97,6 +143,16 @@ function _getRandomMinionAbilitySlots(rarity, abilityCount) {
   switch (rarity) {
     case CARD_RARITIES.COMMON:
       weights = MinionAbilitySlotsWeights.common();
+      break;
+    case CARD_RARITIES.RARE:
+      weights = MinionAbilitySlotsWeights.rare();
+      break;
+    case CARD_RARITIES.EPIC:
+      weights = MinionAbilitySlotsWeights.epic();
+      break;
+    case CARD_RARITIES.LEGENDARY:
+      weights = MinionAbilitySlotsWeights.legendary();
+      break;
     default:
       Log.error(`unexpected rarity: ${rarity}`);
       weights = MinionAbilitySlotsWeights.common();
@@ -110,6 +166,16 @@ function _getRandomSpellAbilities(rarity) {
   switch (rarity) {
     case CARD_RARITIES.COMMON:
       weights = SpellAbilitiesWeights.common();
+      break;
+    case CARD_RARITIES.RARE:
+      weights = SpellAbilitiesWeights.rare();
+      break;
+    case CARD_RARITIES.EPIC:
+      weights = SpellAbilitiesWeights.epic();
+      break;
+    case CARD_RARITIES.LEGENDARY:
+      weights = SpellAbilitiesWeights.legendary();
+      break;
     default:
       Log.error(`unexpected rarity: ${rarity}`);
       weights = SpellAbilitiesWeights.common();
@@ -122,6 +188,16 @@ function _getRandomSpellAbilitySlots(rarity, abilityCount) {
   switch (rarity) {
     case CARD_RARITIES.COMMON:
       weights = SpellAbilitySlotsWeights.common();
+      break;
+    case CARD_RARITIES.RARE:
+      weights = SpellAbilitySlotsWeights.rare();
+      break;
+    case CARD_RARITIES.EPIC:
+      weights = SpellAbilitySlotsWeights.epic();
+      break;
+    case CARD_RARITIES.LEGENDARY:
+      weights = SpellAbilitySlotsWeights.legendary();
+      break;
     default:
       Log.error(`unexpected rarity: ${rarity}`);
       weights = SpellAbilitySlotsWeights.common();
@@ -138,7 +214,97 @@ function _removeAlreadyFilledSlots(slots, abilityCount) {
 }
 
 function _getCardCost(card) {
-  return 1;
+  let cost = 0;
+  switch (card.type) {
+    case CARD_TYPES.MINION:
+      cost = _getMinionCardCost(card);
+      break;
+    case CARD_TYPES.SPELL:
+      cost = _getSpellCardCost(card);
+      break;
+    default:
+      Log.error(`Unexpected card type: ${card.type}`);
+  }
+  cost += _getRarityCost(card.rarity);
+  cost = Math.floor(cost);
+  if (cost < 0) {
+    cost = 0;
+  }
+  return cost;
+}
+
+function _getMinionCardCost(card) {
+  let cost = 0;
+  cost += card.attack * 0.3;
+  if (range === 0) {
+    cost += -1;
+  } else if (range === 1) {
+    cost += 0;
+  } else if (range === 2) {
+    cost += 2;
+  } else if (range === 3) {
+    cost += 3;
+  }
+  cost += card.health * 0.25;
+  if (card.abilities.length) {
+    for (let ability of card.abilities) {
+      cost += _getAbilityCost();
+    }
+  }
+  cost += card.slots.length * 0.25;
+  return cost;
+}
+
+function _getSpellCardCost(card) {
+  if (card.abilities.length) {
+    for (let ability of card.abilities) {
+      cost += _getAbilityCost();
+    }
+  }
+  cost += card.slots.length * 0.25;
+  return cost;
+}
+
+function _getAbilityCost(ability) {
+  switch (ability.id) {
+    case CARD_ABILITIES.REACH:
+      return _getAbilityReachCost(ability);
+    case CARD_ABILITIES.HASTE:
+      return _getAbilityHasteCost(ability);
+    case CARD_ABILITIES.SPELLSHOT:
+      return _getAbilitySpellshotCost(ability);
+    default:
+      Log.error(`unexpected ability: ${ability.id}`);
+      return 0;
+  }
+}
+
+function _getAbilityReachCost(ability) {
+  return ability.amount * 3;
+}
+
+function _getAbilityHasteCost(ability) {
+  return 1.5;
+}
+
+function _getAbilitySpellshotCost(ability) {
+  return ability.amount * 2;
+}
+
+function _getRarityCost(rarity) {
+  switch (rarity) {
+    case CARD_RARITIES.COMMON:
+      return 0;
+    case CARD_RARITIES.RARE:
+      return -.5;
+    case CARD_RARITIES.EPIC:
+      return -1;
+    case CARD_RARITIES.LEGENDARY:
+      return -2;
+    default:
+      Log.error(`unexpected rarity: ${rarity}`);
+      weights = SpellAbilitySlotsWeights.common();
+  }
 }
 
 function _selectChosenWeight(weights) {

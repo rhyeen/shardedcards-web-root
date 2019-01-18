@@ -1,3 +1,4 @@
+import { CARD_TYPES } from "../../../../../../../sc_shared/src/entities/card-keywords";
 
 export const CardTypeWeights = [
   {
