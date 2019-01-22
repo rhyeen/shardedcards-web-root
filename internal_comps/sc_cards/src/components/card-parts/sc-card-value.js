@@ -10,6 +10,7 @@ import {
   RangeIcon,
   ShieldIcon } from '../../../../sc_shared/src/entities/sc-icons.js';
 import { CARD_STATS } from '../../../../sc_shared/src/entities/card-keywords.js';
+import { roundToTwoDecimals } from '../../../../sc_shared/src/services/util.js';
 
 export const VALUE_TYPES = {
   ...CARD_STATS
@@ -92,7 +93,7 @@ class ScCardValue extends LitElement {
       case VALUE_TYPES.ATTACK:
         return this.card.attack;
       case VALUE_TYPES.COST:
-        return this.card.cost;
+        return roundToTwoDecimals(this.card.cost, 2);
       case VALUE_TYPES.HEALTH:
         return this.card.health;
       case VALUE_TYPES.RANGE:

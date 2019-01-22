@@ -18,6 +18,7 @@ export const APP_COLORS = {
   BASE_WHITE: '--sc_shared-base-white',
   NEAR_WHITE_BORDER: '--sc_shared-near-white-border',
   OFF_BLACK: '--sc_shared-off-black',
+  HINT_GRAY: '--sc_shared-hint-gray',
   OVERLAY_BLACK: '--sc_shared-overlay-black',
   OVERLAY_WHITE: '--sc_shared-overlay-white',
   OVERLAY_CARD_WHITE: '--sc_shared-overlay-card-white',
@@ -70,6 +71,7 @@ export const ScSharedStyles = html`
     --sc_shared-base-white: #FFF;
     --sc_shared-near-white-border: #E7EBEF;
     --sc_shared-off-black: #525456;
+    --sc_shared-hint-gray: #798183;
     
     --sc_shared-overlay-black: rgba(0, 0, 0, 0.5);
     --sc_shared-overlay-white: rgba(255, 255, 255, 0.8);

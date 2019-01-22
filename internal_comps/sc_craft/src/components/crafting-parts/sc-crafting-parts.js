@@ -1,5 +1,5 @@
 import { LitElement, html } from '@polymer/lit-element';
-import { ScSharedStyles } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
+import { ScSharedStyles, APP_COLORS } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
 import { ScCraftingStyles, CRAFTING_AREA } from '../../entities/sc_crafting-styles.js';
 import { connect } from 'pwa-helpers/connect-mixin.js';
 import { localStore } from '../../state/store.js';
@@ -8,6 +8,7 @@ import * as CraftingSelector from '../../state/selectors.js';
 import './sc-crafting-part.js';
 
 import { selectCraftingPart } from '../../state/actions.js';
+import { LOCALE_EN } from '../../../../sc_locale/src/entities/en.js';
 
 
 class ScCraftingParts extends connect(localStore)(LitElement) {
@@ -33,18 +34,34 @@ class ScCraftingParts extends connect(localStore)(LitElement) {
         sc-crafting-part {
           margin-top: 10px;
         }
+
+        .parts-title {
+          color: var(${APP_COLORS.HINT_GRAY});
+          font-size: 14px;
+          font-weight: 300;
+          border-bottom: 1px dashed var(${APP_COLORS.HINT_GRAY});
+          padding-bottom: 10px;
+        }
+
+        /** Given in LOCALE_EN.SC_CRAFT.CRAFTING_PARTS.FORGE_NOT_EMPTY */
+        .dynamic-value {
+          font-weight: 700;
+        }
       </style>
+      <div class="parts-title">${this._getPartsTitle()}</div>
       ${this._craftingParts.map((craftingPart, index) => html`
       <sc-crafting-part
           .craftingPart="${craftingPart}"
-          @click="${() => this._selectCraftingPart(index)}"></sc-crafting-part>
+          @click="${() => this._selectCraftingPart(index)}"
+          ?disabled="${this._emptyForgeSlots}"></sc-crafting-part>
       `)}
     `;
   }
 
   static get properties() { 
     return {
-      _craftingParts: { type: Object }
+      _craftingParts: { type: Object },
+      _emptyForgeSlots: { type: Boolean }
     }
   }
 
@@ -52,7 +69,16 @@ class ScCraftingParts extends connect(localStore)(LitElement) {
     localStore.dispatch(selectCraftingPart(craftingPartIndex));
   }
 
+  _getPartsTitle() {
+    if (this._emptyForgeSlots) {
+      return html`${LOCALE_EN.SC_CRAFT.CRAFTING_PARTS.FORGE_EMPTY}`;
+    }
+    // @TODO: have (1) be dynamic.
+    return html`${LOCALE_EN.SC_CRAFT.CRAFTING_PARTS.FORGE_NOT_EMPTY(1)}`;
+  }
+
   stateChanged(state) {
+    this._emptyForgeSlots = CraftingSelector.emptyForgeSlots(state);
     this._craftingParts = CraftingSelector.getCraftingParts(state);
   }
 }

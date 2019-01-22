@@ -29,6 +29,10 @@ class ScCraftingPart extends LitElement {
           fill: var(${BTN_COLORS.DARK_BTN_TEXT_COLOR}) !important;
         }
 
+        button[disabled] .button-svg-icon {
+          fill: var(${BTN_COLORS.DISABLED.TEXT_COLOR}) !important;
+        }
+
         [card-part] {
           display: flex;
           align-items: center;
@@ -54,7 +58,7 @@ class ScCraftingPart extends LitElement {
           color: var(${BTN_COLORS.DISABLED.TEXT_COLOR});
         }
       </style>
-      <button card-part ?disabled="${false}">
+      <button card-part ?disabled="${this.disabled}">
         <div class="icon">${this._craftingPartIcon()}</div>
         <div class="tooltip">
           <div class="tooltip-title">${this._craftingPartTooltip()}</div>
@@ -66,7 +70,8 @@ class ScCraftingPart extends LitElement {
 
   static get properties() { 
     return {
-      craftingPart: { type: Object }
+      craftingPart: { type: Object },
+      disabled: { type: Boolean }
     }
   }
 

@@ -55,7 +55,7 @@ function _getGeneratedSpellBaseCard() {
   let abilities = _getRandomSpellAbilities(rarity);
   let slots = _getRandomSpellAbilitySlots(rarity, abilities.length);
   let card = {
-    type: CARD_TYPES.MINION,
+    type: CARD_TYPES.SPELL,
     rarity,
     abilities,
     slots
@@ -218,23 +218,26 @@ function _removeAlreadyFilledSlots(slots, abilityCount) {
 }
 
 function _getCardCost(card) {
-  let cost = 0;
-  switch (card.type) {
-    case CARD_TYPES.MINION:
-      cost = _getMinionCardCost(card);
-      break;
-    case CARD_TYPES.SPELL:
-      cost = _getSpellCardCost(card);
-      break;
-    default:
-      Log.error(`Unexpected card type: ${card.type}`);
-  }
+  let cost = _getCardTypeSpecificCosts(card);
   cost += _getRarityCost(card.rarity);
-  cost = Math.floor(cost);
+  // @NOTE: we don't want to floor() since we need approximations while still crafting.
+  // cost = Math.floor(cost);
   if (cost < 0) {
     cost = 0;
   }
   return cost;
+}
+
+function _getCardTypeSpecificCosts(card) {
+  switch (card.type) {
+    case CARD_TYPES.MINION:
+      return _getMinionCardCost(card);
+    case CARD_TYPES.SPELL:
+      return _getSpellCardCost(card);
+    default:
+      Log.error(`Unexpected card type: ${card.type}`);
+      return 0;
+  }
 }
 
 function _getMinionCardCost(card) {
@@ -260,6 +263,7 @@ function _getMinionCardCost(card) {
 }
 
 function _getSpellCardCost(card) {
+  let cost = 0;
   if (card.abilities.length) {
     for (let ability of card.abilities) {
       cost += _getAbilityCost(ability);

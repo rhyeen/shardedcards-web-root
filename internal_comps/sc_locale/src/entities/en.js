@@ -12,6 +12,12 @@ export const LOCALE_EN = {
       NOT_FOUND: '404 - NOT FOUND'
     }
   },
+  SC_CRAFT: {
+    CRAFTING_PARTS: {
+      FORGE_NOT_EMPTY: (amount) => html`Add <span class="dynamic-value">${amount}</span> to a card in the forge`,
+      FORGE_EMPTY: 'Unlock by adding a card to the forge'
+    }
+  },
   SC_BTN: {
     PRESET: {
       BACK: 'back',

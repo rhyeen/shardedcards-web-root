@@ -24,3 +24,15 @@ export const getCraftingParts = createSelector(
     return craftingParts;
   }
 );
+
+export const emptyForgeSlots = createSelector(
+  _forgeSelector,
+  (forge) => {
+    for (let slot of forge.slots) {
+      if (slot.card) {
+        return false;
+      }
+    }
+    return true;
+  }
+);
