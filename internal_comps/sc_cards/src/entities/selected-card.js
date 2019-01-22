@@ -1,10 +1,15 @@
-import { CARD_ABILITIES, CARD_CONDITIONS } from "../../../sc_shared/src/entities/card-keywords";
+import { CARD_ABILITIES, CARD_CONDITIONS, CARD_STATS } from "../../../sc_shared/src/entities/card-keywords";
 import { 
   EnergizeIcon,
   HasteIcon,
   SpellshotIcon,
   ReachIcon,
-  ExhaustedIcon } from "../../../sc_shared/src/entities/sc-icons";
+  ExhaustedIcon, 
+  AttackIcon,
+  HealthIcon,
+  RangeIcon,
+  ShieldIcon,
+  EnergyIcon} from "../../../sc_shared/src/entities/sc-icons";
 import { LOCALE_EN } from "../../../sc_locale/src/entities/en";
 
 
@@ -95,4 +100,49 @@ Condition.getDescription = (condition) => {
 
 Condition.getIcon = (condition, args) => {
   return conditionMap[condition].iconFn(args);
+};
+
+export const CardStat = {};
+const cardStatMap = {};
+
+cardStatMap[CARD_STATS.ATTACK] = {
+  name: LOCALE_EN.CARD_STAT.ATTACK.NAME,
+  descriptionFn: LOCALE_EN.CARD_STAT.ATTACK.DESCRIPTION,
+  iconFn: AttackIcon
+};
+
+cardStatMap[CARD_STATS.HEALTH] = {
+  name: LOCALE_EN.CARD_STAT.HEALTH.NAME,
+  descriptionFn: LOCALE_EN.CARD_STAT.HEALTH.DESCRIPTION,
+  iconFn: HealthIcon
+};
+
+cardStatMap[CARD_STATS.RANGE] = {
+  name: LOCALE_EN.CARD_STAT.RANGE.NAME,
+  descriptionFn: LOCALE_EN.CARD_STAT.RANGE.DESCRIPTION,
+  iconFn: RangeIcon
+};
+
+cardStatMap[CARD_STATS.SHIELD] = {
+  name: LOCALE_EN.CARD_STAT.SHIELD.NAME,
+  descriptionFn: LOCALE_EN.CARD_STAT.SHIELD.DESCRIPTION,
+  iconFn: ShieldIcon
+};
+
+cardStatMap[CARD_STATS.COST] = {
+  name: LOCALE_EN.CARD_STAT.COST.NAME,
+  descriptionFn: LOCALE_EN.CARD_STAT.COST.DESCRIPTION,
+  iconFn: EnergyIcon
+};
+
+CardStat.getName = (statId) => {
+  return cardStatMap[statId].name;
+};
+
+CardStat.getDescription = (statId, amount) => {
+  return cardStatMap[statId].descriptionFn(amount);
+};
+
+CardStat.getIcon = (statId, args) => {
+  return cardStatMap[statId].iconFn(args);
 };

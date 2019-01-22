@@ -10,6 +10,9 @@ import { MinionAbilitySlotsWeights } from '../models/weights/minion-ability-slot
 import { SpellAbilitiesWeights } from '../models/weights/spell-abilities.js';
 import { SpellAbilitySlotsWeights } from '../models/weights/spell-ability-slots.js';
 import * as CardsController from '../../../../../../sc_cards/src/services/interface/mock/controllers/cards-controller.js'; 
+import { CraftingPartTypeWeights } from '../models/weights/crafting-part-type.js';
+import { StatPartWeights } from '../models/weights/stat-part.js';
+import { AbilityPartWeights } from '../models/weights/ability-part.js';
 
 export const prepareCraftingTurn = () => {
   Model.craftingBaseCard = _getGeneratedCraftingBaseCard();
@@ -68,7 +71,8 @@ function _getRandomCardType() {
 
 function _getRandomCardRarity() {
   let { remainingBacklogCards, initialBacklogCards } = CardsController.getBacklogStats();
-  let percentCompleted = 1 - (remainingBacklogCards / initialBacklogCards);
+  let initialAfterFieldFilled = initialBacklogCards - 3;
+  let percentCompleted = 1 - (remainingBacklogCards / initialAfterFieldFilled);
   let computedWeights = _getComputedRarityWeights(percentCompleted);
   return _selectChosenWeight(computedWeights).rarity;
 }
@@ -79,15 +83,15 @@ function _getComputedRarityWeights(percentCompleted) {
   for (let range of ranges) {
     weights.push({
       ...range,
-      weight: _getComputedRarityWeights(percentCompleted, range.range)
+      weight: _getComputedRarityWeight(percentCompleted, range.range)
     });
   }
   return weights;
 }
 
-function _getComputedRarityWeights(percentCompleted, range) {
+function _getComputedRarityWeight(percentCompleted, range) {
   for (let weight of range) {
-    if (percentCompleted < weight.percentCompleted) {
+    if (percentCompleted <= weight.percentCompleted) {
       return weight.weight;
     }
   }
@@ -236,19 +240,19 @@ function _getCardCost(card) {
 function _getMinionCardCost(card) {
   let cost = 0;
   cost += card.attack * 0.3;
-  if (range === 0) {
+  if (card.range === 0) {
     cost += -1;
-  } else if (range === 1) {
+  } else if (card.range === 1) {
     cost += 0;
-  } else if (range === 2) {
+  } else if (card.range === 2) {
     cost += 2;
-  } else if (range === 3) {
+  } else if (card.range === 3) {
     cost += 3;
   }
   cost += card.health * 0.25;
   if (card.abilities.length) {
     for (let ability of card.abilities) {
-      cost += _getAbilityCost();
+      cost += _getAbilityCost(ability);
     }
   }
   cost += card.slots.length * 0.25;
@@ -258,7 +262,7 @@ function _getMinionCardCost(card) {
 function _getSpellCardCost(card) {
   if (card.abilities.length) {
     for (let ability of card.abilities) {
-      cost += _getAbilityCost();
+      cost += _getAbilityCost(ability);
     }
   }
   cost += card.slots.length * 0.25;
@@ -303,7 +307,7 @@ function _getRarityCost(rarity) {
       return -2;
     default:
       Log.error(`unexpected rarity: ${rarity}`);
-      weights = SpellAbilitySlotsWeights.common();
+      return 0;
   }
 }
 
@@ -311,41 +315,102 @@ function _selectChosenWeight(weights) {
   let chosenWeight = _getWinningLotteryNumber(weights);
   let currentLowerboundWeight = 0;
   for (let weight of weights) {
-    if (weight + currentLowerboundWeight <= chosenWeight) {
+    if (chosenWeight <= weight.weight + currentLowerboundWeight) {
       return weight;
     }
-    currentLowerboundWeight += weight;
+    currentLowerboundWeight += weight.weight;
   }
   Log.error('failed to find a weight associated with the winning lottery');
   return weights[0];
 }
 
 function _getWinningLotteryNumber(weights) {
-  let totalWeights = weights.reduce((total, weight) => total + weight.weight);
+  let totalWeights = 0;
+  for (let weight of weights) {
+    totalWeights += weight.weight;
+  }
   return Math.random()*(totalWeights);
 }
 
 function _getGeneratedCraftingParts() {
   return [
-    {
-      type: CRAFTING_PART_TYPES.ABILITY,
-      ability: {
-        id: CARD_ABILITIES.SPELLSHOT,
-        amount: 1
-      }
-    },
-    {
-      type: CRAFTING_PART_TYPES.ABILITY,
-      ability: {
-        id: CARD_ABILITIES.HASTE
-      }
-    },
-    {
-      type: CRAFTING_PART_TYPES.ABILITY,
-      ability: {
-        id: CARD_ABILITIES.REACH,
-        amount: 1
-      }
-    }
+    _getGeneratedCraftingPart(),
+    _getGeneratedCraftingPart(),
+    _getGeneratedCraftingPart()
   ];
+}
+
+function _getGeneratedCraftingPart() {
+  let partType = _getRandomCraftingPartType();
+  let rarity = _getRandomCardRarity();
+  switch (partType) {
+    case CRAFTING_PART_TYPES.ABILITY:
+      return {
+        ability: _getGeneratedAbilityPart(rarity),
+        type: partType,
+        rarity
+      };
+    case CRAFTING_PART_TYPES.STAT:
+      return {
+        stat: _getGeneratedStatPart(rarity),
+        type: partType,
+        rarity
+      };
+    default:
+      Log.error(`unexpected card type: ${partType}`);
+      return {
+        ability: _getGeneratedAbilityPart(),
+        type: CRAFTING_PART_TYPES.ABILITY,
+        rarity
+      };
+  }
+}
+
+function _getRandomCraftingPartType() {
+  let weights = CraftingPartTypeWeights();
+  return _selectChosenWeight(weights).type;
+}
+
+function _getGeneratedAbilityPart(rarity) {
+  let weights;
+  switch (rarity) {
+    case CARD_RARITIES.COMMON:
+      weights = AbilityPartWeights.common();
+      break;
+    case CARD_RARITIES.RARE:
+      weights = AbilityPartWeights.rare();
+      break;
+    case CARD_RARITIES.EPIC:
+      weights = AbilityPartWeights.epic();
+      break;
+    case CARD_RARITIES.LEGENDARY:
+      weights = AbilityPartWeights.legendary();
+      break;
+    default:
+      Log.error(`unexpected rarity: ${rarity}`);
+      weights = AbilityPartWeights.common();
+  }
+  return _selectChosenWeight(weights).ability;
+}
+
+function _getGeneratedStatPart(rarity) {
+  let weights;
+  switch (rarity) {
+    case CARD_RARITIES.COMMON:
+      weights = StatPartWeights.common();
+      break;
+    case CARD_RARITIES.RARE:
+      weights = StatPartWeights.rare();
+      break;
+    case CARD_RARITIES.EPIC:
+      weights = StatPartWeights.epic();
+      break;
+    case CARD_RARITIES.LEGENDARY:
+      weights = StatPartWeights.legendary();
+      break;
+    default:
+      Log.error(`unexpected rarity: ${rarity}`);
+      weights = StatPartWeights.common();
+  }
+  return _selectChosenWeight(weights).stat;
 }

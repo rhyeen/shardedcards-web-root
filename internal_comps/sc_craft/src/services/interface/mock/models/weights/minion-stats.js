@@ -1,9 +1,8 @@
-
 export const MinionStatsWeights = {
-  common: _getCommonWeights(),
-  rare: _getRareWeights(),
-  epic: _getEpicWeights(),
-  legendary: _getLegendaryWeights()
+  common: _getCommonWeights,
+  rare: _getRareWeights,
+  epic: _getEpicWeights,
+  legendary: _getLegendaryWeights
 }
 
 function _getCommonWeights() {

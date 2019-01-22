@@ -30,7 +30,7 @@ export const LOCALE_EN = {
   ABILITY: {
     ENERGIZE: {
       NAME: 'energize',
-      DESCRIPTION: (amount) => `+${amount} max and current energy.`,
+      DESCRIPTION: (amount) => `+${amount} max and current energy.`
     },
     HASTE: {
       NAME: 'haste',
@@ -44,6 +44,28 @@ export const LOCALE_EN = {
       NAME: 'reach',
       DESCRIPTION: (amount) => `+${amount} range`
     },
+  },
+  CARD_STAT: {
+    HEALTH: {
+      NAME: 'health',
+      DESCRIPTION: (amount) => `+${amount} to max health.`
+    },
+    ATTACK: {
+      NAME: 'attack',
+      DESCRIPTION: (amount) => `+${amount} to attack.`
+    },
+    COST: {
+      NAME: 'cost',
+      DESCRIPTION: (amount) => `+${amount} to energy cost.`
+    },
+    SHIELD: {
+      NAME: 'shield',
+      DESCRIPTION: (amount) => `+${amount} to current shield.`
+    },
+    RANGE: {
+      NAME: 'range',
+      DESCRIPTION: (amount) => `+${amount} to attack range.`
+    }
   },
   CONDITION: {
     EXHAUSTED: {

@@ -9,13 +9,10 @@ import {
   HealthIcon,
   RangeIcon,
   ShieldIcon } from '../../../../sc_shared/src/entities/sc-icons.js';
+import { CARD_STATS } from '../../../../sc_shared/src/entities/card-keywords.js';
 
 export const VALUE_TYPES = {
-  ATTACK: 'attack',
-  COST: 'cost',
-  HEALTH: 'health',
-  RANGE: 'range',
-  SHIELD: 'sheild'
+  ...CARD_STATS
 };
 
 class ScCardValue extends LitElement {

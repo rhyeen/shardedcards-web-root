@@ -28,3 +28,11 @@ export const ENERGY_SHARD = {
   ID: 'ENERGY_SHARD',
   INSTANCE: '0'
 };
+
+export const CARD_STATS = {
+  ATTACK: 'attack',
+  COST: 'cost',
+  HEALTH: 'health',
+  RANGE: 'range',
+  SHIELD: 'sheild'
+};

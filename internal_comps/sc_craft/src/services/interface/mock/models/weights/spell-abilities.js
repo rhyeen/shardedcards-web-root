@@ -1,10 +1,10 @@
 import { CARD_ABILITIES } from "../../../../../../../sc_shared/src/entities/card-keywords";
 
 export const SpellAbilitiesWeights = {
-  common: _getCommonWeights(),
-  rare: _getRareWeights(),
-  epic: _getEpicWeights(),
-  legendary: _getLegendaryWeights()
+  common: _getCommonWeights,
+  rare: _getRareWeights,
+  epic: _getEpicWeights,
+  legendary: _getLegendaryWeights
 }
 
 function _getCommonWeights() {

@@ -1,3 +1,4 @@
 export const CRAFTING_PART_TYPES = {
-  ABILITY: 'ability'
+  ABILITY: 'ability',
+  STAT: 'stat'
 };
