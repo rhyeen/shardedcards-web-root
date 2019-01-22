@@ -14,8 +14,8 @@ export const LOCALE_EN = {
   },
   SC_CRAFT: {
     CRAFTING_PARTS: {
-      FORGE_NOT_EMPTY: (amount) => html`Add <span class="dynamic-value">${amount}</span> to a card in the forge`,
-      FORGE_EMPTY: 'Unlock by adding a card to the forge'
+      FORGE_NOT_EMPTY: (amount) => html`Add <span class="dynamic-value">${amount}</span> to a card in the forge.`,
+      FORGE_EMPTY: 'Unlock by adding a card to the forge.'
     }
   },
   SC_BTN: {

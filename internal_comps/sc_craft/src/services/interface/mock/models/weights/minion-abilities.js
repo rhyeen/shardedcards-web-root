@@ -1,4 +1,5 @@
 import { CARD_ABILITIES } from "../../../../../../../sc_shared/src/entities/card-keywords";
+import { CRAFTING_PART_ABILITY_TIERS } from "../../../../../entities/crafting-part";
 
 export const MinionAbilitiesWeights = {
   common: _getCommonWeights,
@@ -16,7 +17,8 @@ function _getCommonWeights() {
     {
       abilities: [
         {
-          id: CARD_ABILITIES.HASTE
+          id: CARD_ABILITIES.HASTE,
+          tier: CRAFTING_PART_ABILITY_TIERS.MINION.TIER_1
         }
       ],
       weight: 5
@@ -33,7 +35,8 @@ function _getRareWeights() {
     {
       abilities: [
         {
-          id: CARD_ABILITIES.HASTE
+          id: CARD_ABILITIES.HASTE,
+          tier: CRAFTING_PART_ABILITY_TIERS.MINION.TIER_1
         }
       ],
       weight: 10
@@ -50,7 +53,8 @@ function _getEpicWeights() {
     {
       abilities: [
         {
-          id: CARD_ABILITIES.HASTE
+          id: CARD_ABILITIES.HASTE,
+          tier: CRAFTING_PART_ABILITY_TIERS.MINION.TIER_1
         }
       ],
       weight: 15
@@ -67,7 +71,8 @@ function _getLegendaryWeights() {
     {
       abilities: [
         {
-          id: CARD_ABILITIES.HASTE
+          id: CARD_ABILITIES.HASTE,
+          tier: CRAFTING_PART_ABILITY_TIERS.MINION.TIER_1
         }
       ],
       weight: 25

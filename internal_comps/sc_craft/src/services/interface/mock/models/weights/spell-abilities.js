@@ -1,4 +1,5 @@
 import { CARD_ABILITIES } from "../../../../../../../sc_shared/src/entities/card-keywords";
+import { CRAFTING_PART_ABILITY_TIERS } from "../../../../../entities/crafting-part";
 
 export const SpellAbilitiesWeights = {
   common: _getCommonWeights,
@@ -17,6 +18,7 @@ function _getCommonWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.REACH,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_2,
           amount: 1
         }
       ],
@@ -26,6 +28,7 @@ function _getCommonWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.SPELLSHOT,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1,
           amount: 1
         }
       ],
@@ -44,6 +47,7 @@ function _getRareWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.REACH,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_2,
           amount: 1
         }
       ],
@@ -53,6 +57,7 @@ function _getRareWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.REACH,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_2,
           amount: 2
         }
       ],
@@ -62,6 +67,7 @@ function _getRareWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.SPELLSHOT,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1,
           amount: 1
         }
       ],
@@ -71,6 +77,7 @@ function _getRareWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.SPELLSHOT,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1,
           amount: 2
         }
       ],
@@ -80,6 +87,7 @@ function _getRareWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.SPELLSHOT,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1,
           amount: 3
         }
       ],
@@ -98,6 +106,7 @@ function _getEpicWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.REACH,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_2,
           amount: 1
         }
       ],
@@ -107,6 +116,7 @@ function _getEpicWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.REACH,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_2,
           amount: 2
         }
       ],
@@ -116,6 +126,7 @@ function _getEpicWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.SPELLSHOT,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1,
           amount: 2
         }
       ],
@@ -125,6 +136,7 @@ function _getEpicWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.SPELLSHOT,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1,
           amount: 5
         }
       ],
@@ -143,6 +155,7 @@ function _getLegendaryWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.REACH,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_2,
           amount: 1
         }
       ],
@@ -152,6 +165,7 @@ function _getLegendaryWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.REACH,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_2,
           amount: 2
         }
       ],
@@ -161,6 +175,7 @@ function _getLegendaryWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.SPELLSHOT,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1,
           amount: 4
         }
       ],
@@ -170,6 +185,7 @@ function _getLegendaryWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.SPELLSHOT,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1,
           amount: 8
         }
       ],
@@ -179,10 +195,12 @@ function _getLegendaryWeights() {
       abilities: [
         {
           id: CARD_ABILITIES.SPELLSHOT,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1,
           amount: 5
         },
         {
           id: CARD_ABILITIES.REACH,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_2,
           amount: 2
         }
       ],
