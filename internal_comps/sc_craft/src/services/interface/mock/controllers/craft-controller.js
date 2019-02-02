@@ -36,14 +36,13 @@ function _getGeneratedMinionBaseCard() {
   let rarity = _getRandomCardRarity();
   let { range, health, attack } = _getRandomMinionStats(rarity);
   let abilities = _getRandomMinionAbilities(rarity);
-  let slots = _getRandomMinionAbilitySlots(rarity, abilities.length);
+  let slots = _getRandomMinionAbilitySlots(rarity, abilities);
   let card = {
     type: CARD_TYPES.MINION,
     rarity,
     range,
     health,
     attack,
-    abilities,
     slots
   };
   card.cost = _getCardCost(card);
@@ -53,11 +52,10 @@ function _getGeneratedMinionBaseCard() {
 function _getGeneratedSpellBaseCard() {
   let rarity = _getRandomCardRarity();
   let abilities = _getRandomSpellAbilities(rarity);
-  let slots = _getRandomSpellAbilitySlots(rarity, abilities.length);
+  let slots = _getRandomSpellAbilitySlots(rarity, abilities);
   let card = {
     type: CARD_TYPES.SPELL,
     rarity,
-    abilities,
     slots
   };
   card.cost = _getCardCost(card);
@@ -142,7 +140,7 @@ function _getRandomMinionAbilities(rarity) {
   return _selectChosenWeight(weights).abilities;
 }
 
-function _getRandomMinionAbilitySlots(rarity, abilityCount) {
+function _getRandomMinionAbilitySlots(rarity, abilities) {
   let weights;
   switch (rarity) {
     case CARD_RARITIES.COMMON:
@@ -162,7 +160,8 @@ function _getRandomMinionAbilitySlots(rarity, abilityCount) {
       weights = MinionAbilitySlotsWeights.common();
   }
   let slots = _selectChosenWeight(weights).slots;
-  return _removeAlreadyFilledSlots(slots, abilityCount);
+  _shuffleArray(slots);
+  return _fillSlotsWithAbilities(slots, abilities);
 }
 
 function _getRandomSpellAbilities(rarity) {
@@ -187,7 +186,7 @@ function _getRandomSpellAbilities(rarity) {
   return _selectChosenWeight(weights).abilities;
 }
 
-function _getRandomSpellAbilitySlots(rarity, abilityCount) {
+function _getRandomSpellAbilitySlots(rarity, abilities) {
   let weights;
   switch (rarity) {
     case CARD_RARITIES.COMMON:
@@ -207,14 +206,32 @@ function _getRandomSpellAbilitySlots(rarity, abilityCount) {
       weights = SpellAbilitySlotsWeights.common();
   }
   let slots = _selectChosenWeight(weights).slots;
-  return _removeAlreadyFilledSlots(slots, abilityCount);
+  _shuffleArray(slots);
+  return _fillSlotsWithAbilities(slots, abilities);
 }
 
-function _removeAlreadyFilledSlots(slots, abilityCount) {
-  if (!abilityCount) {
-    return slots;
+/**
+ * @TODO: make a helper function.
+ */
+function _shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-  return slots.splice(-1, abilityCount);
+}
+
+function _fillSlotsWithAbilities(slots, abilities) {
+  if (!slots.length || slots.length < abilities.length) {
+    return [...abilities];
+  }
+  if (!abilities.length) {
+    return [...slots];
+  }
+  let tempSlots = [...slots];
+  for (let i = 0; i < abilities.length; i++) {
+    tempSlots.splice(i, 1, abilities[i]);
+  }
+  return tempSlots;
 }
 
 function _getCardCost(card) {
@@ -253,23 +270,27 @@ function _getMinionCardCost(card) {
     cost += 3;
   }
   cost += card.health * 0.25;
-  if (card.abilities.length) {
-    for (let ability of card.abilities) {
-      cost += _getAbilityCost(ability);
-    }
-  }
+  cost += _getAbilitiesCost(card);
   cost += card.slots.length * 0.25;
   return cost;
 }
 
 function _getSpellCardCost(card) {
   let cost = 0;
-  if (card.abilities.length) {
-    for (let ability of card.abilities) {
-      cost += _getAbilityCost(ability);
+  cost += _getAbilitiesCost(card);
+  cost += card.slots.length * 0.25;
+  return cost;
+}
+
+function _getAbilitiesCost(card) {
+  let cost = 0;
+  if (card.slots.length) {
+    for (let slot of card.slots) {
+      if (slot.id) {
+        cost += _getAbilityCost(slot);
+      }
     }
   }
-  cost += card.slots.length * 0.25;
   return cost;
 }
 

@@ -207,6 +207,9 @@ export const shuffleDrawDeck = (initial = false) => {
   }
 };
 
+/**
+ * @TODO: make a helper function.
+ */
 function _shuffleArray(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));

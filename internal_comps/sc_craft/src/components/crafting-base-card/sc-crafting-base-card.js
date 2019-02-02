@@ -5,6 +5,8 @@ import { ScCardStyles, CARDS } from '../../../../sc_cards/src/entities/sc_card-s
 import '../../../../sc_cards/src/components/card-parts/sc-card-value.js';
 import  { VALUE_TYPES } from '../../../../sc_cards/src/components/card-parts/sc-card-value.js';
 
+import './sc-crafting-card-slots.js';
+
 class ScCraftingBaseCard extends LitElement {
   render() {
     return html`
@@ -49,6 +51,7 @@ class ScCraftingBaseCard extends LitElement {
       <header>
         <sc-card-value valueType="${VALUE_TYPES.COST}" .card="${this.card}" reduced></sc-card-value>
       </header>
+      <sc-crafting-card-slots .card="${this.card}" reduced></sc-crafting-card-slots>
       <footer>
         <sc-card-value valueType="${VALUE_TYPES.RANGE}" .card="${this.card}" stack reduced></sc-card-value>
         <sc-card-value valueType="${VALUE_TYPES.ATTACK}" .card="${this.card}" stack reduced></sc-card-value>
