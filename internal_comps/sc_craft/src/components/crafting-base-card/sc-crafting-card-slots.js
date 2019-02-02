@@ -16,18 +16,19 @@ class ScCraftingCardSlots extends LitElement {
           align-items: center;
         }
 
+        .abilities-slots-break {
+          width: 100%;
+          margin-top: 5px;
+          border-bottom: 1px dashed var(${APP_COLORS.HINT_GRAY});
+          margin-bottom: 5px;
+        }
+
         .abilities-overview {
           font-size: 16px;
-          padding-bottom: 5px;
-          margin-bottom: 5px;
-          width: 100%;
-          text-align: center;
-          border-bottom: 1px dashed var(${APP_COLORS.HINT_GRAY});
         }
 
         .slots-overview {
           font-size: 13px;
-          font-weight: 300;
         }
       </style>
       ${this._craftingCardSlotsHtml()}
@@ -51,18 +52,22 @@ class ScCraftingCardSlots extends LitElement {
   _craftingCardSlotsHtmlReduced() {
     let { slotsWithAbilities , slotsWithoutAbilities } = this._separateSlotsWithAbilities();
     let abilitiesOverviewHtml = html``;
+    let abilityAndSlotBreak = html``;
     let slotsOverviewHtml = html``;
     if (slotsWithAbilities.length) {
       abilitiesOverviewHtml = html`
         <div class="abilities-overview">${LOCALE_EN.SC_CRAFT.CRAFTING_CARD_SLOTS.ABILITY_COUNT(slotsWithAbilities.length)}</div>
       `;
     }
+    if (slotsWithAbilities.length && slotsWithoutAbilities.length) {
+      abilityAndSlotBreak = html`<div class="abilities-slots-break"></div>`;
+    }
     if (slotsWithoutAbilities.length) {
       slotsOverviewHtml = html`
         <div class="slots-overview">${LOCALE_EN.SC_CRAFT.CRAFTING_CARD_SLOTS.SLOT_COUNT(slotsWithoutAbilities.length)}</div>
       `;
     }
-    return html`<div class="reduced-overview">${abilitiesOverviewHtml}${slotsOverviewHtml}</div>`;
+    return html`<div class="reduced-overview">${abilitiesOverviewHtml}${abilityAndSlotBreak}${slotsOverviewHtml}</div>`;
   }
 
   _separateSlotsWithAbilities() {
