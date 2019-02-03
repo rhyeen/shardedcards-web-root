@@ -125,6 +125,8 @@ export const ScCardStyles = html`
     display: flex;
     align-items: center;
     font-size: 18px;
+    padding: 5px 0;
+    margin: 5px 0;
   }
 
   [card-ability] .tooltip,

@@ -119,7 +119,8 @@ export const ScSharedStyles = html`
      and I'm unsure why... */
   [bar-item] .icon,
   [card-ability] .icon,
-  [card-part] .icon {
+  [card-part] .icon,
+  [card-slot] .icon {
     height: 24px;
   }
 </style>

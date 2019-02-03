@@ -23,7 +23,6 @@ class ScCardAbilityValue extends LitElement {
 
   static get properties() { 
     return {
-      card: { type: Object },
       ability: { type: Object }
     }
   }

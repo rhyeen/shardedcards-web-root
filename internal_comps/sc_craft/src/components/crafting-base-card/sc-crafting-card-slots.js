@@ -2,6 +2,9 @@ import { LitElement, html } from '@polymer/lit-element';
 import { ScSharedStyles, APP_COLORS } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
 import { ScCraftingStyles } from '../../entities/sc_crafting-styles.js';
 
+import '../../../../sc_cards/src/components/card-parts/sc-card-ability-value.js';
+import './sc-crafting-card-slot-value.js';
+
 import { LOCALE_EN } from '../../../../sc_locale/src/entities/en.js';
 
 class ScCraftingCardSlots extends LitElement {
@@ -87,10 +90,25 @@ class ScCraftingCardSlots extends LitElement {
   }
 
   _craftingCardSlotsHtmlFull() {
-    console.error('@TODO:');
-    return html`
+    if (!this.card.slots || !this.card.slots.length) {
+      return html``;
+    }
+    return this.card.slots.map(slot => {
+      if (slot.id) {
+        return this._craftingCardFilledSlotHtmlFull(slot);
+      }
+      return this._craftingCardEmptySlotHtmlFull(slot);
+    });
+  }
 
-    `;
+  _craftingCardFilledSlotHtmlFull(slot) {
+    return html`
+      <sc-card-ability-value .ability="${slot}"></sc-card-ability-value>`;
+  }
+
+  _craftingCardEmptySlotHtmlFull(slot) {
+    return html`
+      <sc-crafting-card-slot-value .slot="${slot}"></sc-crafting-card-slot-value>`;
   }
 }
 

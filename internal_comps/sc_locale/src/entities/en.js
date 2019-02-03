@@ -20,6 +20,10 @@ export const LOCALE_EN = {
     CRAFTING_CARD_SLOTS: {
       ABILITY_COUNT: (amount) => amount === 1 ? html`<span class="count">1</span> ability` : html`<span class="count">${amount}</span> abilities`,
       SLOT_COUNT: (amount) => amount === 1 ? html`<span class="count">1</span> slot left` : html`<span class="count">${amount}</span> slots left`
+    },
+    CRAFTING_CARD_SLOT_VALUE: {
+      TITLE: 'empty slot',
+      DESCRIPTION: 'fill with an ability'
     }
   },
   SC_BTN: {
@@ -35,7 +39,7 @@ export const LOCALE_EN = {
       GAME_WON: 'You win!',
       GAME_LOST: 'You lose!',
       PLAY_CARD: 'play',
-      FORGE_CARD: 'forge card'
+      FORGE_CARD: 'forge'
     }
   },
   ABILITY: {

@@ -23,7 +23,6 @@ class ScCardConditionValue extends LitElement {
 
   static get properties() { 
     return {
-      card: { type: Object },
       condition: { type: String }
     }
   }

@@ -21,10 +21,7 @@ class ScCardAbilities extends LitElement {
   }
 
   _getAbilityHtml(ability) {
-    return html`
-      <sc-card-ability-value
-          .card="${this.card}"
-          .ability="${ability}"></sc-card-ability-value>`;
+    return html`<sc-card-ability-value .ability="${ability}"></sc-card-ability-value>`;
   }
 }
 

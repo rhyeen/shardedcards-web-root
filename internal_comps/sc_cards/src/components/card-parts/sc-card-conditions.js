@@ -27,9 +27,7 @@ class ScCardConditions extends LitElement {
 
   _getExhaustedConditionHtml() {
     return html`
-      <sc-card-condition-value
-          .card="${this.card}"
-          .condition="${CARD_CONDITIONS.EXHAUSTED}"></sc-card-condition-value>`;
+      <sc-card-condition-value .condition="${CARD_CONDITIONS.EXHAUSTED}"></sc-card-condition-value>`;
   }
 }
 

@@ -36,5 +36,29 @@ export const ScCraftingStyles = html`
     --sc_craft-forge-icon-height: 32px;
     --sc_craft-forge-icon-color: #CFD8DC;
   }
+
+
+  [card-slot] {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    padding: 5px 0;
+    margin: 5px 0;
+  }
+
+  [card-slot] .tooltip {
+    margin-left: 15px;
+  }
+
+  [card-slot] .tooltip-title {
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  [card-slot] .tooltip-description {
+    font-size: 12px;
+    color: #757575;
+  }
 </style>
 `;
