@@ -6,6 +6,7 @@ import { localStore } from '../../state/store.js';
 
 import * as GameSelector from '../../state/selectors.js';
 import * as CardsSelector from '../../../../sc_cards/src/state/selectors.js';
+import * as CraftSelector from '../../../../sc_craft/src/state/selectors.js';
 import { CARD_SOURCES } from '../../../../sc_cards/src/entities/selected-card.js';
 import { END_GAME_STATE } from '../overlay/sc-game-over-overlay.js';
 
@@ -51,7 +52,9 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
       _isAbilitySelected: { type: Boolean },
       _hasWon: { type: Boolean },
       _hasLost: { type: Boolean },
-      _isCrafting: { type: Boolean }
+      _isCrafting: { type: Boolean },
+      _craftingBaseCard: { type: Object },
+      _isCraftingBaseCardSelected: { type: Boolean }
     }
   }
 
@@ -109,7 +112,9 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
             .selectedCard="${this._selectedCardWithAbility}"></sc-play-minion-overlay>`;
     }
     if (this._showFullCraftingBaseCardOverlay()) {
-      return html`<sc-select-crafting-base-card-overlay></sc-select-crafting-base-card-overlay>`;
+      return html`
+        <sc-select-crafting-base-card-overlay
+            .craftingBaseCard="${this._craftingBaseCard}"></sc-select-crafting-base-card-overlay>`;
     }
     return null;
   }
@@ -119,7 +124,7 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
   }
 
   _showFullCraftingBaseCardOverlay() {
-    return this._isCrafting && false; // @TODO: && state.crafting.craftingBaseCardSelected
+    return this._isCrafting && this._isCraftingBaseCardSelected;
   }
 
   _showOpponentTurnOverlay() {
@@ -186,6 +191,8 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
     this._selectedCardWithAbility = CardsSelector.getSelectedAbility(state);
     this._isCardSelected = !!this._selectedCardWithAbility.card;
     this._isAbilitySelected = !!this._selectedCardWithAbility.ability;
+    this._craftingBaseCard = CraftSelector.getCraftingBaseCard(state);
+    this._isCraftingBaseCardSelected = CraftSelector.isCraftingBaseCardSelected(state);
   }
 }
 

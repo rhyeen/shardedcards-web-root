@@ -13,7 +13,8 @@ function _resetState() {
       selectedForgeSlot: {
         forgeSlotIndex: null
       },
-      isCraftingBaseCardSelected: false
+      isCraftingBaseCardSelected: false,
+      isForgingCraftingBaseCard: false
     },
     entities: {
       forge: {
@@ -92,6 +93,16 @@ function _setIsCraftingBaseCardSelected(state, isCraftingBaseCardSelected) {
   };
 }
 
+function _setIsForgingCraftingBaseCard(state, isForgingCraftingBaseCard) {
+  return {
+    ...state,
+    ui: {
+      ...state.ui,
+      isForgingCraftingBaseCard
+    }
+  };
+}
+
 function _setForgeSlotCards(state, forgeSlotCards) {
   let newState = state;
   for (let i = 0; i < forgeSlotCards.length; i++) {
@@ -143,6 +154,7 @@ function _setCraftingParts(state, craftingParts) {
 }
 
 export const sc_craft = (state = INITIAL_STATE, action) => {
+  let newState;
   switch (action.type) {
     case ActionType.SELECT_CRAFTING_BASE_CARD:
       return _setIsCraftingBaseCardSelected(state, true);
@@ -160,6 +172,17 @@ export const sc_craft = (state = INITIAL_STATE, action) => {
       return _setCraftingBaseCard(state, action.craftingBaseCard);
     case ActionType.SET_CRAFTING_PARTS.SUCCESS:
       return _setCraftingParts(state, action.craftingParts);
+    case ActionType.FORGE_SELECTED_CRAFTING_BASE_CARD:
+      newState = state;
+      newState = _setIsForgingCraftingBaseCard(newState, true);
+      return _setIsCraftingBaseCardSelected(newState, false);
+    case ActionType.CANCEL_FORGE_SELECTED_CRAFTING_BASE_CARD:
+      return _setIsForgingCraftingBaseCard(state, false);
+    case ActionType.FINISH_FORGE_SELECTED_CRAFTING_BASE_CARD:
+      newState = state;
+      newState = _setForgeSlotCard(newState, action.forgeSlotIndex, state.entities.craftingBaseCard);
+      newState = _setIsForgingCraftingBaseCard(newState, false);
+      return _setCraftingBaseCard(newState, null);
     default:
       return state;
   }

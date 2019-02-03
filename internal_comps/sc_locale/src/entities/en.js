@@ -34,7 +34,8 @@ export const LOCALE_EN = {
       FINISH_CRAFTING: 'finish crafting',
       GAME_WON: 'You win!',
       GAME_LOST: 'You lose!',
-      PLAY_CARD: 'play'
+      PLAY_CARD: 'play',
+      FORGE_CARD: 'forge card'
     }
   },
   ABILITY: {

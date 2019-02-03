@@ -52,3 +52,12 @@ export const setCraftingParts = {
   request: () => _action(SET_CRAFTING_PARTS.REQUEST, {}),
   success: (craftingParts) => _action(SET_CRAFTING_PARTS.SUCCESS, {craftingParts})
 };
+
+export const FORGE_SELECTED_CRAFTING_BASE_CARD = _createRequestRaw('FORGE_SELECTED_CRAFTING_BASE_CARD');
+export const forgeSelectedCraftingBaseCard = () => _action(FORGE_SELECTED_CRAFTING_BASE_CARD, {});
+
+export const CANCEL_FORGE_SELECTED_CRAFTING_BASE_CARD = _createRequestRaw('CANCEL_FORGE_SELECTED_CRAFTING_BASE_CARD');
+export const cancelForgeSelectedCraftingBaseCard = () => _action(CANCEL_FORGE_SELECTED_CRAFTING_BASE_CARD, {});
+
+export const FINISH_FORGE_SELECTED_CRAFTING_BASE_CARD = _createRequestRaw('FINISH_FORGE_SELECTED_CRAFTING_BASE_CARD');
+export const finishForgeSelectedCraftingBaseCard = (forgeSlotIndex) => _action(FINISH_FORGE_SELECTED_CRAFTING_BASE_CARD, {forgeSlotIndex});
