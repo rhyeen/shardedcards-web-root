@@ -1,6 +1,6 @@
 import { LitElement, html } from '@polymer/lit-element';
 import { ScSharedStyles, APP_COLORS } from '../../../../sc_shared/src/entities/sc-shared-styles.js';
-import { ScCraftingStyles, CRAFTING_AREA } from '../../entities/sc_crafting-styles.js';
+import { ScCraftingStyles, CRAFTING_PARTS } from '../../entities/sc_crafting-styles.js';
 import { connect } from 'pwa-helpers/connect-mixin.js';
 import { localStore } from '../../state/store.js';
 import * as CraftingSelector from '../../state/selectors.js';
@@ -19,8 +19,7 @@ class ScCraftingParts extends connect(localStore)(LitElement) {
       <style>
         :host {
           /* @TODO: put in variables */
-          padding: 10px 0;
-          height: 240px; /* just some number */
+          height: var(${CRAFTING_PARTS.HEIGHT});
           display: flex;
           align-items: center;
           flex-direction: column;
@@ -33,6 +32,10 @@ class ScCraftingParts extends connect(localStore)(LitElement) {
 
         sc-crafting-part {
           margin-top: 10px;
+        }
+
+        sc-crafting-part:last-child {
+          margin-bottom: 10px;
         }
 
         .parts-title {

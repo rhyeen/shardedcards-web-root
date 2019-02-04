@@ -7,10 +7,13 @@ import * as CraftingSelector from '../../state/selectors.js';
 
 import {  
   selectCraftingBaseCard,
-  selectForgeSlot } from '../../state/actions.js';
+  selectForgeSlot,
+  finishForgeSelectedCraftingBaseCard } from '../../state/actions.js';
 
 import './sc-crafting-forge.js';
+import './covers/sc-cover-crafting-forge.js';
 import '../crafting-base-card/sc-crafting-base-card.js';
+import './covers/sc-cover-crafting-base-card.js';
 
 class ScCraftingArea extends connect(localStore)(LitElement) {
   render() {
@@ -36,7 +39,9 @@ class ScCraftingArea extends connect(localStore)(LitElement) {
     return {
       overlay: { type: Boolean },
       _forgeSlots: { type: Object },
-      _craftingBaseCard: { type: Object }
+      _craftingBaseCard: { type: Object },
+      _loaded: { type: Boolean },
+      _isForgingCraftingBaseCard: { type: Boolean }
     }
   }
 
@@ -45,28 +50,23 @@ class ScCraftingArea extends connect(localStore)(LitElement) {
       return html``;
     }
     return html`
-      <sc-crafting-forge
-          .forgeSlot="${this._forgeSlots[0]}"
-          ?overlay="${this.overlay}"
-          @click="${() => this._selectForgeSlot(0)}"></sc-crafting-forge>
-      <sc-crafting-base-card
-          .card="${this._craftingBaseCard}"
-          ?overlay="${this.overlay}"
-          @click="${() => this._selectCraftingBaseCard()}"></sc-crafting-base-card>
-      <sc-crafting-forge
-          .forgeSlot="${this._forgeSlots[1]}"
-          ?overlay="${this.overlay}"
-          @click="${() => this._selectForgeSlot(1)}"></sc-crafting-forge>
+      ${this._getCraftingForgeHtml(0)}
+      ${this._getCraftingBaseCardHtml()}
+      ${this._getCraftingForgeHtml(1)}
     `;
   }
 
   _isLoading() {
-    return !this._craftingBaseCard;
+    if (!!this._craftingBaseCard) {
+      this._loaded = true;
+    }
+    return !this._loaded;
   }
 
   stateChanged(state) {
     this._forgeSlots = CraftingSelector.getForgeSlots(state);
     this._craftingBaseCard = CraftingSelector.getCraftingBaseCard(state);
+    this._isForgingCraftingBaseCard = CraftingSelector.isForgingCraftingBaseCard(state);
   }
 
   _selectCraftingBaseCard() {
@@ -74,7 +74,43 @@ class ScCraftingArea extends connect(localStore)(LitElement) {
   }
 
   _selectForgeSlot(forgeSlotIndex) {
-    localStore.dispatch(selectForgeSlot(forgeSlotIndex));
+    if (this._isForgingCraftingBaseCard) {
+      localStore.dispatch(finishForgeSelectedCraftingBaseCard(forgeSlotIndex));
+    } else {
+      localStore.dispatch(selectForgeSlot(forgeSlotIndex));
+    }
+  }
+
+  _getCraftingForgeHtml(forgeSlotIndex) {
+    if (!this.overlay) {
+      return html`
+        <sc-crafting-forge
+            .forgeSlot="${this._forgeSlots[forgeSlotIndex]}"
+            @click="${() => this._selectForgeSlot(forgeSlotIndex)}"></sc-crafting-forge>
+      `;
+    }
+    if (this._isForgingCraftingBaseCard) {
+      return html`
+        <sc-cover-crafting-forge
+            .card="${this._craftingBaseCard}"
+            .forgeSlot="${this._forgeSlots[forgeSlotIndex]}"
+            @click="${() => this._selectForgeSlot(forgeSlotIndex)}"></sc-cover-crafting-forge>
+      `;
+    }
+    console.error('@TODO: state for adding a crafting part to a forge slot');
+  }
+
+  _getCraftingBaseCardHtml() {
+    if (!this.overlay) {
+      return html`
+        <sc-crafting-base-card
+            .card="${this._craftingBaseCard}"
+            @click="${() => this._selectCraftingBaseCard()}"></sc-crafting-base-card>
+      `;
+    }
+    return html`
+      <sc-cover-crafting-base-card></sc-cover-crafting-base-card>
+    `;
   }
 }
 

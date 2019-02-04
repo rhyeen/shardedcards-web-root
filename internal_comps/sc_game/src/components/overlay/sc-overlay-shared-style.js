@@ -1,8 +1,10 @@
 import { html } from '@polymer/lit-element';
 import { AREAS, ScCardStyles } from '../../../../sc_cards/src/entities/sc_card-styles';
+import { CRAFTING_PARTS, ScCraftingStyles } from '../../../../sc_craft/src/entities/sc_crafting-styles';
 
 export const ScOverlaySharedStyle = html`
 ${ScCardStyles}
+${ScCraftingStyles}
 <style>
   :host {
     display: flex;
@@ -34,12 +36,20 @@ ${ScCardStyles}
   }
 
   /** if the btn-group needs to properly fill the  player hand height **/
-  [btn-group].btn-group-hand-area {
+  [btn-group].btn-group-hand-area,
+  [btn-group].btn-group-crafting-parts-area {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    flex: 0 0 var(${AREAS.PLAYER_HAND.HEIGHT});
     margin: 0;
+  }
+
+  [btn-group].btn-group-hand-area {
+    flex: 0 0 var(${AREAS.PLAYER_HAND.HEIGHT});
+  }
+
+  [btn-group].btn-group-crafting-parts-area {
+    flex: 0 0 var(${CRAFTING_PARTS.HEIGHT});
   }
 
   sc-btn:first-child {

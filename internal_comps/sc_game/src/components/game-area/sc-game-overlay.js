@@ -11,6 +11,7 @@ import { CARD_SOURCES } from '../../../../sc_cards/src/entities/selected-card.js
 import { END_GAME_STATE } from '../overlay/sc-game-over-overlay.js';
 
 import '../overlay/sc-select-crafting-base-card-overlay.js';
+import '../overlay/sc-forging-crafting-base-card-overlay.js';
 import '../overlay/sc-select-hand-card-overlay.js';
 import '../overlay/sc-select-opponent-minion-overlay.js';
 import '../overlay/sc-select-player-minion-overlay.js';
@@ -54,7 +55,8 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
       _hasLost: { type: Boolean },
       _isCrafting: { type: Boolean },
       _craftingBaseCard: { type: Object },
-      _isCraftingBaseCardSelected: { type: Boolean }
+      _isCraftingBaseCardSelected: { type: Boolean },
+      _isForgingCraftingBaseCard: { type: Boolean }
     }
   }
 
@@ -116,6 +118,10 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
         <sc-select-crafting-base-card-overlay
             .craftingBaseCard="${this._craftingBaseCard}"></sc-select-crafting-base-card-overlay>`;
     }
+    if (this._showForgingCraftingBaseCardOverlay()) {
+      return html`
+        <sc-forging-crafting-base-card-overlay></sc-forging-crafting-base-card-overlay>`;
+    }
     return null;
   }
 
@@ -125,6 +131,10 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
 
   _showFullCraftingBaseCardOverlay() {
     return this._isCrafting && this._isCraftingBaseCardSelected;
+  }
+
+  _showForgingCraftingBaseCardOverlay() {
+    return this._isCrafting && this._isForgingCraftingBaseCard;
   }
 
   _showOpponentTurnOverlay() {
@@ -193,6 +203,7 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
     this._isAbilitySelected = !!this._selectedCardWithAbility.ability;
     this._craftingBaseCard = CraftSelector.getCraftingBaseCard(state);
     this._isCraftingBaseCardSelected = CraftSelector.isCraftingBaseCardSelected(state);
+    this._isForgingCraftingBaseCard = CraftSelector.isForgingCraftingBaseCard(state);
   }
 }
 

@@ -19,6 +19,8 @@ export function SpellshotIcon(customClass) { return getBaseSvg(customClass, 'spe
 export function ReachIcon(customClass) { return getBaseSvg(customClass, 'reach-svg-icon', svg`<path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,10.84 21.79,9.69 21.39,8.61L19.79,10.21C19.93,10.8 20,11.4 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4C12.6,4 13.2,4.07 13.79,4.21L15.4,2.6C14.31,2.21 13.16,2 12,2M19,2L15,6V7.5L12.45,10.05C12.3,10 12.15,10 12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12C14,11.85 14,11.7 13.95,11.55L16.5,9H18L22,5H19V2M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12H16A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8V6Z" />`) }
 export function ForgeIcon(customClass) { return getBaseSvg(customClass, 'forge-svg-icon', svg`<path d="M9,5V10C13.03,12.47 8.44,14.97 6,16V19H21V16C14.59,13.27 17.47,9 22,8V5H9M2,6C2.81,8.13 4.42,9.5 7,10V6H2Z" />`) }
 export function EmptySlotIcon(customClass) { return getBaseSvg(customClass, 'empty-slot-svg-icon', svg`<path d="M2.2 16.06L3.88 12 2.2 7.94l4.06-1.68L7.94 2.2 12 3.88l4.06-1.68 1.68 4.06 4.06 1.68L20.12 12l1.68 4.06-4.06 1.68-1.68 4.06L12 20.12 7.94 21.8l-1.68-4.06-4.06-1.68M4.81 9l1.24 3-1.24 3 2.98 1.21L9 19.19l3-1.24 3 1.24 1.21-2.98L19.19 15l-1.24-3 1.24-3-2.98-1.21L15 4.81l-3 1.24-3-1.24-1.21 2.98L4.81 9z"/>`) }
+export function RemoveIcon(customClass) { return getBaseSvg(customClass, 'remove-svg-icon', svg`<path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12m2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12M15.5 4l-1-1h-5l-1 1H5v2h14V4h-3.5z"/>`) }
+
 
 function getBaseSvg(customClass, definedClass, svgContent) {
   const classes = [definedClass, customClass].join(' ');

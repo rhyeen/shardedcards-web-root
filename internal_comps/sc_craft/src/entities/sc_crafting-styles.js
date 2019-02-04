@@ -1,7 +1,12 @@
 import { html } from '@polymer/lit-element';
+import { CARDS } from '../../../sc_cards/src/entities/sc_card-styles';
 
 export const CRAFTING_AREA = {
   MAX_WIDTH: '--sc_craft-play-area-max-width'
+};
+
+export const CRAFTING_PARTS = {
+  HEIGHT: '--sc_craft-crafting-parts-height'
 };
 
 export const CRAFTING_PART = {
@@ -19,11 +24,29 @@ export const FORGE = {
     HEIGHT: '--sc_craft-forge-icon-height',
     COLOR: '--sc_craft-forge-icon-color'
   }
-}
+};
+
+export const CRAFTING_CARDS = {
+  CRAFTING_BASE_CARD_COVER: {
+    HEIGHT: CARDS.MINION_COVER.HEIGHT,
+    WIDTH: CARDS.MINION_COVER.WIDTH
+  },
+  FORGE_COVER: {
+    HEIGHT: FORGE.HEIGHT,
+    WIDTH: FORGE.WIDTH,
+    PADDING: CARDS.MINION_COVER.PADDING,
+    BORDER_RADIUS: FORGE.BORDER_RADIUS,
+    FORGE_CARD_BORDER: '--sc_craft-crafting-cards-cover-forge-card-border',
+    BACKGROUND_COLOR: CARDS.MINION_COVER.BACKGROUND_COLOR,
+    BORDER_SIZE: CARDS.MINION_COVER.BORDER_SIZE
+  }
+};
+
 
 export const ScCraftingStyles = html`
 <style>
   :host {
+    --sc_craft-crafting-parts-height: 240px; /* just some number */
     --sc_craft-play-area-max-width: 500px;
     --sc_craft-crafting-part-background-color: #7E57C2;
 
@@ -35,6 +58,8 @@ export const ScCraftingStyles = html`
     --sc_craft-forge-icon-width: 32px;
     --sc_craft-forge-icon-height: 32px;
     --sc_craft-forge-icon-color: #CFD8DC;
+
+    --sc_craft-crafting-cards-cover-forge-card-border: var(${CRAFTING_CARDS.FORGE_COVER.BORDER_SIZE}) dashed #2196F3;
   }
 
 
