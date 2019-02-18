@@ -39,7 +39,8 @@ export const LOCALE_EN = {
       GAME_WON: 'You win!',
       GAME_LOST: 'You lose!',
       PLAY_CARD: 'play',
-      FORGE_CARD: 'forge'
+      FORGE_CARD: 'forge',
+      FINISH_FORGE: 'finish card'
     }
   },
   ABILITY: {

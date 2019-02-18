@@ -22,6 +22,7 @@ import '../overlay/sc-play-minion-overlay.js';
 import '../overlay/sc-summon-minion-overlay.js';
 import '../overlay/sc-target-minion-ability-overlay.js';
 import '../overlay/sc-use-card-ability-overlay.js';
+import '../overlay/sc-select-forging-card-overlay.js';
 
 class ScGameOverlay extends connect(localStore)(LitElement) {
   render() {
@@ -56,6 +57,7 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
       _isCrafting: { type: Boolean },
       _craftingBaseCard: { type: Object },
       _isCraftingBaseCardSelected: { type: Boolean },
+      _selectedForgeSlotCard: { type: Object },
       _isForgingCraftingBaseCard: { type: Boolean }
     }
   }
@@ -121,6 +123,11 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
     if (this._showForgingCraftingBaseCardOverlay()) {
       return html`
         <sc-forging-crafting-base-card-overlay></sc-forging-crafting-base-card-overlay>`;
+    }
+    if (this._showFullForgingCardOverlay()) {
+      return html`
+        <sc-select-forging-card-overlay
+            .card="${this._selectedForgeSlotCard.card}"></sc-select-forging-card-overlay>`;
     }
     return null;
   }
@@ -193,6 +200,10 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
     );
   }
 
+  _showFullForgingCardOverlay() {
+    return !!this._selectedForgeSlotCard.card;
+  }
+
   stateChanged(state) {
     this._isGameMenuOpen = GameSelector.isGameMenuOpen(state);
     this._hasWon = GameSelector.hasWon(state);
@@ -204,6 +215,7 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
     this._craftingBaseCard = CraftSelector.getCraftingBaseCard(state);
     this._isCraftingBaseCardSelected = CraftSelector.isCraftingBaseCardSelected(state);
     this._isForgingCraftingBaseCard = CraftSelector.isForgingCraftingBaseCard(state);
+    this._selectedForgeSlotCard = CraftSelector.getSelectedForgeSlotCardSelector(state);
   }
 }
 

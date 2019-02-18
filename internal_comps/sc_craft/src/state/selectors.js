@@ -5,6 +5,7 @@ const _craftingBaseCardSelector = state => state.sc_craft.entities.craftingBaseC
 const _craftingPartsSelector = state => state.sc_craft.entities.craftingParts;
 const _isCraftingBaseCardSelectedSelector = state => state.sc_craft.ui.isCraftingBaseCardSelected;
 const _isForgingCraftingBaseCardSelector = state => state.sc_craft.ui.isForgingCraftingBaseCard;
+const _selectedForgeSlotSelector = state => state.sc_craft.ui.selectedForgeSlot;
 
 export const getForgeSlots = createSelector(
   _forgeSelector,
@@ -47,4 +48,21 @@ export const isCraftingBaseCardSelected = createSelector(
 export const isForgingCraftingBaseCard = createSelector(
   _isForgingCraftingBaseCardSelector,
   (isForgingCraftingBaseCard) => isForgingCraftingBaseCard
+);
+
+export const getSelectedForgeSlotCardSelector = createSelector(
+  _selectedForgeSlotSelector,
+  _forgeSelector,
+  (selectedForgeSlotSelector, forgeSelector) => {
+    if (!selectedForgeSlotSelector.forgeSlotIndex && selectedForgeSlotSelector.forgeSlotIndex !== 0) {
+      return {
+        forgeSlotIndex: null,
+        card: null
+      };
+    }
+    return {
+      forgeSlotIndex: selectedForgeSlotSelector.forgeSlotIndex,
+      ...forgeSelector.slots[selectedForgeSlotSelector.forgeSlotIndex]
+    };
+  }
 );

@@ -35,6 +35,12 @@ export const selectForgeSlot = (forgeSlotIndex) => _action(SELECT_FORGE_SLOT, {f
 export const CANCEL_SELECT_FORGE_SLOT = _createRequestRaw('CANCEL_SELECT_FORGE_SLOT');
 export const cancelSelectForgeSlot = () => _action(CANCEL_SELECT_FORGE_SLOT, {});
 
+export const FINISH_FORGING_CARD = _createRequestTypes('FINISH_FORGING_CARD');
+export const finishForgingCard = {
+  request: () => _action(FINISH_FORGING_CARD.REQUEST, {}),
+  success: () => _action(FINISH_FORGING_CARD.SUCCESS, {})
+};
+
 export const SELECT_CRAFTING_PART = _createRequestRaw('SELECT_CRAFTING_PART');
 export const selectCraftingPart = (craftingPartIndex) => _action(SELECT_CRAFTING_PART, {craftingPartIndex});
 
