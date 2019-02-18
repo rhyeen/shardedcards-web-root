@@ -101,16 +101,16 @@ class ScCraftingArea extends connect(localStore)(LitElement) {
   }
 
   _getCraftingBaseCardHtml() {
-    if (!this.overlay) {
+    if (!this.overlay && !this._craftingBaseCard) {
+      return html`<sc-cover-crafting-base-card></sc-cover-crafting-base-card>`;
+    } else if (!this.overlay) {
       return html`
         <sc-crafting-base-card
             .card="${this._craftingBaseCard}"
             @click="${() => this._selectCraftingBaseCard()}"></sc-crafting-base-card>
       `;
     }
-    return html`
-      <sc-cover-crafting-base-card></sc-cover-crafting-base-card>
-    `;
+    return html`<sc-cover-crafting-base-card></sc-cover-crafting-base-card>`;
   }
 }
 

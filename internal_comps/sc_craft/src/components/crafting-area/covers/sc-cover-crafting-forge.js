@@ -17,6 +17,8 @@ class ScCoverCraftingForge extends LitElement {
       <style>
         :host {
           border: var(${CRAFTING_CARDS.FORGE_COVER.FORGE_CARD_BORDER});
+          width: var(${CRAFTING_CARDS.FORGE_COVER.WIDTH});
+          height: var(${CRAFTING_CARDS.FORGE_COVER.HEIGHT});
         }
         [crafting-cover-separator] {
           opacity: ${this._getCardSeparatorOpacity()};

@@ -7,8 +7,6 @@ ${ScCraftingStyles}
   :host {
     display: flex;
     flex-direction: column;
-    width: calc(var(${CRAFTING_CARDS.FORGE_COVER.WIDTH}) - 2*var(${CRAFTING_CARDS.FORGE_COVER.PADDING}));
-    height: calc(var(${CRAFTING_CARDS.FORGE_COVER.HEIGHT}) - 2*var(${CRAFTING_CARDS.FORGE_COVER.PADDING}));
     box-shadow: var(${CRAFTING_CARDS.FORGE_COVER.ELEVATION});
     border-radius: var(${CRAFTING_CARDS.FORGE_COVER.BORDER_RADIUS});
     padding: var(${CRAFTING_CARDS.FORGE_COVER.PADDING});

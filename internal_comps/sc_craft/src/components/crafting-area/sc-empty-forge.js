@@ -14,9 +14,9 @@ class ScEmptyForge extends LitElement {
           display: flex;
           align-items: center;
           justify-content: center;
-          /* @TODO: these have got to be fixed...*/
           width: var(${FORGE.WIDTH});
           height: var(${FORGE.HEIGHT});
+          padding: var(${FORGE.PADDING});
           box-shadow: var(${FORGE.ELEVATION});
           border-radius: var(${FORGE.BORDER_RADIUS});
           background-color: var(${FORGE.BACKGROUND_COLOR});

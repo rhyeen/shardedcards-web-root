@@ -23,7 +23,6 @@ class ScCraftingBaseCard extends LitElement {
           box-shadow: var(${CARDS.MINION.ELEVATION});
           border-radius: var(${CARDS.MINION.BORDER_RADIUS});
           padding: var(${CARDS.MINION.PADDING});
-          opacity: ${this._getCardOpacity()};
         }
 
         header,
@@ -65,13 +64,6 @@ class ScCraftingBaseCard extends LitElement {
     return {
       card: { type: Object }
     }
-  }
-
-  _getCardOpacity() {
-    if (!this.card.conditions) {
-      return '1';
-    }
-    return this.card.conditions.exhausted ? CARDS.MINION.EXHAUSTED_OPACITY_VALUE : '1';
   }
 }
 
