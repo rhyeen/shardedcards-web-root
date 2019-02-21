@@ -6,6 +6,7 @@ const _craftingPartsSelector = state => state.sc_craft.entities.craftingParts;
 const _isCraftingBaseCardSelectedSelector = state => state.sc_craft.ui.isCraftingBaseCardSelected;
 const _isForgingCraftingBaseCardSelector = state => state.sc_craft.ui.isForgingCraftingBaseCard;
 const _selectedForgeSlotSelector = state => state.sc_craft.ui.selectedForgeSlot;
+const _selectedCraftingPart = state => state.sc_craft.ui.selectedCraftingPart;
 
 export const getForgeSlots = createSelector(
   _forgeSelector,
@@ -63,6 +64,27 @@ export const getSelectedForgeSlotCardSelector = createSelector(
     return {
       forgeSlotIndex: selectedForgeSlotSelector.forgeSlotIndex,
       ...forgeSelector.slots[selectedForgeSlotSelector.forgeSlotIndex]
+    };
+  }
+);
+
+export const getSelectedCraftingPartSelector = createSelector(
+  _selectedCraftingPart,
+  _forgeSelector,
+  _craftingPartsSelector,
+  (selectedCraftingPart, forgeSelector, craftingPartsSelector) => {
+    let forgeSlot = null;
+    let craftingPart = null;
+    if (selectedCraftingPart.forgeSlotIndex === 0 || selectedCraftingPart.forgeSlotIndex > 0) {
+      forgeSlot = { ...forgeSelector.slots[selectedCraftingPart.forgeSlotIndex] };
+    }
+    if (selectedCraftingPart.craftingPartIndex === 0 || selectedCraftingPart.craftingPartIndex > 0) {
+      craftingPart = { ...craftingPartsSelector[selectedCraftingPart.craftingPartIndex] };
+    }
+    return {
+      ...selectedCraftingPart,
+      forgeSlot,
+      craftingPart,
     };
   }
 );
