@@ -6,6 +6,9 @@ import {
   RemoveIcon,
   ForgeIcon,
   ScIconsStyles } from '../../../../../sc_shared/src/entities/sc-icons.js';
+import { CRAFTING_PART_TYPES } from '../../../entities/crafting-part.js';
+import { Ability, CardStat } from '../../../../../sc_cards/src/entities/selected-card.js';
+import { BTN_COLORS } from '../../../../../sc_shared/src/components/sc-btn-base-style.js';
 
 class ScCoverCraftingForge extends LitElement {
   render() {
@@ -24,6 +27,10 @@ class ScCoverCraftingForge extends LitElement {
           opacity: ${this._getCardSeparatorOpacity()};
           border-bottom: var(${CRAFTING_CARDS.FORGE_COVER.FORGE_CARD_BORDER});
         }
+
+        .basic-svg-icon {
+          fill: var(${BTN_COLORS.LIGHT_BTN_TEXT_COLOR}) !important;
+        }
       </style>
       <div crafting-cover-top>${this._getReplacedResultHtml()}</div>
       <div crafting-cover-separator></div>
@@ -34,7 +41,8 @@ class ScCoverCraftingForge extends LitElement {
   static get properties() { 
     return {
       card: { type: Object },
-      forgeSlot: { type: Object }
+      forgeSlot: { type: Object },
+      craftingPart: { type: Object }
     }
   }
 
@@ -47,11 +55,29 @@ class ScCoverCraftingForge extends LitElement {
   }
 
   _getReplacedResultHtml() {
+    if (this.craftingPart) {
+      return ForgeIcon();
+    }
     return this._noCardToReplace() ? html`` : RemoveIcon();
   }
 
   _getReplacerResultHtml() {
+    if (this.craftingPart) {
+      return this._getCraftingPartIcon();
+    }
     return this._noCardToReplace() ? html`` : ForgeIcon();
+  }
+
+  _getCraftingPartIcon() {
+    switch (this.craftingPart.type) {
+      case CRAFTING_PART_TYPES.ABILITY:
+        return html`${Ability.getIcon(this.craftingPart.ability.id, 'basic-svg-icon')}`;
+      case CRAFTING_PART_TYPES.STAT:
+        return html`${CardStat.getIcon(this.craftingPart.stat.id, 'basic-svg-icon')}`;
+      default:
+        Log.error(`unexpected crafting part type: ${this.craftingPart.type}`);
+        return html``;
+    }
   }
 }
 

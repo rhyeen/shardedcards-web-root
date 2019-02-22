@@ -47,6 +47,12 @@ export const selectCraftingPart = (craftingPartIndex) => _action(SELECT_CRAFTING
 export const CANCEL_SELECT_CRAFTING_PART = _createRequestRaw('CANCEL_SELECT_CRAFTING_PART');
 export const cancelSelectCraftingPart = () => _action(CANCEL_SELECT_CRAFTING_PART, {});
 
+export const ADD_CRAFTING_PART = _createRequestRaw('ADD_CRAFTING_PART');
+export const addCraftingPart = (forgeSlotIndex) => _action(ADD_CRAFTING_PART, {forgeSlotIndex});
+
+export const CANCEL_ADD_CRAFTING_PART = _createRequestRaw('CANCEL_ADD_CRAFTING_PART');
+export const cancelAddCraftingPart = () => _action(CANCEL_ADD_CRAFTING_PART, {});
+
 export const SET_CRAFTING_BASE_CARD = _createRequestTypes('SET_CRAFTING_BASE_CARD');
 export const setCraftingBaseCard = {
   request: () => _action(SET_CRAFTING_BASE_CARD.REQUEST, {}),

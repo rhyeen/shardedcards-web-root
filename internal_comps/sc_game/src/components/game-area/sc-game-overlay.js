@@ -6,7 +6,7 @@ import { localStore } from '../../state/store.js';
 
 import * as GameSelector from '../../state/selectors.js';
 import * as CardsSelector from '../../../../sc_cards/src/state/selectors.js';
-import * as CraftSelector from '../../../../sc_craft/src/state/selectors.js';
+import * as CraftingSelector from '../../../../sc_craft/src/state/selectors.js';
 import { CARD_SOURCES } from '../../../../sc_cards/src/entities/selected-card.js';
 import { END_GAME_STATE } from '../overlay/sc-game-over-overlay.js';
 
@@ -133,8 +133,7 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
     }
     if (this._showAddCraftingPartOverlay()) {
       return html`
-        <sc-show-add-crafting-part-overlay
-            .craftingPart="${this._selectedCraftingPart.craftingPart}"></sc-show-add-crafting-part-overlay>`;
+        <sc-show-add-crafting-part-overlay></sc-show-add-crafting-part-overlay>`;
     }
     return null;
   }
@@ -226,11 +225,11 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
     this._selectedCardWithAbility = CardsSelector.getSelectedAbility(state);
     this._isCardSelected = !!this._selectedCardWithAbility.card;
     this._isAbilitySelected = !!this._selectedCardWithAbility.ability;
-    this._craftingBaseCard = CraftSelector.getCraftingBaseCard(state);
-    this._isCraftingBaseCardSelected = CraftSelector.isCraftingBaseCardSelected(state);
-    this._isForgingCraftingBaseCard = CraftSelector.isForgingCraftingBaseCard(state);
-    this._selectedForgeSlotCard = CraftSelector.getSelectedForgeSlotCardSelector(state);
-    this._selectedCraftingPart = CraftSelector.getSelectedCraftingPartSelector(state);
+    this._craftingBaseCard = CraftingSelector.getCraftingBaseCard(state);
+    this._isCraftingBaseCardSelected = CraftingSelector.isCraftingBaseCardSelected(state);
+    this._isForgingCraftingBaseCard = CraftingSelector.isForgingCraftingBaseCard(state);
+    this._selectedForgeSlotCard = CraftingSelector.getSelectedForgeSlotCardSelector(state);
+    this._selectedCraftingPart = CraftingSelector.getSelectedCraftingPartSelector(state);
   }
 }
 
