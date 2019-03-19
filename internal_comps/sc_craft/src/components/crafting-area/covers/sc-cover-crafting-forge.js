@@ -19,7 +19,7 @@ class ScCoverCraftingForge extends LitElement {
       ${ScIconsStyles}
       <style>
         :host {
-          border: var(${CRAFTING_CARDS.FORGE_COVER.FORGE_CARD_BORDER});
+          border: ${this._getBorder()};
           width: var(${CRAFTING_CARDS.FORGE_COVER.WIDTH});
           height: var(${CRAFTING_CARDS.FORGE_COVER.HEIGHT});
         }
@@ -46,6 +46,15 @@ class ScCoverCraftingForge extends LitElement {
     }
   }
 
+  _getBorder() {
+    if (this.forgeSlot.card || !this.craftingPart) {
+      return html`var(${CRAFTING_CARDS.FORGE_COVER.FORGE_CARD_BORDER})`;
+    }
+    // @NOTE: make sure the forge is covered fully.  So we have an invisible border to
+    // ensure the width/height are positioned correctly.
+    return html`var(${CRAFTING_CARDS.FORGE_COVER.BORDER_SIZE}) solid rgba(0,0,0,0)`;
+  }
+
   _getCardSeparatorOpacity() {
     return this._noCardToReplace() ? '0' : '1';
   }
@@ -56,6 +65,9 @@ class ScCoverCraftingForge extends LitElement {
 
   _getReplacedResultHtml() {
     if (this.craftingPart) {
+      if (!this.forgeSlot.card) {
+        return html``;
+      }
       return ForgeIcon();
     }
     return this._noCardToReplace() ? html`` : RemoveIcon();
@@ -63,6 +75,9 @@ class ScCoverCraftingForge extends LitElement {
 
   _getReplacerResultHtml() {
     if (this.craftingPart) {
+      if (!this.forgeSlot.card) {
+        return html``;
+      }
       return this._getCraftingPartIcon();
     }
     return this._noCardToReplace() ? html`` : ForgeIcon();

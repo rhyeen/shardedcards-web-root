@@ -98,7 +98,7 @@ class ScCraftingArea extends connect(localStore)(LitElement) {
             @click="${() => this._selectForgeSlot(forgeSlotIndex)}"></sc-cover-crafting-forge>
       `;
     }
-    if (this._craftingPartSelected && this._forgeSlots[forgeSlotIndex].card) {
+    if (this._craftingPartSelected) {
       return html`
         <sc-cover-crafting-forge
             .craftingPart="${this._selectedCraftingPart.craftingPart}"

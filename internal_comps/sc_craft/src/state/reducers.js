@@ -179,6 +179,10 @@ export const sc_craft = (state = INITIAL_STATE, action) => {
       state = _setForgeSlotCard(state, action.forgeSlotIndex, state.entities.craftingBaseCard);
       state = _setIsForgingCraftingBaseCard(state, false);
       return _setCraftingBaseCard(state, null);
+    case ActionType.ADD_CRAFTING_PART:
+      return _setSelectedCraftingPart(state, state.ui.selectedCraftingPart.craftingPartIndex, action.forgeSlotIndex);
+    case ActionType.CANCEL_ADD_CRAFTING_PART:
+      return _setSelectedCraftingPart(state, state.ui.selectedCraftingPart.craftingPartIndex, null);
     default:
       return state;
   }

@@ -40,7 +40,8 @@ export const LOCALE_EN = {
       GAME_LOST: 'You lose!',
       PLAY_CARD: 'play',
       FORGE_CARD: 'forge',
-      FINISH_FORGE: 'finish card'
+      FINISH_FORGE: 'finish card',
+      ADD_PART: 'add part'
     }
   },
   ABILITY: {

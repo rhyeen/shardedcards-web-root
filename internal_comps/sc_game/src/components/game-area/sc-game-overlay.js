@@ -24,6 +24,7 @@ import '../overlay/sc-target-minion-ability-overlay.js';
 import '../overlay/sc-use-card-ability-overlay.js';
 import '../overlay/sc-select-forging-card-overlay.js';
 import '../overlay/sc-show-add-crafting-part-overlay.js';
+import '../overlay/sc-show-add-crafting-part-to-slot-overlay.js';
 
 class ScGameOverlay extends connect(localStore)(LitElement) {
   render() {
@@ -135,6 +136,12 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
       return html`
         <sc-show-add-crafting-part-overlay></sc-show-add-crafting-part-overlay>`;
     }
+    if (this._showAddCraftingPartToSlotOverlay()) {
+      return html`
+        <sc-show-add-crafting-part-to-slot-overlay
+            .forgeSlot="${this._selectedCraftingPart.forgeSlot}"
+            .craftingPart="${this._selectedCraftingPart.craftingPart}"></sc-show-add-crafting-part-to-slot-overlay>`;
+    }
     return null;
   }
 
@@ -212,7 +219,14 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
 
   _showAddCraftingPartOverlay() {
     return (
-      !this._selectedCraftingPart.forgePart
+      !this._selectedCraftingPart.forgeSlot
+      && this._selectedCraftingPart.craftingPart
+    );
+  }
+
+  _showAddCraftingPartToSlotOverlay() {
+    return (
+      this._selectedCraftingPart.forgeSlot
       && this._selectedCraftingPart.craftingPart
     );
   }

@@ -15,6 +15,7 @@ class ScForgingCard extends LitElement {
       ${ScCardStyles}
       <style>
         .forging-card {
+          position: absolute;
           display: flex;
           justify-content: space-between;
           flex-direction: column;
@@ -51,12 +52,10 @@ class ScForgingCard extends LitElement {
         }
 
         sc-empty-forge {
-          position: absolute;
           z-index: -1;
           display: block;
         }
       </style>
-      <sc-empty-forge></sc-empty-forge>
       <div class="forging-card">
         <header>
           <sc-card-value valueType="${VALUE_TYPES.COST}" .card="${this.forgeSlot.card}" reduced></sc-card-value>
@@ -69,6 +68,7 @@ class ScForgingCard extends LitElement {
           <sc-card-value valueType="${VALUE_TYPES.SHIELD}" .card="${this.forgeSlot.card}" stack reduced></sc-card-value>
         </footer>
       </div>
+      <sc-empty-forge></sc-empty-forge>
     `;
   }
 
