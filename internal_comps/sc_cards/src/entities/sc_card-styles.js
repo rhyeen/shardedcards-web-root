@@ -146,5 +146,20 @@ export const ScCardStyles = html`
     font-size: 12px;
     color: #757575;
   }
+
+  [card-ability].proposed .tooltip-title,
+  [card-ability].proposed .tooltip-description {
+    /* @TODO: pull into variable, maybe from APP_COLORS? */
+    color: #2196F3;
+  }
+
+  [card-ability].proposed .icon [svg-icon] {
+    /* @TODO: pull into variable, maybe from APP_COLORS? */
+    fill: #2196F3;
+  }
+
+  [card-ability] .modifier {
+    color: #2196F3;
+  }
 </style>
 `;

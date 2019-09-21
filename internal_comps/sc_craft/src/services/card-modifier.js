@@ -64,10 +64,13 @@ function _slotCanBeModified(slot, craftingPart) {
   if (!slot.id) {
     return false;
   }
-  if (slot.id !== craftingPart.id) {
+  if (!craftingPart.ability) {
     return false;
   }
-  if (!slot.amount || !craftingPart.amount) {
+  if (slot.id !== craftingPart.ability.id) {
+    return false;
+  }
+  if (!slot.amount || !craftingPart.ability.amount) {
     return false;
   }
   return true;
@@ -79,7 +82,7 @@ function _getModifiedSlot(slot, craftingPart) {
   }
   return { 
     ...slot,
-    amount: slot.amount + craftingPart.amount
+    amount: slot.amount + craftingPart.ability.amount
   };
 }
 
@@ -111,43 +114,53 @@ function _partFitsSlot(slot, craftingPart) {
 }
 
 function _canModifyAttack(card, craftingPart) {
+  if (!_canModifyStat(card, craftingPart)) {
+    return false;
+  }
+  return craftingPart.stat === CARD_STATS.ATTACK;
+}
+
+function _canModifyStat(card, craftingPart) {
   if (card.type !== CARD_TYPES.MINION) {
     return false;
   }
-  return craftingPart.id === CARD_STATS.ATTACK;
+  if (!craftingPart.stat) {
+    return false;
+  }
+  return true;
 }
 
 function _modifyAttack(card, craftingPart) {
   if (!_canModifyAttack(card, craftingPart)) {
     return card.attack;
   }
-  return card.attack + craftingPart.amount;
+  return card.attack + craftingPart.stat.amount;
 }
 
 function _canModifyRange(card, craftingPart) {
-  if (card.type !== CARD_TYPES.MINION) {
+  if (!_canModifyStat(card, craftingPart)) {
     return false;
   }
-  return craftingPart.id === CARD_STATS.RANGE;
+  return craftingPart.stat === CARD_STATS.RANGE;
 }
 
 function _modifyRange(card, craftingPart) {
   if (!_canModifyRange(card, craftingPart)) {
     return card.range;
   }
-  return card.range + craftingPart.amount;
+  return card.range + craftingPart.stat.amount;
 }
 
 function _canModifyHealth(card, craftingPart) {
-  if (card.type !== CARD_TYPES.MINION) {
+  if (!_canModifyStat(card, craftingPart)) {
     return false;
   }
-  return craftingPart.id === CARD_STATS.HEALTH;
+  return craftingPart.stat === CARD_STATS.HEALTH;
 }
 
 function _modifyHealth(card, craftingPart) {
   if (!_canModifyHealth(card, craftingPart)) {
     return card.health;
   }
-  return card.health + craftingPart.amount;
+  return card.health + craftingPart.stat.amount;
 }

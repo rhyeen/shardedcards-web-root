@@ -66,7 +66,7 @@ class ScFullCraftingBaseCard extends LitElement {
         <sc-card-value valueType="${VALUE_TYPES.COST}" .card="${this.card}" .modifiedCard="${this.modifiedCard}"></sc-card-value>
       </header>
       <section>
-        <sc-crafting-card-slots .card="${this.card}"></sc-crafting-card-slots>
+        <sc-crafting-card-slots .card="${this.card}" .modifiedCard="${this.modifiedCard}"></sc-crafting-card-slots>
       </section>
       <footer>
         <div class="footer-left">

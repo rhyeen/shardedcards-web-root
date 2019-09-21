@@ -11,7 +11,7 @@ class ScCardAbilityValue extends LitElement {
       ${ScSharedStyles}
       ${ScCardStyles}
       ${ScIconsStyles}
-      <div card-ability>
+      <div card-ability class="${this._getCardAbilityClasses()}">
         <div class="icon">${this._cardAbilityIcon()}</div>
         <div class="tooltip">
           <div class="tooltip-title">${this._cardAbilityTooltip()}</div>
@@ -23,19 +23,38 @@ class ScCardAbilityValue extends LitElement {
 
   static get properties() { 
     return {
-      ability: { type: Object }
+      ability: { type: Object },
+      modifiedAbility: { type: Object }
+    }
+  }
+
+  _getCardAbilityClasses() {
+    if (!this.ability.id) {
+      return 'proposed';
     }
   }
 
   _cardAbilityTooltip() {
+    if (!this.ability.id) {
+      return Ability.getName(this.modifiedAbility.id);
+    }
     return Ability.getName(this.ability.id);
   }
 
   _cardAbilityTooltipDescription() {
+    if (!this.ability.id) {
+      return Ability.getDescription(this.modifiedAbility.id, this.modifiedAbility.amount);
+    }
+    if (this.modifiedAbility && this.modifiedAbility.id && this.modifiedAbility.amount !== this.ability.amount) {
+      return Ability.getModifiedDescription(this.ability.id, this.ability.amount, this.modifiedAbility.amount);
+    }
     return Ability.getDescription(this.ability.id, this.ability.amount);
   }
 
   _cardAbilityIcon() {
+    if (!this.ability.id) {
+      return Ability.getIcon(this.modifiedAbility.id);
+    }
     return Ability.getIcon(this.ability.id);
   }
 }

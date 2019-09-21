@@ -20,6 +20,11 @@ function _getCommonWeights() {
           id: CARD_ABILITIES.REACH,
           tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_2,
           amount: 1
+        },
+        {
+          id: CARD_ABILITIES.SPELLSHOT,
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1,
+          amount: 2
         }
       ],
       weight: 10000000 // @DEBUG: 10

@@ -34,6 +34,7 @@ const abilityMap = {};
 abilityMap[CARD_ABILITIES.ENERGIZE] = {
   name: LOCALE_EN.ABILITY.ENERGIZE.NAME,
   descriptionFn: LOCALE_EN.ABILITY.ENERGIZE.DESCRIPTION,
+  modifiedDescriptionFn: LOCALE_EN.ABILITY.ENERGIZE.MODIFIED_DESCRIPTION,
   iconFn: EnergizeIcon,
   isPlayerTargetedAbility: true
 };
@@ -47,6 +48,7 @@ abilityMap[CARD_ABILITIES.HASTE] = {
 abilityMap[CARD_ABILITIES.SPELLSHOT] = {
   name: LOCALE_EN.ABILITY.SPELLSHOT.NAME,
   descriptionFn: LOCALE_EN.ABILITY.SPELLSHOT.DESCRIPTION,
+  modifiedDescriptionFn: LOCALE_EN.ABILITY.SPELLSHOT.MODIFIED_DESCRIPTION,
   iconFn: SpellshotIcon,
   isOpponentMinionTargetedAbility: true
 };
@@ -54,6 +56,7 @@ abilityMap[CARD_ABILITIES.SPELLSHOT] = {
 abilityMap[CARD_ABILITIES.REACH] = {
   name: LOCALE_EN.ABILITY.REACH.NAME,
   descriptionFn: LOCALE_EN.ABILITY.REACH.DESCRIPTION,
+  modifiedDescriptionFn: LOCALE_EN.ABILITY.REACH.MODIFIED_DESCRIPTION,
   iconFn: ReachIcon,
   isPlayerMinionTargetedAbility: true
 };
@@ -65,6 +68,17 @@ Ability.getName = (abilityId) => {
 Ability.getDescription = (abilityId, amount) => {
   return abilityMap[abilityId].descriptionFn(amount);
 };
+
+Ability.getModifiedDescription = (abilityId, amount, modifiedAmount) => {
+  if (modifiedAmount === amount) {
+    return Ability.getDescription(abilityId, amount);
+  }
+  let modifier = modifiedAmount - amount;
+  if (modifier > 0) {
+    modifier = '+' + modifier;
+  }
+  return abilityMap[abilityId].modifiedDescriptionFn(amount, modifier);
+}
 
 Ability.getIcon = (abilityId, args) => {
   return abilityMap[abilityId].iconFn(args);

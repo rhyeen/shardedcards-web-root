@@ -47,7 +47,8 @@ export const LOCALE_EN = {
   ABILITY: {
     ENERGIZE: {
       NAME: 'energize',
-      DESCRIPTION: (amount) => `+${amount} max and current energy.`
+      DESCRIPTION: (amount) => `+${amount} max and current energy.`,
+      MODIFIED_DESCRIPTION: (amount, modifier) => html`+${amount} <span class="modifier">(${modifier})</span> max and current energy.`
     },
     HASTE: {
       NAME: 'haste',
@@ -55,11 +56,13 @@ export const LOCALE_EN = {
     },
     SPELLSHOT: {
       NAME: 'spellshot',
-      DESCRIPTION: (amount) => `Deal ${amount} to enemy unit.`
+      DESCRIPTION: (amount) => `Deal ${amount} to enemy unit.`,
+      MODIFIED_DESCRIPTION: (amount, modifier) => html`Deal ${amount} <span class="modifier">(${modifier})</span> to enemy unit.`
     },
     REACH: {
       NAME: 'reach',
-      DESCRIPTION: (amount) => `+${amount} range`
+      DESCRIPTION: (amount) => `+${amount} range`,
+      MODIFIED_DESCRIPTION: (amount, modifier) => html`+${amount} <span class="modifier">(${modifier})</span> range`
     },
   },
   CARD_STAT: {

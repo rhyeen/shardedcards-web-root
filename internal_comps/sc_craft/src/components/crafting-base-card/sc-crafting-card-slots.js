@@ -41,6 +41,7 @@ class ScCraftingCardSlots extends LitElement {
   static get properties() { 
     return {
       card: { type: Object },
+      modifiedCard: { type: Object },
       reduced: { type: Boolean }
     }
   }
@@ -93,17 +94,20 @@ class ScCraftingCardSlots extends LitElement {
     if (!this.card.slots || !this.card.slots.length) {
       return html``;
     }
-    return this.card.slots.map(slot => {
-      if (slot.id) {
+    return this.card.slots.map((slot, index) => {
+      if (slot.id || (this.modifiedCard && this.modifiedCard.slots[index].id)) {
+        if (this.modifiedCard && this.modifiedCard.slots[index].id) {
+          return this._craftingCardFilledSlotHtmlFull(slot, this.modifiedCard.slots[index]);
+        }
         return this._craftingCardFilledSlotHtmlFull(slot);
       }
       return this._craftingCardEmptySlotHtmlFull(slot);
     });
   }
 
-  _craftingCardFilledSlotHtmlFull(slot) {
+  _craftingCardFilledSlotHtmlFull(slot, modifiedSlot) {
     return html`
-      <sc-card-ability-value .ability="${slot}"></sc-card-ability-value>`;
+      <sc-card-ability-value .ability="${slot}" .modifiedAbility="${modifiedSlot}"></sc-card-ability-value>`;
   }
 
   _craftingCardEmptySlotHtmlFull(slot) {
