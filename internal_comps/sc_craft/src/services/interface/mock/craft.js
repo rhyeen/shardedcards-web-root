@@ -29,3 +29,18 @@ export const getCraftingParts = () => {
     }, CALLBACK_TIME.GET);
   });
 };
+
+export function getCardName(card) {
+  return new Promise((resolve) => {
+    Mock.debugRequest(getCardName);
+    setTimeout(() => {
+      console.trace('Get an actual generated name');
+      let response = {
+        cardName: 'TEST',
+        isNewCard: true
+      };
+      Mock.debugSuccessfulResponse(getCardName, response);
+      resolve(Mock.prepareResponse(response));
+    }, CALLBACK_TIME.GET);
+  });
+}

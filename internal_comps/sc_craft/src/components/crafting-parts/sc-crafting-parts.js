@@ -56,7 +56,7 @@ class ScCraftingParts extends connect(localStore)(LitElement) {
       <sc-crafting-part
           .craftingPart="${craftingPart}"
           @click="${() => this._selectCraftingPart(index)}"
-          ?disabled="${this._emptyForgeSlots}"></sc-crafting-part>
+          ?disabled="${this._emptyForgeSlots || this._craftingPartsLeftToUse <= 0}"></sc-crafting-part>
       `)}
     `;
   }
@@ -64,7 +64,8 @@ class ScCraftingParts extends connect(localStore)(LitElement) {
   static get properties() { 
     return {
       _craftingParts: { type: Object },
-      _emptyForgeSlots: { type: Boolean }
+      _emptyForgeSlots: { type: Boolean },
+      _craftingPartsLeftToUse: { type: Number }
     }
   }
 
@@ -76,13 +77,16 @@ class ScCraftingParts extends connect(localStore)(LitElement) {
     if (this._emptyForgeSlots) {
       return html`${LOCALE_EN.SC_CRAFT.CRAFTING_PARTS.FORGE_EMPTY}`;
     }
-    // @TODO: have (1) be dynamic.
-    return html`${LOCALE_EN.SC_CRAFT.CRAFTING_PARTS.FORGE_NOT_EMPTY(1)}`;
+    if (this._craftingPartsLeftToUse <= 0) {
+      return html`${LOCALE_EN.SC_CRAFT.CRAFTING_PARTS.NO_USES_REMAIN}`;
+    }
+    return html`${LOCALE_EN.SC_CRAFT.CRAFTING_PARTS.FORGE_NOT_EMPTY(this._craftingPartsLeftToUse)}`;
   }
 
   stateChanged(state) {
     this._emptyForgeSlots = CraftingSelector.emptyForgeSlots(state);
     this._craftingParts = CraftingSelector.getCraftingParts(state);
+    this._craftingPartsLeftToUse = CraftingSelector.getCraftingPartsLeftToUse(state);
   }
 }
 

@@ -38,7 +38,13 @@ export const cancelSelectForgeSlot = () => _action(CANCEL_SELECT_FORGE_SLOT, {})
 export const FINISH_FORGING_CARD = _createRequestTypes('FINISH_FORGING_CARD');
 export const finishForgingCard = {
   request: () => _action(FINISH_FORGING_CARD.REQUEST, {}),
-  success: () => _action(FINISH_FORGING_CARD.SUCCESS, {})
+  success: (card) => _action(FINISH_FORGING_CARD.SUCCESS, {card})
+};
+
+export const ADD_CRAFTED_CARD_TO_DECK = _createRequestTypes('ADD_CRAFTED_CARD_TO_DECK');
+export const addCraftedCardToDeck = {
+  request: (numberOfInstances) => _action(ADD_CRAFTED_CARD_TO_DECK.REQUEST, {numberOfInstances}),
+  success: () => _action(ADD_CRAFTED_CARD_TO_DECK.SUCCESS, {})
 };
 
 export const SELECT_CRAFTING_PART = _createRequestRaw('SELECT_CRAFTING_PART');
@@ -52,6 +58,12 @@ export const addCraftingPart = (forgeSlotIndex) => _action(ADD_CRAFTING_PART, {f
 
 export const CANCEL_ADD_CRAFTING_PART = _createRequestRaw('CANCEL_ADD_CRAFTING_PART');
 export const cancelAddCraftingPart = () => _action(CANCEL_ADD_CRAFTING_PART, {});
+
+export const FINISH_ADD_CRAFTING_PART = _createRequestTypes('FINISH_ADD_CRAFTING_PART');
+export const finishAddCraftingPart = {
+  request: () => _action(FINISH_ADD_CRAFTING_PART.REQUEST, {}),
+  success: (forgeCard) => _action(FINISH_ADD_CRAFTING_PART.SUCCESS, {forgeCard})
+};
 
 export const SET_CRAFTING_BASE_CARD = _createRequestTypes('SET_CRAFTING_BASE_CARD');
 export const setCraftingBaseCard = {

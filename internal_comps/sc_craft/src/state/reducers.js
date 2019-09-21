@@ -14,7 +14,8 @@ function _resetState() {
         forgeSlotIndex: null
       },
       isCraftingBaseCardSelected: false,
-      isForgingCraftingBaseCard: false
+      isForgingCraftingBaseCard: false,
+      finishedForgeCard: null
     },
     entities: {
       forge: {
@@ -28,7 +29,9 @@ function _resetState() {
         ]
       },
       craftingBaseCard: null,
-      craftingParts: []
+      craftingParts: [],
+      craftingPartsUsed: 0,
+      maxCraftingPartsUsed: 1,
     }
   };
 }
@@ -93,6 +96,16 @@ function _setIsCraftingBaseCardSelected(state, isCraftingBaseCardSelected) {
   };
 }
 
+function _setFinishedForgeCard(state, finishedForgeCard) {
+  return {
+    ...state,
+    ui: {
+      ...state.ui,
+      finishedForgeCard
+    }
+  };
+}
+
 function _setIsForgingCraftingBaseCard(state, isForgingCraftingBaseCard) {
   return {
     ...state,
@@ -152,6 +165,28 @@ function _setCraftingParts(state, craftingParts) {
   };
 }
 
+function _removeCraftingPart(state, craftingPartIndex) {
+  let craftingParts = [...state.entities.craftingParts];
+  craftingParts.splice(craftingPartIndex, 1);
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      craftingParts: craftingParts
+    }
+  };
+}
+
+function _setCraftingPartsUsed(state, craftingPartsUsed) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      craftingPartsUsed: craftingPartsUsed,
+    }
+  };
+}
+
 export const sc_craft = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ActionType.SELECT_CRAFTING_BASE_CARD:
@@ -169,7 +204,13 @@ export const sc_craft = (state = INITIAL_STATE, action) => {
     case ActionType.SET_CRAFTING_BASE_CARD.SUCCESS:
       return _setCraftingBaseCard(state, action.craftingBaseCard);
     case ActionType.SET_CRAFTING_PARTS.SUCCESS:
+      state = _setCraftingPartsUsed(state, 0);
       return _setCraftingParts(state, action.craftingParts);
+    case ActionType.FINISH_ADD_CRAFTING_PART.SUCCESS:
+      state = _setForgeSlotCard(state, state.ui.selectedCraftingPart.forgeSlotIndex, action.forgeCard);
+      state = _removeCraftingPart(state, state.ui.selectedCraftingPart.craftingPartIndex);
+      state = _setCraftingPartsUsed(state, state.entities.craftingPartsUsed + 1);
+      return _removeSelectedCraftingPart(state);
     case ActionType.FORGE_SELECTED_CRAFTING_BASE_CARD:
       state = _setIsForgingCraftingBaseCard(state, true);
       return _setIsCraftingBaseCardSelected(state, false);
@@ -183,6 +224,12 @@ export const sc_craft = (state = INITIAL_STATE, action) => {
       return _setSelectedCraftingPart(state, state.ui.selectedCraftingPart.craftingPartIndex, action.forgeSlotIndex);
     case ActionType.CANCEL_ADD_CRAFTING_PART:
       return _setSelectedCraftingPart(state, state.ui.selectedCraftingPart.craftingPartIndex, null);
+    case ActionType.FINISH_FORGING_CARD.SUCCESS:
+      state = _setFinishedForgeCard(state, action.card);
+      state = _setForgeSlotCard(state, state.ui.selectedForgeSlot.forgeSlotIndex, null);
+      return _removeSelectedForgeSlot(state);
+    case ActionType.ADD_CRAFTED_CARD_TO_DECK.SUCCESS:
+      return _setFinishedForgeCard(state, null);
     default:
       return state;
   }

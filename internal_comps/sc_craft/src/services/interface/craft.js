@@ -27,3 +27,14 @@ export const getCraftingParts = () => {
       return invalidInterfaceState();
   }
 };
+
+export function getCardName(card) {
+  switch (interfaceState()) {
+    case INTERFACE.HTTP:
+      return CallHttp.getCardName(card);
+    case INTERFACE.MOCK:
+      return CallMock.getCardName(card);
+    default:
+      return invalidInterfaceState();
+  }
+}

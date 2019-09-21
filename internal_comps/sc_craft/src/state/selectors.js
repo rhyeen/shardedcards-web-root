@@ -7,6 +7,9 @@ const _isCraftingBaseCardSelectedSelector = state => state.sc_craft.ui.isCraftin
 const _isForgingCraftingBaseCardSelector = state => state.sc_craft.ui.isForgingCraftingBaseCard;
 const _selectedForgeSlotSelector = state => state.sc_craft.ui.selectedForgeSlot;
 const _selectedCraftingPart = state => state.sc_craft.ui.selectedCraftingPart;
+const _craftingPartsUsed = state => state.sc_craft.entities.craftingPartsUsed;
+const _maxCraftingPartsUsed = state => state.sc_craft.entities.maxCraftingPartsUsed;
+const _finishedForgeCard = state => state.sc_craft.ui.finishedForgeCard;
 
 export const getForgeSlots = createSelector(
   _forgeSelector,
@@ -41,6 +44,14 @@ export const emptyForgeSlots = createSelector(
   }
 );
 
+export const getCraftingPartsLeftToUse = createSelector(
+  _craftingPartsUsed,
+  _maxCraftingPartsUsed,
+  (craftingPartsUsed, maxCraftingPartsUsed) => {
+    return maxCraftingPartsUsed - craftingPartsUsed;
+  }
+);
+
 export const isCraftingBaseCardSelected = createSelector(
   _isCraftingBaseCardSelectedSelector,
   (isCraftingBaseCardSelected) => isCraftingBaseCardSelected
@@ -49,6 +60,11 @@ export const isCraftingBaseCardSelected = createSelector(
 export const isForgingCraftingBaseCard = createSelector(
   _isForgingCraftingBaseCardSelector,
   (isForgingCraftingBaseCard) => isForgingCraftingBaseCard
+);
+
+export const getFinishedForgeCard = createSelector(
+  _finishedForgeCard,
+  (finishedForgeCard) => finishedForgeCard
 );
 
 export const getSelectedForgeSlotCardSelector = createSelector(
