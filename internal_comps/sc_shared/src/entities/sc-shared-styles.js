@@ -22,7 +22,8 @@ export const APP_COLORS = {
   OVERLAY_BLACK: '--sc_shared-overlay-black',
   OVERLAY_WHITE: '--sc_shared-overlay-white',
   OVERLAY_CARD_WHITE: '--sc_shared-overlay-card-white',
-  SVG_DEFAULT: '--sc_shared-default-svg-color'
+  SVG_DEFAULT: '--sc_shared-default-svg-color',
+  PRIMARY_BLUE: '--sc_shared-primary-blue'
 };
 
 export const SHADOW_ELEVATIONS = {
@@ -66,6 +67,7 @@ export const ScSharedStyles = html`
     --sc_shared-card-rarity-legendary-color: #FFD54F;
     --sc_shared-card-rarity-standard-color: #B2DFDB;
 
+    --sc_shared-primary-blue: #2196F3;
     --sc_shared-near-black: #222426;
     --sc_shared-near-white: #F7FBFF;
     --sc_shared-base-white: #FFF;

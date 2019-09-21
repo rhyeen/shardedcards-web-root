@@ -14,13 +14,15 @@ import '../../../../sc_craft/src/components/crafting-base-card/sc-full-crafting-
 
 import { BTN_TYPES } from '../../../../sc_shared/src/entities/sc-btn-types.js';
 import { LOCALE_EN } from '../../../../sc_locale/src/entities/en.js';
+import { getCardWithAddedCraftingPart } from '../../../../sc_craft/src/services/card-modifier.js';
 
 export class ScShowAddCraftingPartToSlotOverlay extends LitElement {
   render() {
+    this._setModifiedCard();
     return html`
       ${ScSharedStyles}
       ${ScOverlaySharedStyle}
-      <sc-full-crafting-base-card .card="${this.forgeSlot.card}"></sc-full-crafting-base-card>
+      <sc-full-crafting-base-card .card="${this.forgeSlot.card}" .modifiedCard="${this._modifiedCard}"></sc-full-crafting-base-card>
       <div btn-group>
         <sc-btn
             .btntype="${BTN_TYPES.PRESET.BACK}"
@@ -28,7 +30,7 @@ export class ScShowAddCraftingPartToSlotOverlay extends LitElement {
           ${LOCALE_EN.SC_BTN.PRESET.BACK}</sc-btn>
         <sc-btn
             .btntype="${BTN_TYPES.GENERIC.PRIMARY}"
-            @click="${() => this._addPart()}">
+            @click="${() => this._addPart()}" ?disabled=${!this._modifiedCard}>
           ${LOCALE_EN.SC_BTN.OTHER.ADD_PART}</sc-btn>
       </div>
     `
@@ -37,8 +39,18 @@ export class ScShowAddCraftingPartToSlotOverlay extends LitElement {
   static get properties() { 
     return {
       forgeSlot: { type: Object },
-      craftingPart: { type: Object }
+      craftingPart: { type: Object },
+      _modifiedCard: { type: Object }
     };
+  }
+
+  _setModifiedCard() {
+    const { modifiedCard, cardWasModified } = getCardWithAddedCraftingPart(this.forgeSlot.card, this.craftingPart);
+    if (cardWasModified) {
+      this._modifiedCard = modifiedCard;
+    } else {
+      this._modifiedCard = null;
+    }
   }
 
   _back() {

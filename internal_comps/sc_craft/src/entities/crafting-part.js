@@ -53,5 +53,5 @@ export function canFitInSlot(abilityTier, slotTier) {
 }
 
 function _getAbilityTierNumber(abilityTier) {
-  return parseInt(abilityTier.substring(-1));
+  return parseInt(abilityTier.substring(abilityTier.length - 1));
 }

@@ -10,16 +10,18 @@ export const SpellAbilitySlotsWeights = {
 function _getCommonWeights() {
   return [
     {
-      slots: [],
-      weight: 100
-    },
-    {
       slots: [
+        {
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1
+        },
+        {
+          tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1
+        },
         {
           tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1
         }
       ],
-      weight: 50
+      weight: 100
     }
   ];
 }

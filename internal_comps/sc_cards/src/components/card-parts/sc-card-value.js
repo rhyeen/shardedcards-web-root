@@ -46,9 +46,16 @@ class ScCardValue extends LitElement {
         }
 
         [card-part] .icon,
-        [card-part] .current {
+        [card-part] .current,
+        [card-part] .modified {
           display: flex;
           align-items: center;
+        }
+
+        [card-part] .modified {
+          margin-left: 5px;
+          font-size: 14px;
+          color: var(${APP_COLORS.PRIMARY_BLUE});
         }
 
         [card-part] .icon .background-svg-icon {
@@ -62,6 +69,7 @@ class ScCardValue extends LitElement {
       </style>
       <div card-part class="${this._cardPartClasses()}">
         <div class="current">${this._cardPartValue()}</div>
+        ${this._getModifiedValueHtml()}
         <div class="icon">${this._cardPartIcon()}</div>
       </div>
     `;
@@ -70,13 +78,54 @@ class ScCardValue extends LitElement {
   static get properties() { 
     return {
       card: { type: Object },
+      modifiedCard: { type: Object },
       cardversion: { type: Number },
       valueType: { type: String },
       stack: { type: Boolean },
-      reduced: { type: Boolean } 
+      reduced: { type: Boolean },
     }
   }
 
+  _getModifiedValueHtml() {
+    if (!this.modifiedCard) {
+      return html``;
+    }
+    const currentValue = this._getValue(this.card, true);
+    const modifiedValue = this._getValue(this.modifiedCard, true);
+    const modifier = modifiedValue - currentValue;
+    if (!modifier) {
+      return html``;
+    }
+    let modifierSign = '';
+    if (modifier > 0) {
+      modifierSign = '+';
+    }
+    return html`<div class="modified">(${modifierSign}${modifier})</div>`;
+  }
+
+  _getValue(card, returnNumber) {
+    let nullValue = html``;
+    if (returnNumber) {
+      nullValue = 0;
+    }
+    switch (this.valueType) {
+      case VALUE_TYPES.ATTACK:
+        return card.attack;
+      case VALUE_TYPES.COST:
+        return roundToTwoDecimals(card.cost, 2);
+      case VALUE_TYPES.HEALTH:
+        return card.health;
+      case VALUE_TYPES.RANGE:
+        return card.range;
+      case VALUE_TYPES.SHIELD:
+        if (!card.conditions) {
+          return nullValue;
+        }
+        return card.conditions.shield;
+      default:
+        return 0;
+    }
+  }
 
   _getDisplay() {
     if (this.valueType !== VALUE_TYPES.SHIELD) {
@@ -89,23 +138,7 @@ class ScCardValue extends LitElement {
   }
 
   _cardPartValue() {
-    switch (this.valueType) {
-      case VALUE_TYPES.ATTACK:
-        return this.card.attack;
-      case VALUE_TYPES.COST:
-        return roundToTwoDecimals(this.card.cost, 2);
-      case VALUE_TYPES.HEALTH:
-        return this.card.health;
-      case VALUE_TYPES.RANGE:
-        return this.card.range;
-      case VALUE_TYPES.SHIELD:
-        if (!this.card.conditions) {
-          return html``;
-        }
-        return this.card.conditions.shield;
-      default:
-        return 0;
-    }
+    return this._getValue(this.card);
   }
 
   _cardPartIcon() {

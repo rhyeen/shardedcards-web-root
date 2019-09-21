@@ -22,7 +22,7 @@ function _getCommonWeights() {
           amount: 1
         }
       ],
-      weight: 10
+      weight: 10000000 // @DEBUG: 10
     },
     {
       abilities: [

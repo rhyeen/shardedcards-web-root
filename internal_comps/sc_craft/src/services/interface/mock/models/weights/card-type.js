@@ -7,6 +7,6 @@ export const CardTypeWeights = () => [
   },
   {
     type: CARD_TYPES.SPELL,
-    weight: 1
+    weight: 1000 // @DEBUG: 1
   }
 ];

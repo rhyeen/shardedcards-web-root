@@ -1,4 +1,5 @@
 import { CARD_ABILITIES } from "../../../../../../../sc_shared/src/entities/card-keywords";
+import { CRAFTING_PART_ABILITY_TIERS } from "../../../../../entities/crafting-part";
 
 export const AbilityPartWeights = {
   common: _getCommonWeights,
@@ -12,6 +13,7 @@ function _getCommonWeights() {
     {
       ability: {
         id: CARD_ABILITIES.REACH,
+        tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_2,
         amount: 1
       },
       weight: 80
@@ -19,13 +21,15 @@ function _getCommonWeights() {
     {
       ability: {
         id: CARD_ABILITIES.SPELLSHOT,
+        tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1,
         amount: 1
       },
       weight: 100
     },
     {
       ability: {
-        id: CARD_ABILITIES.HASTE
+        id: CARD_ABILITIES.HASTE,
+        tier: CRAFTING_PART_ABILITY_TIERS.MINION.TIER_1
       },
       weight: 10
     }
@@ -37,6 +41,7 @@ function _getRareWeights() {
     {
       ability: {
         id: CARD_ABILITIES.REACH,
+        tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_2,
         amount: 1
       },
       weight: 80
@@ -44,13 +49,15 @@ function _getRareWeights() {
     {
       ability: {
         id: CARD_ABILITIES.SPELLSHOT,
+        tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1,
         amount: 1
       },
       weight: 100
     },
     {
       ability: {
-        id: CARD_ABILITIES.HASTE
+        id: CARD_ABILITIES.HASTE,
+        tier: CRAFTING_PART_ABILITY_TIERS.MINION.TIER_1
       },
       weight: 10
     }
@@ -62,6 +69,7 @@ function _getEpicWeights() {
     {
       ability: {
         id: CARD_ABILITIES.REACH,
+        tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_2,
         amount: 1
       },
       weight: 80
@@ -69,13 +77,15 @@ function _getEpicWeights() {
     {
       ability: {
         id: CARD_ABILITIES.SPELLSHOT,
+        tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1,
         amount: 1
       },
       weight: 100
     },
     {
       ability: {
-        id: CARD_ABILITIES.HASTE
+        id: CARD_ABILITIES.HASTE,
+        tier: CRAFTING_PART_ABILITY_TIERS.MINION.TIER_1
       },
       weight: 10
     }
@@ -87,6 +97,7 @@ function _getLegendaryWeights() {
     {
       ability: {
         id: CARD_ABILITIES.REACH,
+        tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_2,
         amount: 1
       },
       weight: 80
@@ -94,13 +105,15 @@ function _getLegendaryWeights() {
     {
       ability: {
         id: CARD_ABILITIES.SPELLSHOT,
+        tier: CRAFTING_PART_ABILITY_TIERS.SPELL.TIER_1,
         amount: 1
       },
       weight: 100
     },
     {
       ability: {
-        id: CARD_ABILITIES.HASTE
+        id: CARD_ABILITIES.HASTE,
+        tier: CRAFTING_PART_ABILITY_TIERS.MINION.TIER_1
       },
       weight: 10
     }

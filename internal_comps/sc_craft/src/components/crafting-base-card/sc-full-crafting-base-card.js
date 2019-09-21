@@ -63,7 +63,7 @@ class ScFullCraftingBaseCard extends LitElement {
         }
       </style>
       <header>
-        <sc-card-value valueType="${VALUE_TYPES.COST}" .card="${this.card}"></sc-card-value>
+        <sc-card-value valueType="${VALUE_TYPES.COST}" .card="${this.card}" .modifiedCard="${this.modifiedCard}"></sc-card-value>
       </header>
       <section>
         <sc-crafting-card-slots .card="${this.card}"></sc-crafting-card-slots>
@@ -82,7 +82,8 @@ class ScFullCraftingBaseCard extends LitElement {
 
   static get properties() { 
     return {
-      card: { type: Object }
+      card: { type: Object },
+      modifiedCard: { type: Object }
     }
   }
 }

@@ -13,6 +13,7 @@ import * as CardsController from '../../../../../../sc_cards/src/services/interf
 import { CraftingPartTypeWeights } from '../models/weights/crafting-part-type.js';
 import { StatPartWeights } from '../models/weights/stat-part.js';
 import { AbilityPartWeights } from '../models/weights/ability-part.js';
+import { getCardCost } from '../../../cost-calculator.js';
 
 export const prepareCraftingTurn = () => {
   Model.craftingBaseCard = _getGeneratedCraftingBaseCard();
@@ -45,7 +46,7 @@ function _getGeneratedMinionBaseCard() {
     attack,
     slots
   };
-  card.cost = _getCardCost(card);
+  card.cost = getCardCost(card);
   return card;
 }
 
@@ -58,7 +59,7 @@ function _getGeneratedSpellBaseCard() {
     rarity,
     slots
   };
-  card.cost = _getCardCost(card);
+  card.cost = getCardCost(card);
   return card;
 }
 
@@ -232,108 +233,6 @@ function _fillSlotsWithAbilities(slots, abilities) {
     tempSlots.splice(i, 1, abilities[i]);
   }
   return tempSlots;
-}
-
-function _getCardCost(card) {
-  let cost = _getCardTypeSpecificCosts(card);
-  cost += _getRarityCost(card.rarity);
-  // @NOTE: we don't want to floor() since we need approximations while still crafting.
-  // cost = Math.floor(cost);
-  if (cost < 0) {
-    cost = 0;
-  }
-  return cost;
-}
-
-function _getCardTypeSpecificCosts(card) {
-  switch (card.type) {
-    case CARD_TYPES.MINION:
-      return _getMinionCardCost(card);
-    case CARD_TYPES.SPELL:
-      return _getSpellCardCost(card);
-    default:
-      Log.error(`Unexpected card type: ${card.type}`);
-      return 0;
-  }
-}
-
-function _getMinionCardCost(card) {
-  let cost = 0;
-  cost += card.attack * 0.3;
-  if (card.range === 0) {
-    cost += -1;
-  } else if (card.range === 1) {
-    cost += 0;
-  } else if (card.range === 2) {
-    cost += 2;
-  } else if (card.range === 3) {
-    cost += 3;
-  }
-  cost += card.health * 0.25;
-  cost += _getAbilitiesCost(card);
-  cost += card.slots.length * 0.25;
-  return cost;
-}
-
-function _getSpellCardCost(card) {
-  let cost = 0;
-  cost += _getAbilitiesCost(card);
-  cost += card.slots.length * 0.25;
-  return cost;
-}
-
-function _getAbilitiesCost(card) {
-  let cost = 0;
-  if (card.slots.length) {
-    for (let slot of card.slots) {
-      if (slot.id) {
-        cost += _getAbilityCost(slot);
-      }
-    }
-  }
-  return cost;
-}
-
-function _getAbilityCost(ability) {
-  switch (ability.id) {
-    case CARD_ABILITIES.REACH:
-      return _getAbilityReachCost(ability);
-    case CARD_ABILITIES.HASTE:
-      return _getAbilityHasteCost(ability);
-    case CARD_ABILITIES.SPELLSHOT:
-      return _getAbilitySpellshotCost(ability);
-    default:
-      Log.error(`unexpected ability: ${ability.id}`);
-      return 0;
-  }
-}
-
-function _getAbilityReachCost(ability) {
-  return ability.amount * 3;
-}
-
-function _getAbilityHasteCost(ability) {
-  return 1.5;
-}
-
-function _getAbilitySpellshotCost(ability) {
-  return ability.amount * 2;
-}
-
-function _getRarityCost(rarity) {
-  switch (rarity) {
-    case CARD_RARITIES.COMMON:
-      return 0;
-    case CARD_RARITIES.RARE:
-      return -.5;
-    case CARD_RARITIES.EPIC:
-      return -1;
-    case CARD_RARITIES.LEGENDARY:
-      return -2;
-    default:
-      Log.error(`unexpected rarity: ${rarity}`);
-      return 0;
-  }
 }
 
 function _selectChosenWeight(weights) {
