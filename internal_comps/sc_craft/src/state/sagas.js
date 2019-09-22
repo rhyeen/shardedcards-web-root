@@ -54,10 +54,11 @@ function _getFinalCard() {
   return buildCard(card);
 }
 
-function* _addCraftedCardToDeck(numberOfInstances) {
+function* _addCraftedCardToDeck({numberOfInstances}) {
   try {
     const craftedCard = yield _getCraftedCard();
-    yield put(CardsActions.addCardToDeck(craftedCard, numberOfInstances));
+    // @NOTE: I originally added the card to the actual discard pile, but since we don't have
+    // the instance ids yet, it's a futile effort.
     yield put(Actions.addCraftedCardToDeck.success());
   } catch (e) {
     yield Log.error(`@TODO: unable to _addCraftedCardToDeck(): ${e}`);

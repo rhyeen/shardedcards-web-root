@@ -8,6 +8,7 @@ const _selectedCardSelector = state => state.sc_cards.ui.selectedCard;
 const _selectedAbilitySelector = state => state.sc_cards.ui.selectedAbility;
 const _cardsSelector = state => state.sc_cards.entities.cards;
 const _playerHandCardsSelector = state => state.sc_cards.entities.player.hand.cards;
+const _playerHandRefillSizeSelector = state => state.sc_cards.entities.player.hand.refillSize;
 const _playerFieldSlotsSelector = state => state.sc_cards.entities.player.field.slots;
 const _opponentFieldSlotsSelector = state => state.sc_cards.entities.opponent.field.slots;
 const _opponentFieldBacklogSelector = state => state.sc_cards.entities.opponent.field.backlog;
@@ -31,6 +32,11 @@ export const getHandCards = createSelector(
   }
 );
 
+export const getHandRefillSize = createSelector(
+  _playerHandRefillSizeSelector,
+  (playerHandRefillSizeSelector) => playerHandRefillSizeSelector
+);
+
 function _getHandCard(handCard, cards) {
   return {
     ...handCard,
@@ -45,6 +51,11 @@ export const getDeckSize = createSelector(
   }
 );
 
+export const getDiscardPileCards = createSelector(
+  _playerDiscardPileCardsSelector,
+  (discardPileCards) => discardPileCards
+);
+
 export const getDiscardPileSize = createSelector(
   _playerDiscardPileCardsSelector,
   (discardPileCards) => {
@@ -57,6 +68,11 @@ export const getLostPileSize = createSelector(
   (lostCards) => {
     return lostCards.length;
   }
+);
+
+export const getLostPileCards = createSelector(
+  _playerLostCardsSelector,
+  (lostCards) => lostCards
 );
 
 export const getSelectedCard = createSelector(

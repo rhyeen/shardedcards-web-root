@@ -138,6 +138,3 @@ export const cancelSelectPlayerMinionTargetedAbility = () => _action(CANCEL_SELE
 // Use selectAbility instead, which will handle this case in the saga.
 export const SELECT_PLAYER_TARGETED_ABILITY = _createRequestRaw('SELECT_PLAYER_TARGETED_ABILITY');
 export const selectPlayerTargetedAbility = (abilityId) => _action(SELECT_PLAYER_TARGETED_ABILITY, {abilityId});
-
-export const ADD_CARD_TO_DECK = _createRequestRaw('ADD_CARD_TO_DECK');
-export const addCardToDeck = (card, numberOfInstances) => _action(ADD_CARD_TO_DECK, {card, numberOfInstances});

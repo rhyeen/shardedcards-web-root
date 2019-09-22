@@ -10,6 +10,7 @@ import * as GameDispatchActions from '../../../sc_game/src/state/actions.js';
 import { Log } from '../../../sc_shared/src/services/logger.js';
 import { CARD_TARGETS, Ability } from '../entities/selected-card.js';
 import * as CardsInterface from '../services/interface/cards.js';
+import { setNewCardTemporaryInstances } from '../services/card-selection.js';
 
 function* _setCards() {
   try {
@@ -285,6 +286,6 @@ export default function* root() {
     takeEvery(Actions.SET_PLAYER_DECKS.REQUEST, _setPlayerDecks),
     takeEvery(Actions.SET_CARDS.REQUEST, _setCards),
     takeEvery(Actions.SELECT_ABILITY, _selectAbility),
-    takeEvery(Actions.CANCEL_SELECT_MINION_TARGETED_ABILITY, _cancelSelectMinionTargetedAbility)
+    takeEvery(Actions.CANCEL_SELECT_MINION_TARGETED_ABILITY, _cancelSelectMinionTargetedAbility),
   ]);
 }
