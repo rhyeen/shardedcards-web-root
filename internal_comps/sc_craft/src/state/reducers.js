@@ -11,11 +11,11 @@ function _resetState() {
         forgeSlotIndex: null
       },
       selectedForgeSlot: {
-        forgeSlotIndex: null
+        forgeSlotIndex: null,
+        finishedCard: null
       },
       isCraftingBaseCardSelected: false,
-      isForgingCraftingBaseCard: false,
-      finishedForgeCard: null
+      isForgingCraftingBaseCard: false
     },
     entities: {
       forge: {
@@ -68,7 +68,8 @@ function _setSelectedForgeSlot(state, forgeSlotIndex) {
     ui: {
       ...state.ui,
       selectedForgeSlot: {
-        forgeSlotIndex
+        forgeSlotIndex,
+        finishedCard: null
       }
     }
   };
@@ -80,7 +81,8 @@ function _removeSelectedForgeSlot(state) {
     ui: {
       ...state.ui,
       selectedForgeSlot: {
-        forgeSlotIndex: null
+        forgeSlotIndex: null,
+        finishedCard: null
       }
     }
   };
@@ -96,12 +98,15 @@ function _setIsCraftingBaseCardSelected(state, isCraftingBaseCardSelected) {
   };
 }
 
-function _setFinishedForgeCard(state, finishedForgeCard) {
+function _setFinishedForgeCard(state, finishedCard) {
   return {
     ...state,
     ui: {
       ...state.ui,
-      finishedForgeCard
+      selectedForgeSlot: {
+        ...state.ui.selectedForgeSlot,
+        finishedCard
+      }
     }
   };
 }
@@ -225,11 +230,11 @@ export const sc_craft = (state = INITIAL_STATE, action) => {
     case ActionType.CANCEL_ADD_CRAFTING_PART:
       return _setSelectedCraftingPart(state, state.ui.selectedCraftingPart.craftingPartIndex, null);
     case ActionType.FINISH_FORGING_CARD.SUCCESS:
-      state = _setFinishedForgeCard(state, action.card);
-      state = _setForgeSlotCard(state, state.ui.selectedForgeSlot.forgeSlotIndex, null);
-      return _removeSelectedForgeSlot(state);
+      return _setFinishedForgeCard(state, action.card);
     case ActionType.ADD_CRAFTED_CARD_TO_DECK.SUCCESS:
-      return _setFinishedForgeCard(state, null);
+      state = _setForgeSlotCard(state, state.ui.selectedForgeSlot.forgeSlotIndex, null);
+      state = _setFinishedForgeCard(state, null);
+      return _removeSelectedForgeSlot(state);
     default:
       return state;
   }

@@ -42,7 +42,8 @@ export const LOCALE_EN = {
       PLAY_CARD: 'play',
       FORGE_CARD: 'forge',
       FINISH_FORGE: 'finish card',
-      ADD_PART: 'add part'
+      ADD_PART: 'add part',
+      ADD_CARDS_TO_DECK: (amount) => amount === 1 ? html`add 1 copy` : html`add ${amount} copies`
     }
   },
   ABILITY: {

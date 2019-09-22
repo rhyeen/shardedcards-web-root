@@ -26,6 +26,10 @@ ${ScCraftingStyles}
     margin-left: 20px;
   }
 
+  [btn-group].btn-group-tight sc-btn {
+    margin-left: 5px;
+  }
+
   [btn-group].btn-group-fill-bottom-up {
     display: flex;
     justify-content: flex-end;

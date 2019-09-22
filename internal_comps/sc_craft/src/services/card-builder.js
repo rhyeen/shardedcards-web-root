@@ -2,7 +2,7 @@ export function buildCard(forgeCard) {
   const card = {
     title: null,
     type: forgeCard.type,
-    cost: forgeCard.cost,
+    cost: getCardCost(forgeCard.cost),
     rarity: forgeCard.rarity,
     abilities: []
   };
@@ -36,4 +36,8 @@ function _getAbility(slot) {
     ability.amount = slot.amount;
   }
   return ability;
+}
+
+function getCardCost(forgeCardCost) {
+  return Math.floor(forgeCardCost);
 }

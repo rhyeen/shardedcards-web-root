@@ -9,7 +9,7 @@ const _selectedForgeSlotSelector = state => state.sc_craft.ui.selectedForgeSlot;
 const _selectedCraftingPart = state => state.sc_craft.ui.selectedCraftingPart;
 const _craftingPartsUsed = state => state.sc_craft.entities.craftingPartsUsed;
 const _maxCraftingPartsUsed = state => state.sc_craft.entities.maxCraftingPartsUsed;
-const _finishedForgeCard = state => state.sc_craft.ui.finishedForgeCard;
+const _finishedForgeCard = state => state.sc_craft.ui.selectedForgeSlot.finishedCard;
 
 export const getForgeSlots = createSelector(
   _forgeSelector,

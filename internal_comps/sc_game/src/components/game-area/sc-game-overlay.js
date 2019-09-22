@@ -25,6 +25,7 @@ import '../overlay/sc-use-card-ability-overlay.js';
 import '../overlay/sc-select-forging-card-overlay.js';
 import '../overlay/sc-show-add-crafting-part-overlay.js';
 import '../overlay/sc-show-add-crafting-part-to-slot-overlay.js';
+import '../overlay/sc-finish-crafting-card-overlay.js';
 
 class ScGameOverlay extends connect(localStore)(LitElement) {
   render() {
@@ -142,6 +143,11 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
             .forgeSlot="${this._selectedCraftingPart.forgeSlot}"
             .craftingPart="${this._selectedCraftingPart.craftingPart}"></sc-show-add-crafting-part-to-slot-overlay>`;
     }
+    if (this._showFinishCraftingCardOverlay()) {
+      return html`
+        <sc-finish-crafting-card-overlay
+            .card="${this._finishedForgeCard}"></sc-finish-crafting-card-overlay>`;
+    }
     return null;
   }
 
@@ -214,7 +220,7 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
   }
 
   _showFullForgingCardOverlay() {
-    return !!this._selectedForgeSlotCard.card;
+    return !!this._selectedForgeSlotCard.card && !this._finishedForgeCard;
   }
 
   _showAddCraftingPartOverlay() {
@@ -231,6 +237,10 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
     );
   }
 
+  _showFinishCraftingCardOverlay() {
+    return !!this._finishedForgeCard;
+  }
+
   stateChanged(state) {
     this._isGameMenuOpen = GameSelector.isGameMenuOpen(state);
     this._hasWon = GameSelector.hasWon(state);
@@ -244,6 +254,7 @@ class ScGameOverlay extends connect(localStore)(LitElement) {
     this._isForgingCraftingBaseCard = CraftingSelector.isForgingCraftingBaseCard(state);
     this._selectedForgeSlotCard = CraftingSelector.getSelectedForgeSlotCardSelector(state);
     this._selectedCraftingPart = CraftingSelector.getSelectedCraftingPartSelector(state);
+    this._finishedForgeCard = CraftingSelector.getFinishedForgeCard(state);
   }
 }
 
