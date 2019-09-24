@@ -83,5 +83,8 @@ export const forgeSelectedCraftingBaseCard = () => _action(FORGE_SELECTED_CRAFTI
 export const CANCEL_FORGE_SELECTED_CRAFTING_BASE_CARD = _createRequestRaw('CANCEL_FORGE_SELECTED_CRAFTING_BASE_CARD');
 export const cancelForgeSelectedCraftingBaseCard = () => _action(CANCEL_FORGE_SELECTED_CRAFTING_BASE_CARD, {});
 
-export const FINISH_FORGE_SELECTED_CRAFTING_BASE_CARD = _createRequestRaw('FINISH_FORGE_SELECTED_CRAFTING_BASE_CARD');
-export const finishForgeSelectedCraftingBaseCard = (forgeSlotIndex) => _action(FINISH_FORGE_SELECTED_CRAFTING_BASE_CARD, {forgeSlotIndex});
+export const FINISH_FORGE_SELECTED_CRAFTING_BASE_CARD = _createRequestTypes('FINISH_FORGE_SELECTED_CRAFTING_BASE_CARD');
+export const finishForgeSelectedCraftingBaseCard = {
+  request: (forgeSlotIndex) => _action(FINISH_FORGE_SELECTED_CRAFTING_BASE_CARD.REQUEST, {forgeSlotIndex}),
+  success: (forgeSlotIndex) => _action(FINISH_FORGE_SELECTED_CRAFTING_BASE_CARD.SUCCESS, {forgeSlotIndex})
+};

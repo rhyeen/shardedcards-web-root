@@ -1,7 +1,10 @@
 export const ACTION_TYPES = {
   PLAY_MINION: 'playMinion',
   CAST_SPELL: 'castSpell',
-  SUMMON_MINION: 'placeMinion'
+  SUMMON_MINION: 'placeMinion',
+  CRAFT_BASE_CARD: 'craftBaseCard',
+  ADD_CRAFTED_CARD_TO_DECK: 'addCraftedCardToDeck',
+  ADD_CRAFTING_PART: 'addCraftingPart'
 };
 
 export const ACTION_TARGET_TYPES = {

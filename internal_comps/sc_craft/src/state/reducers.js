@@ -221,7 +221,7 @@ export const sc_craft = (state = INITIAL_STATE, action) => {
       return _setIsCraftingBaseCardSelected(state, false);
     case ActionType.CANCEL_FORGE_SELECTED_CRAFTING_BASE_CARD:
       return _setIsForgingCraftingBaseCard(state, false);
-    case ActionType.FINISH_FORGE_SELECTED_CRAFTING_BASE_CARD:
+    case ActionType.FINISH_FORGE_SELECTED_CRAFTING_BASE_CARD.SUCCESS:
       state = _setForgeSlotCard(state, action.forgeSlotIndex, state.entities.craftingBaseCard);
       state = _setIsForgingCraftingBaseCard(state, false);
       return _setCraftingBaseCard(state, null);

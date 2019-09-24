@@ -64,6 +64,16 @@ function _endTurn(state) {
   };
 }
 
+function _addOpponentTurn(state, opponentTurn) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      turnHistory: [...state.entities.turnHistory, opponentTurn]
+    }
+  };
+}
+
 export const sc_game = (state = INITIAL_STATE, action) => {
   let newState;  
   switch (action.type) {
@@ -77,7 +87,9 @@ export const sc_game = (state = INITIAL_STATE, action) => {
     case ActionType.BEGIN_CRAFTING.SUCCESS:
       return _updateGameState(state, GAME_STATES.CRAFTING);
     case ActionType.END_CRAFTING.SUCCESS:
-      return _updateGameState(state, GAME_STATES.PLAYING);
+      state = _updateGameState(state, GAME_STATES.PLAYING);
+      state = _endTurn(state);
+      return _addOpponentTurn(state, action.opponentTurn);
     case ActionType.WIN_GAME.SUCCESS:
       return _updateGameState(state, GAME_STATES.WIN);
     case ActionType.LOSE_GAME.SUCCESS:

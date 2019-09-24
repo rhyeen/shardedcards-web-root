@@ -74,7 +74,7 @@ class ScCraftingArea extends connect(localStore)(LitElement) {
 
   _selectForgeSlot(forgeSlotIndex) {
     if (this._isForgingCraftingBaseCard) {
-      localStore.dispatch(finishForgeSelectedCraftingBaseCard(forgeSlotIndex));
+      localStore.dispatch(finishForgeSelectedCraftingBaseCard.request(forgeSlotIndex));
     } else if (this._craftingPartSelected) {
       localStore.dispatch(addCraftingPart(forgeSlotIndex));
     } else {

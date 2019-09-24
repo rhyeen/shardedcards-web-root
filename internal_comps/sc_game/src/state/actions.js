@@ -60,7 +60,7 @@ export const beginCrafting = {
 export const END_CRAFTING = _createRequestTypes('END_CRAFTING');
 export const endCrafting = {
   request: () => _action(END_CRAFTING.REQUEST, {}),
-  success: () => _action(END_CRAFTING.SUCCESS, {})
+  success: (opponentTurn) => _action(END_CRAFTING.SUCCESS, {opponentTurn})
 };
 
 export const WIN_GAME = _createRequestTypes('WIN_GAME');

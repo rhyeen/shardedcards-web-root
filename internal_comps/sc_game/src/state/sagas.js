@@ -30,17 +30,22 @@ function* _beginCrafting() {
   yield put(Actions.beginCrafting.success());
 }
 
-function* _endCrafting(turn) {
+function* _endCrafting() {
   try {
-    let { opponentTurn, updatedCards, gameState } = yield call(GameInterface.endCrafting, turn);
-    console.info('@TODO: update turn history with opponent turn');
-    yield put(Actions.endCrafting.success());
+    const { opponentTurn, updatedCards, gameState } = yield call(_callEndCrafting);
+    yield put(Actions.endCrafting.success(opponentTurn));
     yield put(CardsDispatchActions.setUpdatedCards(updatedCards));
     yield put(Actions.beginTurn.request());
     yield _setGameState(gameState);
   } catch (e) {
     yield Log.error(`@TODO: unable to endCrafting(): ${e}`);
   }
+}
+
+function _callEndCrafting() {
+  const state = localStore.getState();
+  let turn = GameSelector.getPendingTurn(state);
+  return GameInterface.endCrafting(turn);
 }
 
 function* _setGameState(gameState) {
