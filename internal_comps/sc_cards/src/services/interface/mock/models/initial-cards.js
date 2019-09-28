@@ -8,7 +8,7 @@ import * as Cards from '../../../card-selection.js';
 
 export function getInitialCards() {
   let cards = {
-    ravager: _getCard({
+    ravager: getCardWithInstancesFromDetails({
       title: 'Frontline Ravager',
       type: CARD_TYPES.MINION,
       rarity: CARD_RARITIES.COMMON,
@@ -22,7 +22,7 @@ export function getInitialCards() {
         }
       ]
     }, 5),
-    incinerate: _getCard({
+    incinerate: getCardWithInstancesFromDetails({
       title: 'Incinerate',
       rarity: CARD_RARITIES.RARE,
       type: CARD_TYPES.SPELL,
@@ -34,7 +34,7 @@ export function getInitialCards() {
         }
       ]
     }, 5),
-    rangedweapon: _getCard({
+    rangedweapon: getCardWithInstancesFromDetails({
       title: 'Ranged Weapon',
       rarity: CARD_RARITIES.EPIC,
       type: CARD_TYPES.SPELL,
@@ -46,7 +46,7 @@ export function getInitialCards() {
         }
       ]
     }, 5),
-    hero: _getCard({
+    hero: getCardWithInstancesFromDetails({
       title: 'Hero',
       rarity: CARD_RARITIES.EPIC,
       type: CARD_TYPES.MINION,
@@ -55,7 +55,7 @@ export function getInitialCards() {
       health: 5,
       attack: 3
     }, 5),
-    monster: _getCard({
+    monster: getCardWithInstancesFromDetails({
       title: 'Monster',
       rarity: CARD_RARITIES.LEGENDARY,
       type: CARD_TYPES.MINION,
@@ -64,7 +64,7 @@ export function getInitialCards() {
       health: 5,
       attack: 3
     }, 5),
-    pawn: _getCard({
+    pawn: getCardWithInstancesFromDetails({
       title: 'Pawn',
       rarity: CARD_RARITIES.UNDEFINED,
       type: CARD_TYPES.MINION,
@@ -75,7 +75,7 @@ export function getInitialCards() {
     }, 5)
   };
 
-  cards[ENERGY_SHARD.ID] = _getCard({
+  cards[ENERGY_SHARD.ID] = getCardWithInstancesFromDetails({
     title: 'Energy Shard',
     type: CARD_TYPES.SPELL,
     rarity: CARD_RARITIES.STANDARD,
@@ -91,13 +91,18 @@ export function getInitialCards() {
   return cards;
 }
 
-function _getCard(cardDetails, instancesAmount) {
+export function getCardWithInstancesFromDetails(cardDetails, instancesAmount) {
   let card = _deepCopy(cardDetails);
+  return getCardInstances(card, instancesAmount);
+};
+
+/* @MUTATES: card */
+export function getCardInstances(card, instancesAmount) {
   for (let i = 0; i < instancesAmount; i++) {
-    Cards.setNewCardInstance(card, `${i}`);
+    Cards.setNewCardInstance(card, Cards.getUniqueCardInstanceId(card));
   }
   return card;
-};
+}
 
 function _deepCopy(obj) {
   return JSON.parse(JSON.stringify(obj));

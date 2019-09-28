@@ -4,7 +4,7 @@ import * as CraftingInterface from '../services/interface/craft.js';
 import * as CraftingSelector from './selectors.js';
 import { getCardWithAddedCraftingPart } from '../services/card-modifier.js';
 import { localStore } from './store.js';
-import { buildCard } from '../services/card-builder.js';
+import { buildCardDetails } from '../services/card-builder.js';
 import * as GameDispatchActions from '../../../sc_game/src/state/actions.js';
 import { ACTION_TYPES } from '../../../sc_shared/src/entities/turn-keywords.js';
 
@@ -53,8 +53,9 @@ function _getAddCraftingPartAction() {
 function* _finishForgingCard() {
   try {
     const finalCard = yield _getFinalCard();
-    let { cardName } = yield call(CraftingInterface.getCardName, finalCard);
+    let { cardName, cardId } = yield call(CraftingInterface.getCardName, finalCard);
     finalCard.title = cardName;
+    finalCard.id = cardId;
     yield put(Actions.finishForgingCard.success(finalCard));
   } catch (e) {
     yield Log.error(`@TODO: unable to _finishForgingCard(): ${e}`);
@@ -64,7 +65,7 @@ function* _finishForgingCard() {
 function _getFinalCard() {
   const state = localStore.getState();
   const { card } = CraftingSelector.getSelectedForgeSlotCardSelector(state);
-  return buildCard(card);
+  return buildCardDetails(card);
 }
 
 function* _addCraftedCardToDeck({numberOfInstances}) {

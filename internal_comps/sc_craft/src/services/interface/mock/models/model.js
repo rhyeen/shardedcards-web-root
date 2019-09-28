@@ -5,7 +5,18 @@ export const Model = _getInitialModel();
 function _getInitialModel() {
   return {
     craftingBaseCard: null,
-    craftingParts: []
+    craftingParts: [],
+    forge: {
+      slots: [
+        {
+          card: null
+        },
+        {
+          card: null
+        }
+      ]
+    },
+    maxCraftingPartsUsed: 1
   };
 }
 

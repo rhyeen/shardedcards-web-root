@@ -8,6 +8,9 @@ import * as CardActions from '../../../card-actions.js';
 import {
   CARD_RARITIES,
   ENERGY_SHARD } from '../../../../../../sc_shared/src/entities/card-keywords.js';
+import { getCardHash } from '../../../../../../sc_craft/src/services/card-hasher.js';
+import { generateGuid } from '../../../../../../sc_game/src/services/id-generator.js';
+import { getRandomCardName } from '../../../../../../sc_craft/src/services/card-name-generator.js';
 
 const OPPONENT_BACKLOG_PARTITIONS = {
   COMMON: 5,
@@ -16,6 +19,24 @@ const OPPONENT_BACKLOG_PARTITIONS = {
   LEGENDARY: 1,
   CHANCE_OF_NEXT_LEVEL_CARD: 0.3
 };
+
+export function getCardIdentifiers(cardDetails) {
+  const cardDetailsHash = getCardHash(cardDetails);
+  for (let cardId in Model.cards) {
+    if (cardDetailsHash === getCardHash(Model.cards[cardId])) {
+      return {
+        isNewCard: false,
+        cardId,
+        cardName: Model.cards[cardId].title
+      };
+    }
+  }
+  return {
+    isNewCard: true,
+    cardId: generateGuid('CR', 15),
+    cardName: getRandomCardName(cardDetails)
+  };
+}
 
 export const getBacklogStats = () => {
   let remainingBacklogCards = _getRemainingBacklogCards();

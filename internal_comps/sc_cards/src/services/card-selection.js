@@ -56,6 +56,19 @@ export function getParentCard(cards, cardId) {
   return cards[cardId];
 }
 
+export function getUniqueCardInstanceId(parentCard) {
+  if (!parentCard.instances) {
+    return '0';
+  }
+  let i = 1;
+  while (true) {
+    if (!(`${i}` in parentCard.instances)) {
+      return `${i}`;
+    }
+    i++;
+  }
+}
+
 /** @MUTATES: card */
 export function setNewCardInstance(parentCard, cardInstance) {
   if (!parentCard.instances) {

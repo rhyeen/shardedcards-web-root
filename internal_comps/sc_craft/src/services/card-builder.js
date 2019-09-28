@@ -1,6 +1,7 @@
-export function buildCard(forgeCard) {
+export function buildCardDetails(forgeCard) {
   const card = {
-    title: null,
+    id: forgeCard.id,
+    title: forgeCard.title,
     type: forgeCard.type,
     cost: getCardCost(forgeCard.cost),
     rarity: forgeCard.rarity,
