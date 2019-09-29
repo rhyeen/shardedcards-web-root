@@ -19,12 +19,11 @@ export const endCrafting = (turn) => {
   return new Promise((resolve) => {
     Mock.debugRequest(endCrafting);
     GameController.executeCraftingTurn(turn);
-    let opponentTurn = GameController.getOpponentTurn();
-    let updatedCard = GameController.getUpdatedCards();
     setTimeout(() => {
-      let response = {
-        opponentTurn: opponentTurn.actions,
-        updatedCards: updatedCard,
+      const response = {
+        opponentTurn: GameController.getOpponentTurn().actions,
+        updatedCards: GameController.getUpdatedCards(),
+        newCards: GameController.getNewlyCraftedCards(),
         gameState: GameController.getGameState()
       };
       Mock.debugSuccessfulResponse(endCrafting, response);

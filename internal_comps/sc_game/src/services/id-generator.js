@@ -11,7 +11,7 @@ const LETTER_RUNES = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456
 function _getRandomString(length) {
   let str = '';
   for (let i = 0; i < length; i++) {
-    str += LETTER_RUNES[Math.floor((Math.random() * LETTER_RUNES.length) + 1)];
+    str += LETTER_RUNES[Math.floor((Math.random() * LETTER_RUNES.length))];
   }
   return str;
 }

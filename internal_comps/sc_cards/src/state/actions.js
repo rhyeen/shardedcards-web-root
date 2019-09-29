@@ -95,6 +95,10 @@ export const refreshPlayerCards = {
 export const SET_UPDATED_CARDS = _createRequestRaw('SET_UPDATED_CARDS');
 export const setUpdatedCards = (updatedCards) => _action(SET_UPDATED_CARDS, {updatedCards});
 
+export const SET_NEW_CARDS = _createRequestRaw('SET_NEW_CARDS');
+export const setNewCards = (newCards) => _action(SET_NEW_CARDS, {newCards});
+
+
 export const SET_CARDS = _createRequestTypes('SET_CARDS');
 export const setCards = {
   request: () => _action(SET_CARDS.REQUEST, {}),

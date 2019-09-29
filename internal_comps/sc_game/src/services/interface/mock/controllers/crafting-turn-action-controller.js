@@ -7,7 +7,6 @@ import { buildCardDetails } from "../../../../../../sc_craft/src/services/card-b
 import { getCardWithInstancesFromDetails, getCardInstances } from "../../../../../../sc_cards/src/services/interface/mock/models/initial-cards";
 
 export const executeCraftingTurnActions = (turn) => {
-  debugger;
   for (let action of turn) {
     let validAction = _executeAction(action);
     if (!validAction) {
@@ -90,10 +89,11 @@ function _executeAddCraftingCardToDeck(action) {
     return false;
   }
   const cardDetails = buildCardDetails(CraftingModel.Model.forge.slots[action.forgeSlotIndex].card);
-  debugger;
-  console.trace('currently missing title + id');
+  cardDetails.id = action.cardId;
+  cardDetails.title = action.cardName;
   const card = _getCardFromDetails(cardDetails, action.numberOfInstances);
-  _addCardsToDiscardPile(...card);
+  _addCardToCards(card);
+  _addCardsToDiscardPile(card);
   CraftingModel.Model.forge.slots[action.forgeSlotIndex].card = null;
   return true;
 }
@@ -113,9 +113,14 @@ function _getExistingCard(cardDetails) {
   return null;
 }
 
-function _addCardsToDiscardPile(cardWithInstances) {
-  for (let instanceId of cardWithInstances.instances) {
-    _addCardToDiscardPile(card.title, instanceId);
+function _addCardToCards(card) {
+  CardsModel.Model.newlyCraftedCards.push(card.id);
+  CardsModel.Model.cards[card.id] = card;
+}
+
+function _addCardsToDiscardPile(card) {
+  for (let instanceId in card.instances) {
+    _addCardToDiscardPile(card.id, instanceId);
   }
 }
 

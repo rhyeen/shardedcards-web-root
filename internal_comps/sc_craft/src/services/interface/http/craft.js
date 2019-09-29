@@ -8,6 +8,6 @@ export const getCraftingParts = () => {
   return Http.post('craft/craftingparts');
 }
 
-export function getCardName(card) {
+export function getCardIdentifiers(card) {
   return Http.get('craft/finishedcard');
 }

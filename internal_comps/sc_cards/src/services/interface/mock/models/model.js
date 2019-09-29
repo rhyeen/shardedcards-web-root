@@ -8,6 +8,7 @@ export const Model = _getInitialModel();
 
 function _getInitialModel() {
   return {
+    newlyCraftedCards: [],
     cards: {},
     player: {
       hand: {
@@ -122,4 +123,13 @@ function _getCardContextFromReference(cardReference) {
     instance: cardReference.instance,
     card: Cards.getCard(Model.cards, cardReference.id, cardReference.instance)
   };
+}
+
+export function getNewlyCraftedCards() {
+  const newCards = {};
+  for (let newCardId of Model.newlyCraftedCards) {
+    newCards[newCardId] = Model.cards[newCardId];
+  }
+  Model.newlyCraftedCards = [];
+  return newCards;
 }

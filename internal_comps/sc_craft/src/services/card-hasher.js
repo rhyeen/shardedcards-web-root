@@ -1,4 +1,4 @@
-import { CARD_TYPES, CARD_RARITIES } from "../../../sc_shared/src/entities/card-keywords";
+import { CARD_TYPES, CARD_RARITIES, CARD_ABILITIES } from "../../../sc_shared/src/entities/card-keywords";
 import { Log } from "../../../sc_shared/src/services/logger";
 
 export function getCardHash(card) {
@@ -82,4 +82,24 @@ function _getCardHashNumber(value) {
     return POSITIVE_HASH_NUMBERS[POSITIVE_HASH_NUMBERS.length - 1];
   }
   return POSITIVE_HASH_NUMBERS[value];
+}
+
+function _getCardHashAbility(ability) {
+  return ';' + _getAbilityHashId(ability.id) + _getCardHashNumber(ability.amount);
+}
+
+function _getAbilityHashId(abilityId) {
+  switch(abilityId) {
+    case CARD_ABILITIES.HASTE:
+      return 'HS';
+    case CARD_ABILITIES.REACH:
+      return 'RC';
+    case CARD_ABILITIES.SPELLSHOT:
+      return 'SS';
+    case CARD_ABILITIES.ENERGIZE:
+      return 'EN';
+    default:
+      Log.error(`unexpected ability id: ${abilityId}`);
+      return '??';
+  }
 }

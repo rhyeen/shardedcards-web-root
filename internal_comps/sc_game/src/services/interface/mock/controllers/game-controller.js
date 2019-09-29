@@ -36,6 +36,10 @@ export const getUpdatedCards = () => {
   return Model.currentTurnUpdatedCards;
 };
 
+export function getNewlyCraftedCards() {
+  return CardsModel.getNewlyCraftedCards();
+}
+
 export const getGameState = () => {
   if (_gameIsLost()) {
     return GAME_STATES.LOSE;

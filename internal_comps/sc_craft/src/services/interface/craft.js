@@ -28,12 +28,12 @@ export const getCraftingParts = () => {
   }
 };
 
-export function getCardName(card) {
+export function getCardIdentifiers(card) {
   switch (interfaceState()) {
     case INTERFACE.HTTP:
-      return CallHttp.getCardName(card);
+      return CallHttp.getCardIdentifiers(card);
     case INTERFACE.MOCK:
-      return CallMock.getCardName(card);
+      return CallMock.getCardIdentifiers(card);
     default:
       return invalidInterfaceState();
   }

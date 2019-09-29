@@ -32,9 +32,10 @@ function* _beginCrafting() {
 
 function* _endCrafting() {
   try {
-    const { opponentTurn, updatedCards, gameState } = yield call(_callEndCrafting);
+    const { opponentTurn, updatedCards, gameState, newCards } = yield call(_callEndCrafting);
     yield put(Actions.endCrafting.success(opponentTurn));
     yield put(CardsDispatchActions.setUpdatedCards(updatedCards));
+    yield put(CardsDispatchActions.setNewCards(newCards));
     yield put(Actions.beginTurn.request());
     yield _setGameState(gameState);
   } catch (e) {

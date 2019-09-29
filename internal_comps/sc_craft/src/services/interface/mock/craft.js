@@ -31,12 +31,12 @@ export const getCraftingParts = () => {
   });
 };
 
-export function getCardName(cardDetails) {
+export function getCardIdentifiers(cardDetails) {
   return new Promise((resolve) => {
-    Mock.debugRequest(getCardName);
+    Mock.debugRequest(getCardIdentifiers);
     setTimeout(() => {
       let response = CardsController.getCardIdentifiers(cardDetails);
-      Mock.debugSuccessfulResponse(getCardName, response);
+      Mock.debugSuccessfulResponse(getCardIdentifiers, response);
       resolve(Mock.prepareResponse(response));
     }, CALLBACK_TIME.GET);
   });

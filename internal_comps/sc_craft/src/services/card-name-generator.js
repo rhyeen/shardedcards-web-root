@@ -28,66 +28,66 @@ function _getRandomCardNamePart(cardNamePart) {
 }
 
 function _getRandomArrayElement(arr) {
-  return arr[Math.floor((Math.random() * arr.length) + 1)];
+  return arr[Math.floor((Math.random() * arr.length))];
 }
 
 const NAME_CLAUSES = {};
 NAME_CLAUSES[CARD_TYPES.MINION] = {};
 NAME_CLAUSES[CARD_TYPES.MINION][CARD_RARITIES.COMMON] = [
   [
-    ['goblin', 'peasant', 'skeleton'],
-    ['scavenger', 'soldier', 'cultist']
+    ['Goblin', 'Peasant', 'Skeleton'],
+    ['Scavenger', 'Soldier', 'Cultist']
   ],
   [
-    ['herald', 'bearer', 'warden', 'vagabond'],
+    ['Herald', 'Bearer', 'Warden', 'Vagabond'],
     ['of'],
-    ['doom', 'glory', 'fame']
+    ['Doom', 'Glory', 'Fame']
   ]
 ];
 NAME_CLAUSES[CARD_TYPES.MINION][CARD_RARITIES.RARE] = [
   [
-    ['orcish', 'noble', 'zombie'],
-    ['archer', 'knight', 'novice']
+    ['Orcish', 'Noble', 'Zombie'],
+    ['Archer', 'Knight', 'Novice']
   ]
 ];
 NAME_CLAUSES[CARD_TYPES.MINION][CARD_RARITIES.EPIC] = [
   [
-    ['troll', 'veteran', 'demon'],
-    ['ranger', 'battlemaster', 'mage']
+    ['Troll', 'Veteran', 'Demon'],
+    ['Ranger', 'Battlemaster', 'Mage']
   ]
 ];
 NAME_CLAUSES[CARD_TYPES.MINION][CARD_RARITIES.LEGENDARY] = [
   [
-    ['giant', 'godsent', 'lich'],
-    ['shadow archer', 'leader', 'archmagi']
+    ['Giant', 'Godsent', 'Lich'],
+    ['Shadow Archer', 'Leader', 'Archmagi']
   ]
 ];
 NAME_CLAUSES[CARD_TYPES.SPELL] = {};
 NAME_CLAUSES[CARD_TYPES.SPELL][CARD_RARITIES.COMMON] = [
   [
-    ['trinket', 'charm'],
+    ['Trinket', 'Charm'],
     ['of'],
-    ['healing', 'light', 'spark']
+    ['Healing', 'Light', 'Spark']
   ]
 ];
 NAME_CLAUSES[CARD_TYPES.SPELL][CARD_RARITIES.RARE] = [
   [
-    ['potion', 'scroll'],
+    ['Potion', 'Scroll'],
     ['of'],
-    ['restoration', 'glimmer', 'storm']
+    ['Restoration', 'Glimmer', 'Storm']
   ]
 ];
 NAME_CLAUSES[CARD_TYPES.SPELL][CARD_RARITIES.EPIC] = [
   [
-    ['tome', 'artifact'],
+    ['Tome', 'Artifact'],
     ['of'],
-    ['revival', 'lightburst', 'lightning']
+    ['Revival', 'Lightburst', 'Lightning']
   ]
 ];
 NAME_CLAUSES[CARD_TYPES.SPELL][CARD_RARITIES.LEGENDARY] = [
   [
-    ['relic', 'blessing'],
+    ['Relic', 'Blessing'],
     ['of'],
-    ['immortality', 'suntorch', 'skyfall']
+    ['Immortality', 'Suntorch', 'Skyfall']
   ]
 ];

@@ -100,6 +100,19 @@ function _setCards(state, cards) {
   };
 }
 
+function _updateCards(state, cards) {
+  return {
+    ...state,
+    entities: {
+      ...state.entities,
+      cards: {
+        ...state.entities.cards,
+        ...cards
+      }
+    }
+  };
+}
+
 function _setPlayerDeckSize(state, deckSize) {
   return {
     ...state,
@@ -497,6 +510,8 @@ export const sc_cards = (state = INITIAL_STATE, action) => {
       return newState;
     case ActionType.SET_CARDS.SUCCESS:
       return _setCards(state, action.cards);
+    case ActionType.SET_NEW_CARDS:
+        return _updateCards(state, action.newCards);
     case ActionType.SET_OPPONENT_CARDS:
       return _setOpponentCards(state, action.cards);
     case ActionType.SET_OPPONENT_FIELD_BACKLOG:

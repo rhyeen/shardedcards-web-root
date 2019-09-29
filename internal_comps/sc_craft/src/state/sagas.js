@@ -53,7 +53,7 @@ function _getAddCraftingPartAction() {
 function* _finishForgingCard() {
   try {
     const finalCard = yield _getFinalCard();
-    let { cardName, cardId } = yield call(CraftingInterface.getCardName, finalCard);
+    let { cardName, cardId } = yield call(CraftingInterface.getCardIdentifiers, finalCard);
     finalCard.title = cardName;
     finalCard.id = cardId;
     yield put(Actions.finishForgingCard.success(finalCard));
@@ -79,9 +79,12 @@ function* _addCraftedCardToDeck({numberOfInstances}) {
 function _getAddCraftedCardToDeckAction(numberOfInstances) {
   const state = localStore.getState();
   const { forgeSlotIndex } = CraftingSelector.getSelectedForgeSlotCardSelector(state);  
+  const finishedForgeCard = CraftingSelector.getFinishedForgeCard(state);
   return {
     type: ACTION_TYPES.ADD_CRAFTED_CARD_TO_DECK,
     numberOfInstances,
+    cardName: finishedForgeCard.title,
+    cardId: finishedForgeCard.id,
     forgeSlotIndex
   };
 }
